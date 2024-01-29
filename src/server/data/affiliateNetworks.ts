@@ -1,5 +1,4 @@
 import type { TAffiliateNetwork, TAffiliateNetwork_id } from '../../client/src/lib/types';
-import { placeholderAffiliateNetworks } from './placeholder-data';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 

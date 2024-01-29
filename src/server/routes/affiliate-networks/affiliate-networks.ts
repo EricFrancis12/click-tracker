@@ -3,8 +3,6 @@ import {
     fetchAffiliateNetworks, fetchAffiliateNetworkBy_id,
     createNewAndSaveNewAffiliateNetwork, updateAffiliateNetwork
 } from '../../data/affiliateNetworks';
-import CyclicDB from '@cyclic.sh/dynamodb';
-const db = CyclicDB(process.env.CYCLIC_DB);
 
 import { Router } from 'express';
 const router = Router();
@@ -58,5 +56,7 @@ router.put('/:affiliateNetwork_id', async (req, res) => {
         res.json({ success: false });
     }
 });
+
+// router.delete
 
 export { router };

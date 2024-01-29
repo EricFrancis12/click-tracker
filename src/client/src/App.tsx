@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function App() {
     const [endpoint, setEndpoint] = useState<string>('');
     const [method, setMethod] = useState<string>('');
+
+    const placeholderAffiliateNetwork = {
+        _id: 'PLACEHOLDER-AFFILIATE-NETWORK-0_AN',
+        name: 'PLACEHOLDER-AFFILIATE-NETWORK-0',
+        defaultNewOfferString: '123',
+        tags: ['0', '1', '2', '3']
+    };
 
     function handleButtonClick() {
         fetch(endpoint, {
@@ -10,7 +17,7 @@ export default function App() {
                 'Content-Type': 'application/json'
             },
             method,
-            body: method.toUpperCase() === 'GET' ? undefined : JSON.stringify({ test: 'test' })
+            body: method.toUpperCase() === 'GET' ? undefined : JSON.stringify(placeholderAffiliateNetwork)
         })
             .then(res => res.json())
             .then(res => console.log(res));
