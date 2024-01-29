@@ -1,4 +1,4 @@
-import { fetchTrafficSources, fetchTrafficSourceBy_id } from '../../data/data';
+import { fetchTrafficSources, fetchTrafficSourceBy_id } from '../../data/trafficSources';
 
 import { Router } from 'express';
 const router = Router();

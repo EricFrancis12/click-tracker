@@ -13,13 +13,13 @@ export function makeNewClickFromReq({ req, campaign }: {
     req: Request,
     campaign: TCampaign
 }) {
-    const click: TClick = {
-        _id: generateNewClick_id(),
-        campaign_id: campaign._id,
-        trafficSource_id: campaign.trafficSource_id,
-        landingPage_id: 
-    };
-    return click;
+    // const click: TClick = {
+    //     _id: generateNewClick_id(),
+    //     campaign_id: campaign._id,
+    //     trafficSource_id: campaign.trafficSource_id,
+    //     landingPage_id: 
+    // };
+    // return click;
 }
 
 // trafficSource_id: TTrafficSource_id,

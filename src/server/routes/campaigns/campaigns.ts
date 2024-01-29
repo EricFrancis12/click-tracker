@@ -1,4 +1,4 @@
-import { fetchCampaigns, fetchCampaignBy_id } from '../../data/data';
+import { fetchCampaigns, fetchCampaignBy_id } from '../../data/campaigns';
 
 import { Router } from 'express';
 const router = Router();

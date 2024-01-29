@@ -8,20 +8,62 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
-const data_1 = require("../../data/data");
+const affiliateNetworks_1 = require("../../data/affiliateNetworks");
+const dynamodb_1 = __importDefault(require("@cyclic.sh/dynamodb"));
+const db = (0, dynamodb_1.default)(process.env.CYCLIC_DB);
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const affiliateNetworks = yield (0, data_1.fetchAffiliateNetworks)();
-    res.json({ affiliateNetworks });
+    try {
+        const affiliateNetworks = yield (0, affiliateNetworks_1.fetchAffiliateNetworks)();
+        res.json({ affiliateNetworks });
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
 }));
 router.get('/:affiliateNetwork_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const affiliateNetwork = yield (0, data_1.fetchAffiliateNetworkBy_id)(req.params.affiliateNetwork_id);
-    res.json({ affiliateNetwork });
+    try {
+        const affiliateNetwork = yield (0, affiliateNetworks_1.fetchAffiliateNetworkBy_id)(req.params.affiliateNetwork_id);
+        res.json({ affiliateNetwork });
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
 }));
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const affiliateNetwork = req.body;
+    try {
+        const affiliateNetwork = req.body;
+        if (!affiliateNetwork) {
+            res.json({ success: false, message: 'Request body required' });
+        }
+        yield (0, affiliateNetworks_1.createNewAndSaveNewAffiliateNetwork)(affiliateNetwork);
+        res.json({ success: true });
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
+}));
+router.put('/:affiliateNetwork_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const affiliateNetwork = req.body;
+        if (!affiliateNetwork) {
+            res.json({ success: false, message: 'Request body required' });
+        }
+        yield (0, affiliateNetworks_1.updateAffiliateNetwork)(affiliateNetwork);
+        res.json({ success: true });
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
 }));

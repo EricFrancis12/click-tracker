@@ -1,5 +1,6 @@
 import type { TClick } from '../../../client/src/lib/types';
-import { fetchCampaignBy_id, fetchFlowBy_id } from '../../data/data';
+import { fetchCampaignBy_id } from '../../data/campaigns';
+import { fetchFlowBy_id } from '../../data/flows';
 import { catchAllRedirectUrl, makeNewClickFromReq } from '../../utils/utils';
 
 import { Router } from 'express';
@@ -11,7 +12,7 @@ router.get('/:campaign_id', async (req, res) => {
         return res.redirect(catchAllRedirectUrl());
     }
 
-    const click: TClick = makeNewClickFromReq({ req, campaign }); /
+    // const click: TClick = makeNewClickFromReq({ req, campaign }); /
 
     let flow;
     // Handle based on flow type

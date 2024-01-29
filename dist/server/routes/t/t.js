@@ -10,23 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
-const data_1 = require("../../data/data");
+const campaigns_1 = require("../../data/campaigns");
+const flows_1 = require("../../data/flows");
 const utils_1 = require("../../utils/utils");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const campaign = yield (0, data_1.fetchCampaignBy_id)(req.params.campaign_id);
+    const campaign = yield (0, campaigns_1.fetchCampaignBy_id)(req.params.campaign_id);
     if (!campaign) {
         return res.redirect((0, utils_1.catchAllRedirectUrl)());
     }
-    const click = (0, utils_1.makeNewClickFromReq)({ req, campaign });
-    /;
+    // const click: TClick = makeNewClickFromReq({ req, campaign }); /
     let flow;
     // Handle based on flow type
     if (campaign.flow.type === 'saved') {
-        flow = yield (0, data_1.fetchFlowBy_id)(campaign.flow._id);
+        flow = yield (0, flows_1.fetchFlowBy_id)(campaign.flow._id);
     }
     else if (campaign.flow.type === 'built_in') {
         flow = campaign.flow;

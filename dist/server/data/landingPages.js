@@ -9,18 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchData = void 0;
+exports.fetchLandingPageBy_id = exports.fetchLandingPages = void 0;
 const placeholder_data_1 = require("./placeholder-data");
-function fetchData() {
+function fetchLandingPages() {
     return __awaiter(this, void 0, void 0, function* () {
-        return {
-            affiliateNetworks: placeholder_data_1.placeholderAffiliateNetworks,
-            campaigns: placeholder_data_1.placeholderCampaigns,
-            flows: placeholder_data_1.placeholderFlows,
-            landingPages: placeholder_data_1.placeholderLandingPages,
-            offers: placeholder_data_1.placeholderOffers,
-            trafficSources: placeholder_data_1.placeholderTrafficSources
-        };
+        return placeholder_data_1.placeholderLandingPages;
     });
 }
-exports.fetchData = fetchData;
+exports.fetchLandingPages = fetchLandingPages;
+function fetchLandingPageBy_id(_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return placeholder_data_1.placeholderLandingPages.find(landingPage => landingPage._id === _id);
+    });
+}
+exports.fetchLandingPageBy_id = fetchLandingPageBy_id;

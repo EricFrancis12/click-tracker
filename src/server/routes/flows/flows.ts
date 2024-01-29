@@ -1,4 +1,4 @@
-import { fetchFlows, fetchFlowBy_id } from '../../data/data';
+import { fetchFlows, fetchFlowBy_id } from '../../data/flows';
 
 import { Router } from 'express';
 const router = Router();

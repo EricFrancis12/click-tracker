@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
-const data_1 = require("../../data/data");
+const trafficSources_1 = require("../../data/trafficSources");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const trafficSources = yield (0, data_1.fetchTrafficSources)();
+    const trafficSources = yield (0, trafficSources_1.fetchTrafficSources)();
     res.json({ trafficSources });
 }));
 router.get('/:trafficSource_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const trafficSource = yield (0, data_1.fetchTrafficSourceBy_id)(req.params.trafficSource_id);
+    const trafficSource = yield (0, trafficSources_1.fetchTrafficSourceBy_id)(req.params.trafficSource_id);
     res.json({ trafficSource });
 }));

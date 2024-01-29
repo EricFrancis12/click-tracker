@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc && cd client && npm run build && cd ../",
+    "build": "npx tsc && cd src/client && npm run build && cd ../",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "reactDev": "cd src/client && npm start %% cd ../../"

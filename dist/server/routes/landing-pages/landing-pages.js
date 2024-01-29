@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
-const data_1 = require("../../data/data");
+const landingPages_1 = require("../../data/landingPages");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const landingPages = yield (0, data_1.fetchLandingPages)();
+    const landingPages = yield (0, landingPages_1.fetchLandingPages)();
     res.json({ landingPages });
 }));
 router.get('/:landingPage_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const landingPage = yield (0, data_1.fetchLandingPageBy_id)(req.params.landingPage_id);
+    const landingPage = yield (0, landingPages_1.fetchLandingPageBy_id)(req.params.landingPage_id);
     res.json({ landingPage });
 }));

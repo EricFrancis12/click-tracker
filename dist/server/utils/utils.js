@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeNewClickFromReq = exports.catchAllRedirectUrl = void 0;
-const _id_1 = require("./_id");
 function catchAllRedirectUrl() {
     if (process.env.CATCH_ALL_REDIRECT_URL) {
         return process.env.CATCH_ALL_REDIRECT_URL;
@@ -10,13 +9,13 @@ function catchAllRedirectUrl() {
 }
 exports.catchAllRedirectUrl = catchAllRedirectUrl;
 function makeNewClickFromReq({ req, campaign }) {
-    const click = {
-        _id: (0, _id_1.generateNewClick_id)(),
-        campaign_id: campaign._id,
-        trafficSource_id: campaign.trafficSource_id,
-        landingPage_id: 
-    };
-    return click;
+    // const click: TClick = {
+    //     _id: generateNewClick_id(),
+    //     campaign_id: campaign._id,
+    //     trafficSource_id: campaign.trafficSource_id,
+    //     landingPage_id: 
+    // };
+    // return click;
 }
 exports.makeNewClickFromReq = makeNewClickFromReq;
 // trafficSource_id: TTrafficSource_id,

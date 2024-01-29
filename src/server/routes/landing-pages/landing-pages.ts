@@ -1,4 +1,4 @@
-import { fetchLandingPages, fetchLandingPageBy_id } from '../../data/data';
+import { fetchLandingPages, fetchLandingPageBy_id } from '../../data/landingPages';
 
 import { Router } from 'express';
 const router = Router();

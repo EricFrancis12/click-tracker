@@ -1,4 +1,4 @@
-import { fetchClicks, fetchClickBy_id } from '../../data/data';
+import { fetchClicks, fetchClickBy_id } from '../../data/clicks';
 
 import { Router } from 'express';
 const router = Router();

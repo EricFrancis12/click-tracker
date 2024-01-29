@@ -9,7 +9,7 @@ export async function fetchAffiliateNetworks() {
     if (!dbResults) {
         throw new Error('Unable to fetch affiliate networks');
     }
-    const affiliateNetworks = dbResults.results.map((result: unknown) => result?.props);
+    const affiliateNetworks = dbResults.results.map((result: { props?: unknown }) => result?.props);
     return affiliateNetworks;
 }
 
@@ -19,8 +19,8 @@ export async function fetchAffiliateNetworkBy_id(_id: string) {
     if (!dbResults) {
         throw new Error('Unable to fetch affiliate network');
     }
-    const affiliateNetworks = dbResults.results.map((result: unknown) => result?.props);
-    return affiliateNetworks.find((affiliateNetwork: unknown) => affiliateNetwork?._id === _id);
+    const affiliateNetworks = dbResults.results.map((result: { props?: unknown }) => result?.props);
+    return affiliateNetworks.find((affiliateNetwork: TAffiliateNetwork) => affiliateNetwork?._id === _id);
 }
 
 export async function createNewAndSaveNewAffiliateNetwork(affiliateNetwork: TAffiliateNetwork) {

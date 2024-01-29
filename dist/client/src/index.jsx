@@ -9,5 +9,5 @@ require("./index.css");
 const App_1 = __importDefault(require("./App"));
 const root = client_1.default.createRoot(document.getElementById('root'));
 root.render(<react_1.default.StrictMode>
-    <App_1.default />
-  </react_1.default.StrictMode>);
+        <App_1.default />
+    </react_1.default.StrictMode>);

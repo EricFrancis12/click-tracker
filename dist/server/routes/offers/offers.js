@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
-const data_1 = require("../../data/data");
+const offers_1 = require("../../data/offers");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const offers = yield (0, data_1.fetchOffers)();
+    const offers = yield (0, offers_1.fetchOffers)();
     res.json({ offers });
 }));
 router.get('/:offer_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const offer = yield (0, data_1.fetchOfferBy_id)(req.params.offer_id);
+    const offer = yield (0, offers_1.fetchOfferBy_id)(req.params.offer_id);
     res.json({ offer });
 }));
