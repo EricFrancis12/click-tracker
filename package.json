@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc && cd src/client && npm install && npm run build && cd ../../",
+    "build": "npx tsc && cd src/client && npm i && npm run build && cd ../../",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "reactDev": "cd src/client && npm start && cd ../../"
@@ -14,10 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "@cyclic.sh/dynamodb": "^0.0.35",
+    "@types/react": "^18.2.48",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
-    "express": "^4.18.2",
-    "react": "^18.2.0"
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
