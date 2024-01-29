@@ -1,97 +1,42 @@
+import { useState } from 'react';
 
-import { useState, ChangeEvent, FormEvent } from "react";
-import { ReactComponent as Logo } from "./logo.svg";
-import { getData } from "./utils/data-utils";
-import FormInput from './components/form-input/form-input';
+export default function App() {
+    const [endpoint, setEndpoint] = useState<string>('');
+    const [method, setMethod] = useState<string>('');
 
-import './App.css';
-
-// TypeScript declarations
-type User = {
-  id: number,
-  name: string,
-  email: string,
-  password: string
-}
-
-const defaultFormFields = {
-  email: '',
-  password: '',
-}
-
-const App = () => {
-  // react hooks
-  const [user, setUser] = useState<User | null>()
-  const [formFields, setFormFields] = useState(defaultFormFields)
-  const { email, password } = formFields
-
-  const resetFormFields = () => {
-    return (
-      setFormFields(defaultFormFields)
-    );
-  }
-
-  // handle input changes
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setFormFields({ ...formFields, [name]: value })
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    try {
-      // make the API call
-      const res: User = await getData(
-        'http://localhost:8000/login', email, password
-      )
-      setUser(res);
-      resetFormFields()
-    } catch (error) {
-      alert('User Sign In Failed');
+    function handleButtonClick() {
+        fetch(endpoint, {
+            headers: method.toUpperCase() === 'GET' ? undefined : {
+                'Content-Type': 'application/json'
+            },
+            method,
+            body: method.toUpperCase() === 'GET' ? undefined : JSON.stringify({ test: 'test' })
+        })
+            .then(res => res.json())
+            .then(res => console.log(res));
     }
-  };
 
-  const reload = () => {
-    setUser(null);
-    resetFormFields()
-  };
-
-  return (
-    <div className='App-header'>
-      <h1>
-        {user && `Welcome! ${user.name}`}
-      </h1>
-      <div className="card">
-        <Logo className="logo" />
-        <h2>Sign In</h2>
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Email"
-            type="email"
-            required
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-          <FormInput
-            label="Password"
-            type='password'
-            required
-            name='password'
-            value={password}
-            onChange={handleChange}
-          />
-          <div className="button-group">
-            <button type="submit">Sign In</button>
-            <span>
-              <button type="button" onClick={reload}>Clear</button>
-            </span>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    return (
+        <div className='h-screen w-full flex justify-center items-center'>
+            <div className='flex justify-start items-center gap-2 p-2'>
+                <div>
+                    <h2>Endpoint</h2>
+                    <input
+                        value={endpoint}
+                        onChange={e => setEndpoint(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <h2>Method</h2>
+                    <input
+                        value={method}
+                        onChange={e => setMethod(e.target.value)}
+                    />
+                </div>
+                <button onClick={e => handleButtonClick()}>
+                    Click
+                </button>
+            </div>
+        </div>
+    )
 }
-
-export default App;
