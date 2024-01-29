@@ -16,6 +16,8 @@ export type TItemName = 'Campaigns' | 'Offers' | 'Landing Pages' | 'Flows' | 'Tr
     | 'OS' | 'OS Versions' | 'Browsers' | 'Browser Names' | 'Browser Versions' | 'Errors';
 
 export type TClick = {
+    created?: string,
+    updated?: string,
     _id: TClick_id,
     campaign_id: TCampaign_id,
     trafficSource_id: TTrafficSource_id,
@@ -59,7 +61,9 @@ export type TAffiliateNetwork = {
     _id: TAffiliateNetwork_id,
     name: string,
     defaultNewOfferString: string,
-    tags?: string[]
+    tags?: string[],
+    created?: string,
+    updated?: string
 };
 
 export type TCampaign = {
@@ -69,8 +73,10 @@ export type TCampaign = {
     landingPageRotation: TLandingPageRotation,
     offerRotation: TOfferRotation,
     flow: TFlow,
-    tags: string[],
-    geo: TGeoName
+    geo?: TGeoName,
+    tags?: string[],
+    created?: string,
+    updated?: string
 };
 
 export type TTrafficSource = {
@@ -78,23 +84,29 @@ export type TTrafficSource = {
     name: string,
     postbackUrl: string,
     defaultTokens: TToken[],
-    tags?: string[]
+    tags?: string[],
+    created?: string,
+    updated?: string
 };
 
 export type TLandingPage = {
     _id: TLandingPage_id,
     name: string,
     url: string,
-    tags: string[]
+    tags?: string[],
+    created?: string,
+    updated?: string
 };
 
 export type TOffer = {
-    _id: `${string}_${string}_OF`,
+    _id: TOffer_id,
     name: string,
     affiliateNetwork_id: TAffiliateNetwork_id,
     url: string,
     payout: number,
-    tags?: string[]
+    tags?: string[],
+    created?: string,
+    updated?: string
 };
 
 export type TFlow = {
@@ -105,7 +117,8 @@ export type TFlow = {
     ruleRoutes?: TRoute_rule[],
     url?: string,
     tags?: string[],
-
+    created?: string,
+    updated?: string
 };
 export type TFlowType = 'saved' | 'built_in' | 'url';
 export type TFlow_saved = TFlow & {
