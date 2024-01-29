@@ -22,10 +22,10 @@ export default function App() {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                console.log(res?.created);
-                console.log(typeof res?.created);
-                console.log(res?.updated);
-                console.log(typeof res?.updated);
+                console.log(res?.affiliateNetworks?.created);
+                console.log(typeof res?.affiliateNetworks?.created);
+                console.log(res?.affiliateNetworks?.updated);
+                console.log(typeof res?.affiliateNetworks?.updated);
             });
     }
 
