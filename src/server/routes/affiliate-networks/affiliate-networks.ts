@@ -1,7 +1,7 @@
 import { TAffiliateNetwork } from '../../../client/src/lib/types';
 import {
     fetchAffiliateNetworks, fetchAffiliateNetworkBy_id,
-    createNewAndSaveNewAffiliateNetwork, updateAffiliateNetwork
+    createNewAndSaveNewAffiliateNetwork, updateAffiliateNetwork, deleteAffiliateNetworkBy_id
 } from '../../data/affiliateNetworks';
 
 import { Router } from 'express';
@@ -57,6 +57,14 @@ router.put('/:affiliateNetwork_id', async (req, res) => {
     }
 });
 
-// router.delete
+router.delete('/:affiliateNetwork_id', async (req, res) => {
+    try {
+        await deleteAffiliateNetworkBy_id(req.params.affiliateNetwork_id);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
+});
 
 export { router };

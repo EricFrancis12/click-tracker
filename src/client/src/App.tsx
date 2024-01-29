@@ -20,7 +20,13 @@ export default function App() {
             body: method.toUpperCase() === 'GET' ? undefined : JSON.stringify(placeholderAffiliateNetwork)
         })
             .then(res => res.json())
-            .then(res => console.log(res));
+            .then(res => {
+                console.log(res);
+                console.log(res?.created);
+                console.log(typeof res?.created);
+                console.log(res?.updated);
+                console.log(typeof res?.updated);
+            });
     }
 
     return (

@@ -13,12 +13,7 @@ export async function fetchAffiliateNetworks() {
 }
 
 export async function fetchAffiliateNetworkBy_id(_id: string) {
-    const affiliateNetworksCollection = db.collection('affiliateNetworks');
-    const dbResults = await affiliateNetworksCollection.filter();
-    if (!dbResults) {
-        throw new Error('Unable to fetch affiliate network');
-    }
-    const affiliateNetworks = dbResults.results.map((result: { props?: unknown }) => result?.props);
+    const affiliateNetworks = await fetchAffiliateNetworks();
     return affiliateNetworks.find((affiliateNetwork: TAffiliateNetwork) => affiliateNetwork?._id === _id);
 }
 
@@ -36,7 +31,7 @@ export async function updateAffiliateNetwork(affiliateNetwork: TAffiliateNetwork
     return await affiliateNetworksCollection.set(affiliateNetwork._id, affiliateNetwork);
 }
 
-export async function deleteAffiliateNetworkBy_id(_id: TAffiliateNetwork_id) {
+export async function deleteAffiliateNetworkBy_id(_id: string) {
     const _affiliateNetwork = await fetchAffiliateNetworkBy_id(_id);
     if (!_affiliateNetwork) {
         throw new Error('Unable to delete affiliate network');
