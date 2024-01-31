@@ -3,24 +3,35 @@ export type TCampaign_id = `${string}_CA`;
 export type TTrafficSource_id = `${string}_TS`;
 export type TLandingPage_id = `${string}_LP`;
 export type TLandingPage_id_direct_linking = 'DIRECT_LINKING_LP';
-export type TOffer_id = `${string}_${string}_OF`;
+export type TOffer_id = `${string}_OF`;
 export type TFlow_id = `${string}_FL`;
 export type TClick_id = `${string}_CL`;
 
-export type TItems = {
-    name: TItemName
+export type TItem = {
+    name: TItemName,
+    clickProp: TClickProp,
+    dataProp?: TDataProp
 };
-export type TItemName = 'Campaigns' | 'Offers' | 'Landing Pages' | 'Flows' | 'Traffic Sources' | 'Affiliate Networks'
-    | 'Conversions' | 'Postbacks' | 'Countries' | 'Languages' | 'Cities' | 'States / Regions' | 'ISP' | 'Mobile Carriers'
+
+export type TItemName = TItemName_primary | TItemName_secondary;
+export type TItemName_primary = 'Campaigns' | 'Offers' | 'Landing Pages' | 'Flows' | 'Traffic Sources' | 'Affiliate Networks';
+export type TItemName_secondary = 'Conversions' | 'Postbacks' | 'Countries' | 'Languages' | 'Cities' | 'States / Regions' | 'ISP' | 'Mobile Carriers'
     | 'Connection Types' | 'Devices' | 'Device Models' | 'Device Vendors' | 'Device Types' | 'Screen Resolutions'
-    | 'OS' | 'OS Versions' | 'Browsers' | 'Browser Names' | 'Browser Versions' | 'Errors';
+    | 'OS' | 'OS Versions' | 'Browsers' | 'Browser Names' | 'Browser Versions';
+
+export type TClickProp = 'affiliateNetwork_id' | 'campaign_id' | 'flow_id' | 'landingPage_id' | 'offer_id' | 'trafficSource_id'
+    | 'country' | 'region' | 'city' | 'language' | 'isp' | 'mobileCarrier' | 'connectionType' | 'deviceModel'
+    | 'deviceVendor' | 'deviceType' | 'screenResolution' | 'os' | 'osVersion' | 'browserName' | 'browserVersion'
+    | null;
+
+export type TDataProp = 'affiliateNetworks' | 'campaigns' | 'flows' | 'landingPages' | 'offers' | 'trafficSources';
 
 export type TClick = {
     created?: string,
     updated?: string,
     _id: TClick_id,
     campaign_id: TCampaign_id,
-    trafficSource_id: TTrafficSource_id,
+    trafficSource_id: TTrafficSource_id | '',
     landingPage_id: TLandingPage_id | TLandingPage_id_direct_linking,
     offer_id: TOffer_id | null,
     flow_id: TFlow_id,
@@ -30,7 +41,7 @@ export type TClick = {
     cost: number,
     revenue: number,
     tokens: {
-        key: string,
+        queryParam: string,
         value: string
     }[],
     viewRedirectUrl: string,
@@ -53,9 +64,6 @@ export type TClick = {
     browserName?: string | null,
     browserVersion?: string | null
 };
-export type TClickProp = 'country' | 'region' | 'city' | 'language' | 'asp' | 'mobileCarrier' | 'connectionType'
-    | 'deviceModel' | 'deviceVendor' | 'deviceType' | 'screenResolution' | 'os' | 'osVersion' | 'browserName'
-    | 'browserVersion';
 
 export type TAffiliateNetwork = {
     _id: TAffiliateNetwork_id,
@@ -69,11 +77,11 @@ export type TAffiliateNetwork = {
 export type TCampaign = {
     _id: TCampaign_id,
     name: string,
-    trafficSource_id: TTrafficSource_id,
+    trafficSource_id: TTrafficSource_id | '',
     landingPageRotation: TLandingPageRotation,
     offerRotation: TOfferRotation,
     flow: TFlow,
-    geo?: TGeoName,
+    geoName?: TGeoName,
     tags?: string[],
     created?: string,
     updated?: string
@@ -84,6 +92,7 @@ export type TTrafficSource = {
     name: string,
     postbackUrl: string,
     defaultTokens: TToken[],
+    customTokens: TToken[],
     tags?: string[],
     created?: string,
     updated?: string
@@ -101,7 +110,7 @@ export type TLandingPage = {
 export type TOffer = {
     _id: TOffer_id,
     name: string,
-    affiliateNetwork_id: TAffiliateNetwork_id,
+    affiliateNetwork_id: TAffiliateNetwork_id | '',
     url: string,
     payout: number,
     tags?: string[],
@@ -129,7 +138,7 @@ export type TFlow_built_in = TFlow & {
     type: 'built_in',
     _id: 'BUILT_IN_FL',
     defaultRoute: TRoute_default,
-    ruleRoutes: TRoute_rule[],
+    ruleRoutes: TRoute_rule[]
 };
 export type TFlow_url = TFlow & {
     type: 'url',
@@ -180,10 +189,28 @@ export type TGeo = {
 export type TGeoName = string;
 
 export type TToken = {
-    name: string,
-    key: string,
+    queryParam: string,
     value: string
+    name: string,
 };
 
 export type TLandingPageRotation = 'random';
 export type TOfferRotation = 'random';
+
+export type TTimeframe = [Date, Date];
+
+export type TMappedData = TMappedDataItem[];
+export type TMappedDataItem = ((TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource) & {
+    clickProp: TClickProp,
+    clicks: TClick[],
+    selected?: boolean,
+    deepMappedData?: TMappedData | null
+});
+
+export type TReportChain = [TReportChainItem, TReportChainItem, TReportChainItem];
+export type TReportChainItem = TItem & {
+    disabled: boolean, // If disabled === true and hidden === true, the button should be visible, but greyed out disabled
+    hidden: boolean // If hidden === true, the chain link should not be visible
+};
+
+export type TMenuData = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource | undefined | null;

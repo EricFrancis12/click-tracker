@@ -1,6 +1,6 @@
 import type { TCampaign, TClick } from '../../client/src/lib/types';
 import type { Request } from 'express';
-import { generateNewClick_id } from './_id';
+import { generateNewClick_id } from '../../client/src/lib/_id';
 
 export function catchAllRedirectUrl() {
     if (process.env.CATCH_ALL_REDIRECT_URL) {

@@ -156,7 +156,7 @@ exports.placeholderCampaigns = [
         offerRotation: 'random',
         flow: exports.placeholderFlows[0],
         tags: ['0', '1', '2', '3'],
-        geo: geos_1.geos[0].name
+        geoName: geos_1.geos[0].name
     }
 ];
 exports.placeholderClicks = [

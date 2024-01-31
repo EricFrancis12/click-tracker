@@ -10,16 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchData = void 0;
-const placeholder_data_1 = require("./placeholder-data");
+const affiliateNetworks_1 = require("./affiliateNetworks");
+const campaigns_1 = require("./campaigns");
+const flows_1 = require("./flows");
+const landingPages_1 = require("./landingPages");
+const offers_1 = require("./offers");
+const trafficSources_1 = require("./trafficSources");
 function fetchData() {
     return __awaiter(this, void 0, void 0, function* () {
+        const affiliateNetworks = (0, affiliateNetworks_1.fetchAffiliateNetworks)();
+        const campaigns = (0, campaigns_1.fetchCampaigns)();
+        const flows = (0, flows_1.fetchFlows)();
+        const landingPages = (0, landingPages_1.fetchLandingPages)();
+        const offers = (0, offers_1.fetchOffers)();
+        const trafficSources = (0, trafficSources_1.fetchTrafficSources)();
+        yield Promise.all([affiliateNetworks, campaigns, flows, landingPages, offers, trafficSources]);
         return {
-            affiliateNetworks: placeholder_data_1.placeholderAffiliateNetworks,
-            campaigns: placeholder_data_1.placeholderCampaigns,
-            flows: placeholder_data_1.placeholderFlows,
-            landingPages: placeholder_data_1.placeholderLandingPages,
-            offers: placeholder_data_1.placeholderOffers,
-            trafficSources: placeholder_data_1.placeholderTrafficSources
+            affiliateNetworks,
+            campaigns,
+            flows,
+            landingPages,
+            offers,
+            trafficSources
         };
     });
 }

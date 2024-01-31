@@ -1,6 +1,12 @@
 node_modules
 src/client/node_modules
+
 .env
 
 dist
 src/client/build
+
+test.js
+test.ts
+test.html
+test.json

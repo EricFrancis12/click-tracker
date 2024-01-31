@@ -3,11 +3,12 @@ import {
     fetchAffiliateNetworks, fetchAffiliateNetworkBy_id,
     createNewAndSaveNewAffiliateNetwork, updateAffiliateNetwork, deleteAffiliateNetworkBy_id
 } from '../../data/affiliateNetworks';
+import auth from '../../middleware/auth/auth';
 
 import { Router } from 'express';
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const affiliateNetworks = await fetchAffiliateNetworks();
         res.json({ affiliateNetworks });
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:affiliateNetwork_id', async (req, res) => {
+router.get('/:affiliateNetwork_id', auth, async (req, res) => {
     try {
         const affiliateNetwork = await fetchAffiliateNetworkBy_id(req.params.affiliateNetwork_id);
         res.json({ affiliateNetwork });
@@ -27,7 +28,7 @@ router.get('/:affiliateNetwork_id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const affiliateNetwork: TAffiliateNetwork = req.body;
         if (!affiliateNetwork) {
@@ -42,7 +43,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:affiliateNetwork_id', async (req, res) => {
+router.put('/:affiliateNetwork_id', auth, async (req, res) => {
     try {
         const affiliateNetwork: TAffiliateNetwork = req.body;
         if (!affiliateNetwork) {
@@ -57,7 +58,7 @@ router.put('/:affiliateNetwork_id', async (req, res) => {
     }
 });
 
-router.delete('/:affiliateNetwork_id', async (req, res) => {
+router.delete('/:affiliateNetwork_id', auth, async (req, res) => {
     try {
         await deleteAffiliateNetworkBy_id(req.params.affiliateNetwork_id);
         res.json({ success: true });

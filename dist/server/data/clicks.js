@@ -8,18 +8,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchClickBy_id = exports.fetchClicks = void 0;
-const placeholder_data_1 = require("./placeholder-data");
+exports.deleteClickBy_id = exports.updateClick = exports.createNewAndSaveNewClick = exports.fetchClickBy_id = exports.fetchClicks = void 0;
+const dynamodb_1 = __importDefault(require("@cyclic.sh/dynamodb"));
+const db = (0, dynamodb_1.default)(process.env.CYCLIC_DB);
 function fetchClicks() {
     return __awaiter(this, void 0, void 0, function* () {
-        return placeholder_data_1.placeholderClicks;
+        const clicksCollection = db.collection('clicks');
+        const dbResults = yield clicksCollection.filter();
+        if (!dbResults) {
+            throw new Error('Unable to fetch clicks');
+        }
+        const clicks = dbResults.results.map((result) => result === null || result === void 0 ? void 0 : result.props);
+        return clicks;
     });
 }
 exports.fetchClicks = fetchClicks;
 function fetchClickBy_id(_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        return placeholder_data_1.placeholderClicks.find(click => click._id === _id);
+        const clicks = yield fetchClicks();
+        return clicks.find((click) => (click === null || click === void 0 ? void 0 : click._id) === _id);
     });
 }
 exports.fetchClickBy_id = fetchClickBy_id;
+function createNewAndSaveNewClick(click) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const clicksCollection = db.collection('clicks');
+        return yield clicksCollection.set(click._id, click);
+    });
+}
+exports.createNewAndSaveNewClick = createNewAndSaveNewClick;
+function updateClick(click) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _click = yield fetchClickBy_id(click._id);
+        if (!_click) {
+            throw new Error('Unable to update click');
+        }
+        const clicksCollection = db.collection('clicks');
+        return yield clicksCollection.set(click._id, click);
+    });
+}
+exports.updateClick = updateClick;
+function deleteClickBy_id(_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _click = yield fetchClickBy_id(_id);
+        if (!_click) {
+            throw new Error('Unable to delete click');
+        }
+        const clicksCollection = db.collection('clicks');
+        return yield clicksCollection.delete(_id);
+    });
+}
+exports.deleteClickBy_id = deleteClickBy_id;

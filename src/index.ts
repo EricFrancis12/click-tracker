@@ -3,6 +3,7 @@ dotenv.config();
 
 import cors from 'cors';
 import path from 'path';
+import auth from './server/middleware/auth/auth';
 
 import express from 'express';
 const app = express();
@@ -40,7 +41,7 @@ app.use('/postback', postbackRouter);
 app.use('/t', tRouter);
 app.use('/traffic-sources', trafficSourcesRouter);
 
-app.get('*', (req, res) => {
+app.get('*', auth, (req, res) => {
     res.sendFile(path.resolve('./', 'src', 'client', 'build', 'index.html'));
 });
 

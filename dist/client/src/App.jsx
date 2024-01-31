@@ -1,34 +1,22 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = require("react");
+const react_router_dom_1 = require("react-router-dom");
+const AuthContext_1 = require("./contexts/AuthContext");
+const Home_1 = __importDefault(require("./pages/Home"));
+const Dashboard_1 = __importDefault(require("./pages/Dashboard"));
+const NotFound_1 = __importDefault(require("./pages/NotFound"));
 function App() {
-    const [endpoint, setEndpoint] = (0, react_1.useState)('');
-    const [method, setMethod] = (0, react_1.useState)('');
-    function handleButtonClick() {
-        fetch(endpoint, {
-            headers: method.toUpperCase() === 'GET' ? undefined : {
-                'Content-Type': 'application/json'
-            },
-            method,
-            body: method.toUpperCase() === 'GET' ? undefined : JSON.stringify({ test: 'test' })
-        })
-            .then(res => res.json())
-            .then(res => console.log(res));
-    }
-    return (<div className='h-screen w-full flex justify-center items-center'>
-            <div className='flex justify-start items-center gap-2 p-2'>
-                <div>
-                    <h2>Endpoint</h2>
-                    <input value={endpoint} onChange={e => setEndpoint(e.target.value)}/>
-                </div>
-                <div>
-                    <h2>Method</h2>
-                    <input value={method} onChange={e => setMethod(e.target.value)}/>
-                </div>
-                <button onClick={e => handleButtonClick()}>
-                    Click
-                </button>
-            </div>
-        </div>);
+    return (<AuthContext_1.AuthProvider>
+            <react_router_dom_1.BrowserRouter>
+                <react_router_dom_1.Routes>
+                    <react_router_dom_1.Route path='/' element={<Home_1.default />}/>
+                    <react_router_dom_1.Route path='/dashboard' element={<Dashboard_1.default />}/>
+                    <react_router_dom_1.Route path='/*' element={<NotFound_1.default />}/>
+                </react_router_dom_1.Routes>
+            </react_router_dom_1.BrowserRouter>
+        </AuthContext_1.AuthProvider>);
 }
 exports.default = App;

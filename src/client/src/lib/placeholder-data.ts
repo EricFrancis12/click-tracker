@@ -1,8 +1,8 @@
 import type {
     TAffiliateNetwork, TLandingPage, TOffer, TCampaign, TFlow_built_in, TFlow_saved, TFlow_url,
     TRoute_default, TRoute_rule, TRule, TPath, TTrafficSource, TClick
-} from '../../client/src/lib/types';
-import { geos } from '../../client/src/lib/geos';
+} from './types';
+import { TData } from '../contexts/AuthContext';
 
 export const placeholderAffiliateNetworks: TAffiliateNetwork[] = [
     {
@@ -145,15 +145,16 @@ export const placeholderTrafficSources: TTrafficSource[] = [
         defaultTokens: [
             {
                 name: 'zone',
-                key: '{zone}',
+                queryParam: '{zone}',
                 value: '123456'
             },
             {
                 name: 'target',
-                key: '{target}',
+                queryParam: '{target}',
                 value: '456789'
             }
         ],
+        customTokens: [],
         tags: ['0', '1', '2', '3']
     }
 ];
@@ -167,7 +168,7 @@ export const placeholderCampaigns: TCampaign[] = [
         offerRotation: 'random',
         flow: placeholderFlows[0],
         tags: ['0', '1', '2', '3'],
-        geo: geos[0].name
+        geoName: 'sample geo name'
     }
 ];
 
@@ -186,11 +187,11 @@ export const placeholderClicks: TClick[] = [
         revenue: 0,
         tokens: [
             {
-                key: placeholderTrafficSources[0].defaultTokens[0].key,
+                queryParam: placeholderTrafficSources[0].defaultTokens[0].queryParam,
                 value: placeholderTrafficSources[0].defaultTokens[0].value
             },
             {
-                key: placeholderTrafficSources[0].defaultTokens[1].key,
+                queryParam: placeholderTrafficSources[0].defaultTokens[1].queryParam,
                 value: placeholderTrafficSources[0].defaultTokens[1].value
             }
         ],
@@ -198,3 +199,12 @@ export const placeholderClicks: TClick[] = [
         clickRedirectUrl: 'https://demoredirecturl.xyz'
     }
 ];
+
+export const placeholderData: TData = {
+    affiliateNetworks: placeholderAffiliateNetworks,
+    campaigns: placeholderCampaigns,
+    flows: placeholderFlows,
+    landingPages: placeholderLandingPages,
+    offers: placeholderOffers,
+    trafficSources: placeholderTrafficSources
+};

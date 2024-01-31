@@ -29,12 +29,7 @@ function fetchAffiliateNetworks() {
 exports.fetchAffiliateNetworks = fetchAffiliateNetworks;
 function fetchAffiliateNetworkBy_id(_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const affiliateNetworksCollection = db.collection('affiliateNetworks');
-        const dbResults = yield affiliateNetworksCollection.filter();
-        if (!dbResults) {
-            throw new Error('Unable to fetch affiliate network');
-        }
-        const affiliateNetworks = dbResults.results.map((result) => result === null || result === void 0 ? void 0 : result.props);
+        const affiliateNetworks = yield fetchAffiliateNetworks();
         return affiliateNetworks.find((affiliateNetwork) => (affiliateNetwork === null || affiliateNetwork === void 0 ? void 0 : affiliateNetwork._id) === _id);
     });
 }

@@ -8,18 +8,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchLandingPageBy_id = exports.fetchLandingPages = void 0;
-const placeholder_data_1 = require("./placeholder-data");
+exports.deleteLandingPageBy_id = exports.updateLandingPage = exports.createNewAndSaveNewLandingPage = exports.fetchLandingPageBy_id = exports.fetchLandingPages = void 0;
+const dynamodb_1 = __importDefault(require("@cyclic.sh/dynamodb"));
+const db = (0, dynamodb_1.default)(process.env.CYCLIC_DB);
 function fetchLandingPages() {
     return __awaiter(this, void 0, void 0, function* () {
-        return placeholder_data_1.placeholderLandingPages;
+        const landingPagesCollection = db.collection('landingPages');
+        const dbResults = yield landingPagesCollection.filter();
+        if (!dbResults) {
+            throw new Error('Unable to fetch landing pages');
+        }
+        const landingPages = dbResults.results.map((result) => result === null || result === void 0 ? void 0 : result.props);
+        return landingPages;
     });
 }
 exports.fetchLandingPages = fetchLandingPages;
 function fetchLandingPageBy_id(_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        return placeholder_data_1.placeholderLandingPages.find(landingPage => landingPage._id === _id);
+        const landingPages = yield fetchLandingPages();
+        return landingPages.find((landingPage) => (landingPage === null || landingPage === void 0 ? void 0 : landingPage._id) === _id);
     });
 }
 exports.fetchLandingPageBy_id = fetchLandingPageBy_id;
+function createNewAndSaveNewLandingPage(landingPage) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const landingPagesCollection = db.collection('landingPages');
+        return yield landingPagesCollection.set(landingPage._id, landingPage);
+    });
+}
+exports.createNewAndSaveNewLandingPage = createNewAndSaveNewLandingPage;
+function updateLandingPage(landingPage) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _landingPage = yield fetchLandingPageBy_id(landingPage._id);
+        if (!_landingPage) {
+            throw new Error('Unable to update landing page');
+        }
+        const landingPagesCollection = db.collection('landingPages');
+        return yield landingPagesCollection.set(landingPage._id, landingPage);
+    });
+}
+exports.updateLandingPage = updateLandingPage;
+function deleteLandingPageBy_id(_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const _landingPage = yield fetchLandingPageBy_id(_id);
+        if (!_landingPage) {
+            throw new Error('Unable to delete landing page');
+        }
+        const landingPagesCollection = db.collection('landingPages');
+        return yield landingPagesCollection.delete(_id);
+    });
+}
+exports.deleteLandingPageBy_id = deleteLandingPageBy_id;

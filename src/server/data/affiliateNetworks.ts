@@ -1,4 +1,4 @@
-import type { TAffiliateNetwork, TAffiliateNetwork_id } from '../../client/src/lib/types';
+import type { TAffiliateNetwork } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 

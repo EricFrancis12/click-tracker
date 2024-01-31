@@ -7,6 +7,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
+const auth_1 = __importDefault(require("./server/middleware/auth/auth"));
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -40,7 +41,7 @@ app.use('/offers', offers_1.router);
 app.use('/postback', postback_1.router);
 app.use('/t', t_1.router);
 app.use('/traffic-sources', traffic_sources_1.router);
-app.get('*', (req, res) => {
+app.get('*', auth_1.default, (req, res) => {
     res.sendFile(path_1.default.resolve('./', 'src', 'client', 'build', 'index.html'));
 });
 const port = process.env.PORT || 3000;
