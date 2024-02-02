@@ -1,13 +1,10 @@
 import type { TData } from '../contexts/AuthContext';
-import type {
-    TAffiliateNetwork, TCampaign, TClick, TFlow,
-    TItem, TItemName, TItemName_primary, TLandingPage,
-    TMappedDataItem, TOffer, TTimeframe, TTrafficSource
-} from '../lib/types';
+import type { TClick, TItem, TItemName, TMappedDataItem, TRule, TTimeframe } from '../lib/types';
 import {
     defaultAffiliateNetwork, defaultCampaign, defaultFlow,
     defaultLandingPage, defaultOffer, defaultTrafficSource
 } from '../lib/default-data';
+import { rulesList } from '../lib/rulesList';
 
 export function isObject(any: any) {
     return any != null && typeof any === 'object';
@@ -43,6 +40,14 @@ export function stringIncludes(string: string, substring: string) {
     return string?.toUpperCase()?.includes(substring?.toUpperCase());
 }
 
+export function arrayOf(any: any, length: number = 1) {
+    let result = [];
+    for (let i = 0; i < length; i++) {
+        result.push(structuredClone(any));
+    }
+    return result;
+}
+
 export function shallowFlatten(array: any[]): (typeof array)[] {
     let result: any[] = [];
     array.forEach(item => {
@@ -59,14 +64,6 @@ export function replaceAtIndex(array: any[], item: any, index: number) {
     return array.splice(index, 1, item);
 }
 
-export function arrayOf(any: any, length: number = 1) {
-    let result = [];
-    for (let i = 0; i < length; i++) {
-        result.push(structuredClone(any));
-    }
-    return result;
-}
-
 export function arrayIncludesKeyValuePair(array: any[], key: string, value: string) {
     if (!array) return false;
     return array.find(item => item[key] === value) !== undefined;
@@ -80,6 +77,31 @@ export function removeDupesFromArray(array: any[]) {
         }
     }
     return uniqueArray;
+}
+
+export function swapArrayElementsPerCondition(
+    array: any[],
+    condition: Function,
+    options?: {
+        direction?: 'before' | 'after',
+        matchAll?: boolean
+    }
+) {
+    const copyArray = [...array];
+    for (let i = 0; i < array.length; i++) {
+        if (condition(array[i], i) !== true) continue;
+
+        if (options?.direction === 'before') {
+            if (i === 0) continue;
+            [copyArray[i], copyArray[i - 1]] = [copyArray[i - 1], copyArray[i]];
+        } else if (options?.direction === 'after') {
+            if (i === array.length - 1) continue;
+            [copyArray[i], copyArray[i + 1]] = [copyArray[i + 1], copyArray[i]];
+        }
+
+        if (!options?.matchAll) break;
+    }
+    return copyArray;
 }
 
 export function traverseParentsForId(element: HTMLElement, id: string): boolean {
@@ -147,7 +169,7 @@ export function mappedDataItemToDataItem(
     return result;
 }
 
-export function getSingName(primaryItemName: TItemName_primary) {
+export function getSingName(primaryItemName: TItemName) {
     let result = '';
     switch (primaryItemName) {
         case 'Affiliate Networks': result = 'Affiliate Network'; break;
@@ -172,3 +194,20 @@ export function defaultItemFromItemName(itemName: TItemName) {
     }
     return result;
 };
+
+export function endpointFromItemName(itemName: TItemName) {
+    let result = null;
+    switch (itemName) {
+        case 'Affiliate Networks': result = 'affiliate-networks'; break;
+        case 'Campaigns': result = 'campaigns'; break;
+        case 'Flows': result = 'flows'; break;
+        case 'Landing Pages': result = 'landing-pages'; break;
+        case 'Offers': result = 'offers'; break;
+        case 'Traffic Sources': result = 'traffic-sources'; break;
+    }
+    return result;
+};
+
+export function getRuleComponent(rule: TRule) {
+    return rulesList.find((rulesListItem: typeof rulesList[0]) => rulesListItem.name === rule.name)?.component ?? null;
+}

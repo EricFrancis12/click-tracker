@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
+import useRulesMemo from '../hooks/useRulesMemo';
 import type {
-    TAffiliateNetwork, TCampaign, TFlow,
+    TAffiliateNetwork, TCampaign, TClick, TFlow,
     TLandingPage, TOffer, TTrafficSource
 } from '../lib/types';
 
@@ -22,13 +23,16 @@ const defaultData: TData = {
     trafficSources: []
 };
 
+const defaultClicks: TClick[] = []
+
 const AuthContext = React.createContext({
     data: defaultData,
     fetchData: async () => (defaultData),
     fetchingData: false,
-    clicks: [],
-    fetchClicks: async () => ([]),
-    fetchingClicks: false
+    clicks: defaultClicks,
+    fetchClicks: async () => (defaultClicks),
+    fetchingClicks: false,
+    rulesMemo: {}
 });
 
 export function useAuth() {
@@ -44,8 +48,10 @@ export function AuthProvider({ children }: {
 }) {
     const [data, setData] = useState<TData>(defaultData);
     const [fetchingData, setFetchingData] = useState<boolean>(false);
-    const [clicks, setClicks] = useState([]);
+    const [clicks, setClicks] = useState<TClick[]>([]);
     const [fetchingClicks, setFetchingClicks] = useState<boolean>(false);
+
+    const rulesMemo = useRulesMemo(clicks);
 
     useEffect(() => {
         fetchData();
@@ -58,14 +64,14 @@ export function AuthProvider({ children }: {
 
         fetch('/data')
             .then(async (res) => {
-                if (res.status === 401) {
+                if (res.status >= 400) {
                     setData(defaultData);
                     return;
                 }
 
                 const resJson = await res.json();
                 if (resJson.data) {
-                    setData(resJson);
+                    setData(resJson.data);
                 }
             })
             .catch((err) => console.error(err))
@@ -78,14 +84,14 @@ export function AuthProvider({ children }: {
 
         fetch('/clicks')
             .then(async (res) => {
-                if (res.status === 401) {
+                if (res.status >= 400) {
                     setClicks([]);
                     return;
                 }
 
                 const resJson = await res.json();
-                if (resJson.data) {
-                    setClicks(resJson);
+                if (resJson.clicks) {
+                    setClicks(resJson.clicks);
                 }
             })
             .catch((err) => console.error(err))
@@ -98,7 +104,8 @@ export function AuthProvider({ children }: {
         fetchingData,
         clicks,
         fetchClicks,
-        fetchingClicks
+        fetchingClicks,
+        rulesMemo
     };
 
     return (

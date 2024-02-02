@@ -1,4 +1,4 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useActionMenu } from '../../contexts/ActionMenuContext';
 import Button from '../Button';
@@ -16,7 +16,7 @@ export default function EditButton({ activeItem, mappedData }: {
     return (
         <Button
             text='Edit'
-            icon={faPlus}
+            icon={faPencil}
             disabled={mappedData.length !== 1}
             onClick={e => {
                 if (!primaryItemNames.includes(activeItem.name as TItemName_primary)) {

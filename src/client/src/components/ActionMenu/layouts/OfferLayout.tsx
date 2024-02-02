@@ -1,6 +1,6 @@
 import { useAuth } from '../../../contexts/AuthContext';
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
-import { Input, Select } from '../../baseComponents';
+import { Input, Select } from '../../base-components';
 import UrlInput from '../../UrlInput';
 import TagsInput from '../../TagsInput';
 import { TMenuData } from '../../../lib/types';

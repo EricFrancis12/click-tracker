@@ -1,15 +1,14 @@
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
-import { Input } from '../../baseComponents';
-import FlowBuilder from '../../FlowBuilder/FlowBuilder';
+import { Input } from '../../base-components';
 import TagsInput from '../../TagsInput';
-import { TFlow, TMenuData } from '../../../lib/types';
+import { TMenuData } from '../../../lib/types';
 
-export default function FlowLayout({ menuData, setMenuData, loading }: {
+export default function AffiliateNetworkLayout({ menuData, setMenuData, loading }: {
     menuData: TMenuData,
     setMenuData: Function,
     loading?: boolean
 }) {
-    const tagSuggestions = useTagSuggestions('Flows');
+    const tagSuggestions = useTagSuggestions('Affiliate Networks');
 
     return (
         <>
@@ -17,13 +16,14 @@ export default function FlowLayout({ menuData, setMenuData, loading }: {
                 <div className='h-full w-full'>
                     <div className='flex flex-col justify-start items-start gap-2 px-4 py-2 w-full'>
                         <Input
-                            name='Flow Name'
+                            name='Name'
                             defaultValue={menuData.name}
                             onChange={e => setMenuData({ ...menuData, name: e.target.value })}
                         />
-                        <FlowBuilder
-                            flow={menuData as TFlow}
-                            setFlow={setMenuData}
+                        <Input
+                            name='Default New Offer String'
+                            defaultValue={menuData.name}
+                            onChange={e => setMenuData({ ...menuData, defaultNewOfferString: e.target.value })}
                         />
                         {menuData?.tags &&
                             <TagsInput

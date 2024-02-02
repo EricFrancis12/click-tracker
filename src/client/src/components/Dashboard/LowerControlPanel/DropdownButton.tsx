@@ -7,7 +7,7 @@ import { traverseParentsForId } from '../../../utils/utils';
 export default function DropdownButton({ children, disabled, active, setActive,
     icon, text, onClick, className, id: _id }: {
         children: React.ReactNode,
-        disabled: boolean,
+        disabled?: boolean,
         active: boolean,
         setActive: Function,
         icon?: IconDefinition,

@@ -4,9 +4,9 @@ import {
 } from './_id';
 import type {
     TAffiliateNetwork, TCampaign, TFlow, TFlow_built_in,
-    TFlow_saved,
-    TFlow_url,
-    TLandingPage, TOffer, TTrafficSource
+    TFlow_saved, TFlow_url, TLandingPage, TOffer,
+    TPath,
+    TTimeframe, TTrafficSource
 } from './types';
 import { geos } from './geos';
 
@@ -31,7 +31,7 @@ export function defaultCampaign(): TCampaign {
             type: 'built_in',
             defaultRoute: {
                 active: true,
-                paths: []
+                paths: [defaultPath()]
             },
             ruleRoutes: []
         },
@@ -80,6 +80,16 @@ export function defaultFlow_url(): TFlow_url {
     });
 }
 
+export function defaultPath(): TPath {
+    return ({
+        weight: 100,
+        landingPages: [],
+        offers: [],
+        active: true,
+        directLinkingEnabled: false
+    });
+}
+
 export function defaultLandingPage(): TLandingPage {
     return ({
         _id: generateNewLandingPage_id(),
@@ -121,3 +131,5 @@ export function defaultTrafficSource(): TTrafficSource {
         tags: []
     });
 }
+
+export const defaultTimeframe: TTimeframe = [new Date(), new Date()];

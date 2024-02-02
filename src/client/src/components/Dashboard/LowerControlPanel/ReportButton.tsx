@@ -12,9 +12,7 @@ export default function ReportButton({ newReport, mappedData }: {
             icon={faRandom}
             onClick={() => {
                 if (mappedData.length !== 1) return;
-                newReport({
-                    dataItem: structuredClone(mappedData[0])
-                });
+                newReport();
             }}
             disabled={mappedData.length !== 1}
             text='Report'

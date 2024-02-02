@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import AffiliateNetworkLayout from './menuLayouts/AffiliateNetworkLayout';
-import CampaignMenuLayout from './menuLayouts/CampaignMenuLayout';
-import FlowLayout from './menuLayouts/FlowLayout';
-import LandingPageLayout from './menuLayouts/LandingPageLayout';
-import OfferLayout from './menuLayouts/OfferLayout';
-import TrafficSourceLayout from './menuLayouts/TrafficSourceLayout';
+import AffiliateNetworkLayout from './layouts/AffiliateNetworkLayout';
+import CampaignMenuLayout from './layouts/CampaignMenuLayout';
+import FlowLayout from './layouts/FlowLayout';
+import LandingPageLayout from './layouts/LandingPageLayout';
+import OfferLayout from './layouts/OfferLayout';
+import TrafficSourceLayout from './layouts/TrafficSourceLayout';
 import type { TItemName, TMenuData } from '../../lib/types';
 
 export default function ActionMenuLayout({ itemName, menuData, setMenuData, loading }: {

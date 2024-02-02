@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { Input } from './baseComponents';
+import { Input } from './base-components';
 import type { TToken } from '../lib/types';
 import { MAX_NUM_CUSTOM_TOKENS } from '../lib/constants';
 

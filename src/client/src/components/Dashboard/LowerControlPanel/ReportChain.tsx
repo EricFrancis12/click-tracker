@@ -11,56 +11,58 @@ export default function ReportChain({ reportChain, setReportChain, reportItem, a
     setReportChain: Function,
     reportItem: TItem,
     activeItem: TItem,
-    setActiveItem: Function
+    setActiveItem: React.Dispatch<React.SetStateAction<TItem>>
 }) {
-    // const { fetchData } = useAuth();
+    const { fetchData } = useAuth();
 
-    // const DEFAULT_DROPDOWNS_ACTIVE = reportChain.map(() => false);
-    // const [dropdownsActive, setDropdownsActive] = useState(DEFAULT_DROPDOWNS_ACTIVE);
+    const DEFAULT_DROPDOWNS_ACTIVE = reportChain.map(() => false);
+    const [dropdownsActive, setDropdownsActive] = useState(DEFAULT_DROPDOWNS_ACTIVE);
 
-    // const dropdownItems = [
-    //     ...itemsArray.filter(item => item.name !== activeItem?.name && item.name !== reportItem.name),
-    //     // add more custom items here like Custom 1-10, time periods, referrers, etc.
-    // ];
+    const dropdownItems = [
+        ...itemsArray.filter(item => item.name !== activeItem?.name && item.name !== reportItem.name),
+        // Could add more custom items here like Custom 1-10, time periods, referrers, etc.
+    ];
 
-    // useEffect(() => handleClick(activeItem, 0), [activeItem]);
+    useEffect(() => handleClick(activeItem as TReportChainItem, 0), [activeItem, handleClick]);
 
-    // function handleClick(item: TReportChainItem, index: number) {
-    //     if (index === 0) {
-    //         setActiveItem(item);
-    //         fetchData();
-    //     }
+    function handleClick(item: TReportChainItem, index: number) {
+        if (index === 0) {
+            setActiveItem(item);
+            fetchData();
+        }
 
-    //     setDropdownsActive(DEFAULT_DROPDOWNS_ACTIVE);
+        setDropdownsActive(DEFAULT_DROPDOWNS_ACTIVE);
 
-    //     setReportChain(prevReportChain => {
-    //         const newReportChain = [...prevReportChain];
-    //         newReportChain.splice(index, MAX_REPORT_CHAIN_LENGTH, ...[
-    //             { ...item, disabled: false },
-    //             { name: null, disabled: item?.name ? false : true },
-    //             ...arrayOf({ name: null, disabled: true }, MAX_REPORT_CHAIN_LENGTH)
-    //         ]);
+        setReportChain((prevReportChain: TReportChain) => {
+            const newReportChain = [...prevReportChain];
+            newReportChain.splice(
+                index,
+                MAX_REPORT_CHAIN_LENGTH,
+                { ...item, disabled: false },
+                { name: item.name, disabled: item?.name ? false : true },
+                ...arrayOf({ name: null, disabled: true }, MAX_REPORT_CHAIN_LENGTH)
+            );
 
-    //         while (newReportChain.length > MAX_REPORT_CHAIN_LENGTH) {
-    //             newReportChain.pop();
-    //         }
+            while (newReportChain.length > MAX_REPORT_CHAIN_LENGTH) {
+                newReportChain.pop();
+            }
 
-    //         return newReportChain;
-    //     });
-    // }
+            return newReportChain;
+        });
+    }
+    [1, 2, 2, 2, 2, 2, 2, 2].splice(1, 2, 1)
+    function handleSetActive(active: boolean, index: number) {
+        setDropdownsActive(prevDropdownsActive => {
+            const newDropdownsActive = [...prevDropdownsActive];
+            newDropdownsActive.splice(index, 1, active);
 
-    // function handleSetActive(active: boolean, index: number) {
-    //     setDropdownsActive(prevDropdownsActive => {
-    //         const newDropdownsActive = [...prevDropdownsActive];
-    //         newDropdownsActive.splice(index, 1, active);
-
-    //         return newDropdownsActive;
-    //     });
-    // }
+            return newDropdownsActive;
+        });
+    }
 
     return (
         <div className='flex flex-wrap justify-center items-center'>
-            {/* {reportChain.map((chainLink, index) => (
+            {reportChain.map((chainLink, index) => (
                 <div key={index} className='p-1'>
                     <DropdownButton
                         text={chainLink.disabled ? '' : ((index === 0 ? activeItem.name : chainLink.name) || 'None')}
@@ -77,7 +79,8 @@ export default function ReportChain({ reportChain, setReportChain, reportItem, a
                             const isPrevChainLink = reportChain.find(chainLink => chainLink?.name === dropdownItem.name) !== undefined;
                             return !isPrevChainLink
                                 ? (
-                                    <DropdownItem key={_index} text={dropdownItem.name}
+                                    <DropdownItem key={_index}
+                                        text={dropdownItem.name}
                                         onClick={e => handleClick(dropdownItem, index)}
                                     />
                                 )
@@ -86,7 +89,7 @@ export default function ReportChain({ reportChain, setReportChain, reportItem, a
                     </DropdownButton>
                 </div>
             ))
-            } */}
+            }
         </div >
     )
 }

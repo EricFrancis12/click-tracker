@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../contexts/AuthContext';
 import Tab from './Tab';
@@ -7,19 +7,37 @@ import LowerControlPanel from '../LowerControlPanel/LowerControlpanel';
 import DataTable from '../DataTable/DataTable';
 import type { TItem, TTimeframe, TMappedData } from '../../../lib/types';
 import { itemsDictionary } from '../../../lib/items';
+import { defaultTimeframe } from '../../../lib/default-data';
 import { mapData } from '../../../utils/mapData';
+import { mappedDataItemToDataItem } from '../../../utils/utils';
 
-export default function HomeTab({ active, onClick, onClose }: {
+export default function HomeTab({
+    active,
+    onClick,
+    onClose,
+    addNewSpawnedTab
+}: {
     active: boolean,
     onClick: React.MouseEventHandler<HTMLDivElement>,
     onClose: React.MouseEventHandler<SVGSVGElement>,
+    addNewSpawnedTab?: Function
 }) {
     const { data, clicks } = useAuth();
 
     const [activeItem, setActiveItem] = useState<TItem>(itemsDictionary.campaigns);
-    const [timeframe, setTimeframe] = useState<TTimeframe>([new Date(), new Date()]);
+    const [timeframe, setTimeframe] = useState<TTimeframe>(defaultTimeframe);
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [mappedData, setMappedData] = useState<TMappedData>(mapData({ clicks, data, activeItem, timeframe, backfill: true }));
+    const [mappedData, setMappedData] = useState<TMappedData>(
+        mapData({ clicks, data, activeItem, timeframe, backfill: true })
+    );
+
+    const selectedMappedDataItems = mappedData.filter(dataItem => dataItem?.selected);
+
+    useEffect(() => {
+        if (clicks && data && timeframe) {
+            setMappedData(mapData({ clicks, data, activeItem, timeframe, backfill: true }));
+        }
+    }, [clicks, data, timeframe]);
 
     return (
         <div>
@@ -40,15 +58,24 @@ export default function HomeTab({ active, onClick, onClose }: {
                         activeItem={activeItem}
                         setActiveItem={setActiveItem}
                         mappedData={mappedData}
-                        newReport={() => console.log('New Report not yet implimented')}
+                        newReport={() => {
+                            if (addNewSpawnedTab && selectedMappedDataItems.length === 1) {
+                                addNewSpawnedTab({
+                                    props: {
+                                        reportItem: mappedDataItemToDataItem(selectedMappedDataItems[0], activeItem, data),
+                                        activeItem,
+                                        timeframe
+                                    }
+                                });
+                            }
+                        }}
                         timeframe={timeframe}
                         setTimeframe={setTimeframe}
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
                     />
-                    {activeItem.name === 'Conversions' || activeItem.name === 'Postbacks'
-                        ? ''
-                        : <DataTable
+                    {(activeItem.name !== 'Conversions' && activeItem.name !== 'Postbacks') &&
+                        <DataTable
                             activeItem={activeItem}
                             searchQuery={searchQuery}
                             mappedData={mappedData}

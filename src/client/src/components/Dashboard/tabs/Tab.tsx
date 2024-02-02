@@ -13,11 +13,12 @@ export default function Tab({ name, icon, active, onClick, onClose }: {
             <div onClick={onClick}
                 className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] hover:bg-[#00000070] ')
                     + (active ? ' text-[#394146] ' : ' text-white ')
-                    + ' h-[32px] max-w-[245px] text-sm cursor-pointer'}
+                    + ' h-[32px] max-w-[245px] text-sm text-ellipsis overflow-hidden cursor-pointer'}
                 style={{
                     userSelect: 'none',
                     padding: '6px 8px 6px 8px',
                     borderRadius: '6px 6px 0 0',
+                    whiteSpace: 'nowrap'
                 }}>
                 <FontAwesomeIcon icon={icon} className='mr-[8px]' />
                 <span className='mr-[8px]'>

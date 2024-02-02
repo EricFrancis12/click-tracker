@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
-import { Input, Select } from '../../baseComponents';
+import { Input, Select } from '../../base-components';
 import Checkbox from '../../Checkbox';
 import TagsInput from '../../TagsInput';
 import FlowBuilder from '../../FlowBuilder/FlowBuilder';
 import UrlInput from '../../UrlInput';
-import type { TFlow, TFlow_built_in, TFlow_saved, TFlow_url, TMenuData } from '../../../lib/types';
+import type { TFlow_built_in, TFlow_saved, TFlow_url, TMenuData } from '../../../lib/types';
 import { geos } from '../../../lib/geos';
 import { landingPageRotationOptions, offerRotationOptions } from '../../../lib/rotationOptions';
 import { flowTypes } from '../../../lib/flowTypes';
 import { defaultFlow, defaultFlow_saved, defaultFlow_built_in, defaultFlow_url } from '../../../lib/default-data';
 
-export default function CampaignMenuLayout({ menuData, setMenuData, loading }: {
+export default function CampaignMenuLayout({ menuData, setMenuData }: {
     menuData: TMenuData,
     setMenuData: Function,
     loading?: boolean
@@ -21,7 +21,7 @@ export default function CampaignMenuLayout({ menuData, setMenuData, loading }: {
     const tagSuggestions = useTagSuggestions('Campaigns');
 
     const flow = (menuData && 'flow' in menuData) ? menuData.flow : defaultFlow();
-    const [savedFlow, setSavedFlow] = useState<TFlow_saved>(flow.type === 'saved' ? flow as TFlow_saved : defaultFlow_saved());
+    const savedFlow = flow.type === 'saved' ? flow as TFlow_saved : defaultFlow_saved();
     const [builtInFlow, setBuiltInFlow] = useState<TFlow_built_in>(flow.type === 'built_in' ? flow as TFlow_built_in : defaultFlow_built_in());
     const [urlFlow, setUrlFlow] = useState<TFlow_url>(flow.type === 'url' ? flow as TFlow_url : defaultFlow_url());
 

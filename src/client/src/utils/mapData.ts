@@ -1,14 +1,5 @@
-import type {
-    TAffiliateNetwork, TAffiliateNetwork_id, TCampaign, TCampaign_id,
-    TClick, TClickProp, TFlow, TFlow_id, TItem, TLandingPage, TLandingPage_id,
-    TOffer, TOffer_id, TTimeframe, TTrafficSource, TTrafficSource_id,
-    TMappedData, TMappedDataItem
-} from '../lib/types';
+import type { TClick, TClickProp, TItem, TTimeframe, TMappedData, TMappedDataItem } from '../lib/types';
 import type { TData } from '../contexts/AuthContext';
-
-export type TDataItem = TItem & {
-    _id: string
-};
 
 export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
     clicks: TClick[],
@@ -17,7 +8,7 @@ export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
     timeframe: TTimeframe,
     backfill?: boolean
 }) {
-    const { dataProp, clickProp, name } = activeItem;
+    const { dataProp, clickProp } = activeItem;
 
     let results: TMappedData = [];
     let savedDataItems = data[dataProp as keyof typeof data] ?? [];

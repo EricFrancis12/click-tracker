@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     IconDefinition, faBullseye, faHandshake, faFolder, faSitemap, faGlobe, faUsers, faDollarSign, faDownload,
-    faGlobeEurope, faWifi, faLaptop, faMobile, faExclamationCircle, faChevronDown, faChevronUp
+    faGlobeEurope, faWifi, faLaptop, faMobile, faChevronDown, faChevronUp
 } from '@fortawesome/free-solid-svg-icons';
 import { } from '@fortawesome/free-solid-svg-icons';
 import useHoverDropdown from '../../../hooks/useHoverDropdown';
 import { itemsArray } from '../../../lib/items';
 import { primaryItemNames } from '../../../lib/primaryItemNames';
-import type { TItem, TItemName, TItemName_primary } from '../../../lib/types';
+import type { TItem, TItemName_primary } from '../../../lib/types';
 import { arrayIncludesKeyValuePair } from '../../../utils/utils';
 
 export type TUpperControlPanelItem = TItem & {
@@ -18,7 +18,7 @@ export type TUpperControlPanelItem = TItem & {
 
 export default function UpperControlPanel({ activeItem, setActiveItem, excludeItemNames = [] }: {
     activeItem: TItem,
-    setActiveItem: Function,
+    setActiveItem: React.Dispatch<React.SetStateAction<TItem>>,
     excludeItemNames?: string[]
 }) {
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
                 { name: 'Languages', icon: faGlobeEurope, clickProp: 'language' },
                 { name: 'Cities', icon: faGlobeEurope, clickProp: 'city' },
                 { name: 'States / Regions', icon: faGlobeEurope, clickProp: 'region' },
-                { name: 'Countries', icon: faGlobeEurope, clickProp: 'country' }
+                { name: 'Countries', icon: faGlobeEurope, clickProp: 'geoName' }
             ]
         },
         {
@@ -102,7 +102,7 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
 export function UpperControlPanelItem({ item, activeItem, setActiveItem }: {
     item: TUpperControlPanelItem,
     activeItem: TItem,
-    setActiveItem: Function
+    setActiveItem: React.Dispatch<React.SetStateAction<TItem>>
 }) {
     const id = crypto.randomUUID();
     const { Dropdown, isHovered } = useHoverDropdown(id);

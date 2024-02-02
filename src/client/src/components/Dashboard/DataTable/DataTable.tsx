@@ -8,6 +8,7 @@ import useRowHover from '../../../hooks/useRowHover';
 import Checkbox from '../../Checkbox';
 import ChevronToggle from '../../ChevronToggle';
 import Spinner from '../../Spinner';
+// import DrilldownButton from '../LowerControlPanel/DrilldownButton';
 import { indicators } from './indicators';
 import type { TItem, TItemName, TMappedData, TMappedDataItem, TReportChain, TTimeframe } from '../../../lib/types';
 import { mapData } from '../../../utils/mapData';
@@ -27,14 +28,13 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
     activeItem: TItem,
     searchQuery: string,
     mappedData: TMappedData,
-    setMappedData: Function,
+    setMappedData: React.Dispatch<React.SetStateAction<TMappedData>>,
     timeframe: TTimeframe
     reportChain?: TReportChain
 }) {
     const { clicks, data, fetchingData } = useAuth();
 
     const dataTableRef = useRef<HTMLDivElement>(null);
-    const dataTableRefWidth = dataTableRef.current?.offsetWidth ?? '100vw';
     const fillRestOfScreen = (ref: React.RefObject<HTMLDivElement>) => {
         const rectTop = ref.current?.getBoundingClientRect()?.top;
         return rectTop ? `${window.innerHeight - rectTop}px` : '100px';
@@ -264,21 +264,20 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             + (isPercentage ? '%' : '');
     }
 
-    // function sortMappedData() {
-    //     const _columns = columns(activeItem.name);
+    function sortMappedData() {
+        const _columns = columns(activeItem.name);
 
-    //     const result = mappedData.sort((a, b) => {
-    //         const activeColumn = _columns[sortedColumn.index];
-    //         const _a = activeColumn.selector(a).at(-1) === '%' ? parseFloat(activeColumn.selector(a)) : activeColumn.selector(a);
-    //         const _b = activeColumn.selector(b).at(-1) === '%' ? parseFloat(activeColumn.selector(b)) : activeColumn.selector(b);
-    //         return _a - _b;
-    //     });
-    //     return sortedColumn.type === 'reversed'
-    //         ? result.reverse()
-    //         : result;
-    // }
-    // const sortedMappedData = sortMappedData();
-    const sortedMappedData = mappedData;
+        const result = mappedData.sort((a, b) => {
+            const activeColumn = _columns[sortedColumn.index];
+            const _a = activeColumn.selector(a).at(-1) === '%' ? parseFloat(activeColumn.selector(a)) : activeColumn.selector(a);
+            const _b = activeColumn.selector(b).at(-1) === '%' ? parseFloat(activeColumn.selector(b)) : activeColumn.selector(b);
+            return _a - _b;
+        });
+        return sortedColumn.type === 'reversed'
+            ? result.reverse()
+            : result;
+    }
+    const sortedMappedData = sortMappedData();
 
     return (
         <div
@@ -418,7 +417,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                             </div>
                                                                             {__row.deepMappedData.map((___row, ___index) => {
                                                                                 const ___cell = column.selector(___row, ___index, null, null);
-                                                                                const ___cell_id = `col_${index}___index_${___index}`;
+                                                                                // const ___cell_id = `col_${index}___index_${___index}`;
                                                                                 const prev___cell = columns(activeItem.name, 2)[index - 2]?.selector(___row, ___index, null, null);
                                                                                 return (
                                                                                     <div key={___index} style={{
@@ -462,9 +461,11 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                             {/* <div className='relative flex justify-start items-center p-6 h-8 w-full bg-white'>
                                                                                 {index === 2 &&
                                                                                     <div className='absolute bg-white' style={{ zIndex: 20 }}>
-                                                                                        <DrilldownButton text={__row.name}
+                                                                                        <DrilldownButton
+                                                                                            text={__row.name}
                                                                                             cell_id={`col_${1}__index_${0}`}
-                                                                                            mappedData={mappedData} drilldown={drilldown}
+                                                                                            mappedData={mappedData} 
+                                                                                            drilldown={drilldown}
                                                                                         />
                                                                                     </div>
                                                                                 }
@@ -478,9 +479,11 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                         {/* <div className='relative flex justify-start items-center p-6 h-8 w-full bg-white'>
                                                             {index === 1 &&
                                                                 <div className='absolute bg-white' style={{ zIndex: 20 }}>
-                                                                    <DrilldownButton text={_row.name}
+                                                                    <DrilldownButton
+                                                                        text={_row.name}
                                                                         cell_id={`col_${0}_index_${0}`}
-                                                                        mappedData={mappedData} drilldown={drilldown}
+                                                                        mappedData={mappedData}
+                                                                        drilldown={drilldown}
                                                                     />
                                                                 </div>
                                                             }

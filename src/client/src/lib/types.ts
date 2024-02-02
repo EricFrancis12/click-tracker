@@ -9,18 +9,18 @@ export type TClick_id = `${string}_CL`;
 
 export type TItem = {
     name: TItemName,
-    clickProp: TClickProp,
+    clickProp?: TClickProp,
     dataProp?: TDataProp
 };
 
 export type TItemName = TItemName_primary | TItemName_secondary;
-export type TItemName_primary = 'Campaigns' | 'Offers' | 'Landing Pages' | 'Flows' | 'Traffic Sources' | 'Affiliate Networks';
+export type TItemName_primary = 'Affiliate Networks' | 'Campaigns' | 'Flows' | 'Landing Pages' | 'Offers' | 'Traffic Sources';
 export type TItemName_secondary = 'Conversions' | 'Postbacks' | 'Countries' | 'Languages' | 'Cities' | 'States / Regions' | 'ISP' | 'Mobile Carriers'
     | 'Connection Types' | 'Devices' | 'Device Models' | 'Device Vendors' | 'Device Types' | 'Screen Resolutions'
     | 'OS' | 'OS Versions' | 'Browsers' | 'Browser Names' | 'Browser Versions';
 
 export type TClickProp = 'affiliateNetwork_id' | 'campaign_id' | 'flow_id' | 'landingPage_id' | 'offer_id' | 'trafficSource_id'
-    | 'country' | 'region' | 'city' | 'language' | 'isp' | 'mobileCarrier' | 'connectionType' | 'deviceModel'
+    | 'geoName' | 'region' | 'city' | 'language' | 'isp' | 'mobileCarrier' | 'connectionType' | 'deviceModel'
     | 'deviceVendor' | 'deviceType' | 'screenResolution' | 'os' | 'osVersion' | 'browserName' | 'browserVersion'
     | null;
 
@@ -149,39 +149,41 @@ export type TFlow_url = TFlow & {
 export type TRoute = {
     active: boolean,
     rules?: TRule[] | null,
+    logicalRelation?: TLogicalRelation,
     paths: TPath[]
 };
 export type TRoute_default = TRoute & {
     rules?: null
 };
 export type TRoute_rule = TRoute & {
-    rules: TRule[]
+    rules: TRule[],
+    logicalRelation: TLogicalRelation
 };
 
 export type TPath = {
     weight: number,
-    landingPages: {
+    landingPages: ({
         _id: TLandingPage_id,
         weight: number
-    },
-    offers: {
+    })[],
+    offers: ({
         _id: TOffer_id,
         weight: number
-    },
+    })[],
     active: boolean,
     directLinkingEnabled: boolean
 };
 
 export type TRule = {
     name: TRule_name,
-    itemName: TItemName,
-    clickprop: TClickProp,
+    itemName: TItemName | null,
+    clickProp: TClickProp,
     equals: boolean,
     data: string[]
 };
 export type TRule_name = 'Country' | 'State / Region' | 'City' | 'Language' | 'ISP' | 'Mobile Carrier' | 'Connection Type'
     | 'Device Model' | 'Device Vendor' | 'Device Type' | 'Screen Resolution' | 'OS' | 'OS Version' | 'Browser Name'
-    | 'Browser Version' | 'Day of the Week';
+    | 'Browser Version' | 'Days of the Week';
 
 export type TGeo = {
     name: TGeoName
@@ -198,6 +200,8 @@ export type TLandingPageRotation = 'random';
 export type TOfferRotation = 'random';
 
 export type TTimeframe = [Date, Date];
+export type TTimeframeName = 'Today' | 'Yesterday' | 'Last 3 Days' | 'Last 7 Days' | 'Last 30 Days'
+    | 'This Month' | 'Last Month' | 'Max Available' | 'Date Range';
 
 export type TMappedData = TMappedDataItem[];
 export type TMappedDataItem = ((TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource) & {
@@ -209,8 +213,11 @@ export type TMappedDataItem = ((TAffiliateNetwork | TCampaign | TFlow | TLanding
 
 export type TReportChain = [TReportChainItem, TReportChainItem, TReportChainItem];
 export type TReportChainItem = TItem & {
-    disabled: boolean, // If disabled === true and hidden === true, the button should be visible, but greyed out disabled
-    hidden: boolean // If hidden === true, the chain link should not be visible
+    disabled?: boolean, // If disabled === true and hidden === true, the button should be visible, but greyed out disabled
+    hidden?: boolean // If hidden === true, the chain link should not be visible
 };
 
 export type TMenuData = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource | undefined | null;
+export type TReportItem = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource;
+
+export type TLogicalRelation = 'and' | 'or';

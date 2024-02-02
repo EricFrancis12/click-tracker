@@ -13,7 +13,7 @@ import { TTimeframe } from '../../../lib/types';
 export default function DashboardTab({ active, onClick, onClose }: {
     active: boolean,
     onClick: React.MouseEventHandler<HTMLDivElement>,
-    onClose: React.MouseEventHandler<SVGSVGElement>,
+    onClose: React.MouseEventHandler<SVGSVGElement>
 }) {
     const { data, clicks, fetchingData } = useAuth();
 
@@ -52,44 +52,44 @@ export default function DashboardTab({ active, onClick, onClose }: {
         }
     ];
 
-    // const bodyCards = [
-    //     {
-    //         name: 'Campaigns',
-    //         data: mapClicks({
-    //             clicks,
-    //             data,
-    //             activeItem: itemsDictionary.campaigns,
-    //             timeframe
-    //         })
-    //     },
-    //     {
-    //         name: 'Traffic Sources',
-    //         data: mapClicks({
-    //             clicks,
-    //             data,
-    //             activeItem: itemsDictionary.trafficSources,
-    //             timeframe
-    //         })
-    //     },
-    //     {
-    //         name: 'Countries',
-    //         data: mapClicks({
-    //             clicks,
-    //             data,
-    //             activeItem: itemsDictionary.countries,
-    //             timeframe
-    //         })
-    //     },
-    //     {
-    //         name: 'Offers',
-    //         data: mapClicks({
-    //             clicks,
-    //             data,
-    //             activeItem: itemsDictionary.offers,
-    //             timeframe
-    //         })
-    //     }
-    // ];
+    const bodyCards = [
+        {
+            name: 'Campaigns',
+            data: mapData({
+                clicks,
+                data,
+                activeItem: itemsDictionary.campaigns,
+                timeframe
+            })
+        },
+        {
+            name: 'Traffic Sources',
+            data: mapData({
+                clicks,
+                data,
+                activeItem: itemsDictionary.trafficSources,
+                timeframe
+            })
+        },
+        {
+            name: 'Countries',
+            data: mapData({
+                clicks,
+                data,
+                activeItem: itemsDictionary.countries,
+                timeframe
+            })
+        },
+        {
+            name: 'Offers',
+            data: mapData({
+                clicks,
+                data,
+                activeItem: itemsDictionary.offers,
+                timeframe
+            })
+        }
+    ];
 
     function calcProfit(dataItem: any) {
         if (!dataItem?.clicks) return 0;
@@ -151,56 +151,59 @@ export default function DashboardTab({ active, onClick, onClose }: {
                                 </div>
                             </div>
                             <div className='flex flex-wrap justify-around items-center gap-4 w-full'>
-                                {/* {bodyCards.map((card, index) => (
-                                <div key={index}
-                                    className='flex flex-col justify-start items-start h-[100px] w-[100%] lg:w-[40%] bg-white'
-                                    style={{ boxShadow: '1px 1px 1px 1px grey' }}
-                                >
-                                    <div className='flex justify-between items-center w-full px-[10px] py-1'
-                                        style={{ borderBottom: 'solid grey 1px' }}
+                                {bodyCards.map((card, index) => (
+                                    <div key={index}
+                                        className='flex flex-col justify-start items-start h-[100px] w-[100%] lg:w-[40%] bg-white'
+                                        style={{ boxShadow: '1px 1px 1px 1px grey' }}
                                     >
-                                        <span>
-                                            {card.name}
-                                        </span>
-                                        <span>
-                                            Profit
-                                        </span>
-                                    </div>
-                                    {fetchingData || card.data?.length === 0
-                                        ? <div className='flex justify-center items-center w-full'
+                                        <div
+                                            className='flex justify-between items-center w-full px-[10px] py-1'
                                             style={{ borderBottom: 'solid grey 1px' }}
                                         >
-                                            <span className='italic my-1'>
-                                                {fetchingData
-                                                    ? <Spinner />
-                                                    : 'No data to display'
-                                                }
+                                            <span>
+                                                {card.name}
+                                            </span>
+                                            <span>
+                                                Profit
                                             </span>
                                         </div>
-                                        : card.data.map((dataItem, _index) => {
-                                            const profit = calcProfit(dataItem);
-                                            const posProfit = typeof profit === 'number' && profit > 0;
-                                            const negProfit = typeof profit === 'number' && profit < 0;
-                                            return (
-                                                <div className='flex justify-between items-center w-full'
-                                                    style={{ borderBottom: 'solid grey 1px' }}
-                                                >
-                                                    <div className='flex justify-start items-center h-full'>
-                                                        <div className={(posProfit ? 'bg-[#17a689]' : negProfit ? 'bg-red-300' : 'bg-gray-300')
-                                                            + ' h-full w-[3px] mr-[10px]'} />
-                                                        <span className='my-1'>
-                                                            {dataItem.name}
+                                        {fetchingData || card.data?.length === 0
+                                            ? <div
+                                                className='flex justify-center items-center w-full'
+                                                style={{ borderBottom: 'solid grey 1px' }}
+                                            >
+                                                <span className='italic my-1'>
+                                                    {fetchingData
+                                                        ? <Spinner />
+                                                        : 'No data to display'
+                                                    }
+                                                </span>
+                                            </div>
+                                            : card.data.map((dataItem, _index) => {
+                                                const profit = calcProfit(dataItem);
+                                                const posProfit = typeof profit === 'number' && profit > 0;
+                                                const negProfit = typeof profit === 'number' && profit < 0;
+                                                return (
+                                                    <div key={index}
+                                                        className='flex justify-between items-center w-full'
+                                                        style={{ borderBottom: 'solid grey 1px' }}
+                                                    >
+                                                        <div className='flex justify-start items-center h-full'>
+                                                            <div className={(posProfit ? 'bg-[#17a689]' : negProfit ? 'bg-red-300' : 'bg-gray-300')
+                                                                + ' h-full w-[3px] mr-[10px]'} />
+                                                            <span className='my-1'>
+                                                                {dataItem.name}
+                                                            </span>
+                                                        </div>
+                                                        <span className={posProfit ? 'text-[#17a689]' : negProfit ? 'text-red-300' : ''
+                                                            + ' pr-[10px]'}>
+                                                            {profit}
                                                         </span>
                                                     </div>
-                                                    <span className={posProfit ? 'text-[#17a689]' : negProfit ? 'text-red-300' : ''
-                                                        + ' pr-[10px]'}>
-                                                        {profit}
-                                                    </span>
-                                                </div>
-                                            )
-                                        })}
-                                </div>
-                            ))} */}
+                                                )
+                                            })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

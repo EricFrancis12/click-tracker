@@ -37,7 +37,7 @@ export default function useHoverDropdown(id: string) {
                 targetElement.removeEventListener('mouseenter', handleMouseEnter);
             }
         };
-    }, [id]);
+    }, [id, handleMouseEnter]);
 
     return { Dropdown, isHovered };
 }

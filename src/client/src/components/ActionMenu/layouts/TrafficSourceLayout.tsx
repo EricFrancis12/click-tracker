@@ -1,5 +1,5 @@
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
-import { Input } from '../../baseComponents';
+import { Input } from '../../base-components';
 import UrlInput from '../../UrlInput';
 import TagsInput from '../../TagsInput';
 import TokensInput from '../../TokensInput';

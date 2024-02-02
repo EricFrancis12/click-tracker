@@ -56,27 +56,35 @@ export const placeholderOffers: TOffer[] = [
 export const placeholderPaths: TPath[] = [
     {
         weight: 100,
-        landingPages: {
-            _id: placeholderLandingPages[0]._id,
-            weight: 100
-        },
-        offers: {
-            _id: placeholderOffers[0]._id,
-            weight: 75
-        },
+        landingPages: [
+            {
+                _id: placeholderLandingPages[0]._id,
+                weight: 100
+            }
+        ],
+        offers: [
+            {
+                _id: placeholderOffers[0]._id,
+                weight: 75
+            }
+        ],
         active: true,
         directLinkingEnabled: false
     },
     {
         weight: 50,
-        landingPages: {
-            _id: placeholderLandingPages[1]._id,
-            weight: 100
-        },
-        offers: {
-            _id: placeholderOffers[1]._id,
-            weight: 100
-        },
+        landingPages: [
+            {
+                _id: placeholderLandingPages[1]._id,
+                weight: 100
+            }
+        ],
+        offers: [
+            {
+                _id: placeholderOffers[1]._id,
+                weight: 100
+            }
+        ],
         active: true,
         directLinkingEnabled: true
     },
@@ -86,14 +94,14 @@ export const placeholderRules: TRule[] = [
     {
         name: 'Language',
         itemName: 'Affiliate Networks',
-        clickprop: 'language',
+        clickProp: 'language',
         equals: true,
         data: []
     },
     {
         name: 'City',
         itemName: 'Campaigns',
-        clickprop: 'city',
+        clickProp: 'city',
         equals: false,
         data: []
     }
@@ -109,7 +117,8 @@ export const placeholderRuleRoutes: TRoute_rule[] = [
     {
         active: true,
         paths: placeholderPaths,
-        rules: placeholderRules
+        rules: placeholderRules,
+        logicalRelation: 'and'
     }
 ];
 
