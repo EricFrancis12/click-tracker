@@ -1,47 +1,116 @@
-import type { TClick } from '../../../client/src/lib/types';
-import { fetchCampaignBy_id } from '../../data/campaigns';
+import type {
+    TFlow, TLandingPage, TOffer, TPath,
+    TPath_landingPage, TPath_offer, TRoute
+} from '../../../client/src/lib/types';
+import { weightedRandomlySelectItem } from '../../../client/src/utils/utils';
+import { createNewAndSaveNewClick, makeClickPropsFromReq, makeNewClickFromReq } from '../../data/clicks';
+import { fetchData } from '../../data/data';
 import { fetchFlowBy_id } from '../../data/flows';
-import { catchAllRedirectUrl, makeNewClickFromReq } from '../../utils/utils';
+import { catchAllRedirectUrl, clickTriggersRuleRoute } from '../../utils/utils';
 
 import { Router } from 'express';
 const router = Router();
 
 router.get('/:campaign_id', async (req, res) => {
-    const campaign = await fetchCampaignBy_id(req.params.campaign_id);
-    if (!campaign) {
-        return res.redirect(catchAllRedirectUrl());
-    }
+    try {
+        if (!req.params.campaign_id) {
+            return res.redirect(catchAllRedirectUrl());
+        }
 
-    // const click: TClick = makeNewClickFromReq({ req, campaign }); /
+        const data = await fetchData();
+        const campaign = data.campaigns.find(_campaign => _campaign._id === req.params.campaign_id) ?? null;
+        if (!campaign) {
+            return res.redirect(catchAllRedirectUrl());
+        }
 
-    let flow;
-    // Handle based on flow type
-    if (campaign.flow.type === 'saved') {
-        flow = await fetchFlowBy_id(campaign.flow._id);
-    } else if (campaign.flow.type === 'built_in') {
-        flow = campaign.flow;
-    } else if (campaign.flow.type === 'url' && campaign.flow.url) {
-        res.redirect(campaign.flow.url);
-    } else {
-        res.redirect(catchAllRedirectUrl());
-    }
+        const clickPropsFromReq = await makeClickPropsFromReq(req);
+        let directLinkingEnabled: boolean | undefined = false;
+        let flow: TFlow | undefined | null,
+            route: TRoute | undefined | null,
+            path: TPath | undefined | null,
+            landingPage: TLandingPage | undefined | null,
+            offer: TOffer | undefined | null,
+            viewRedirectUrl: string | undefined | null,
+            clickRedirectUrl: string | undefined | null;
 
-    if (flow) {
-        if (flow.ruleRoutes) {
-            // determine if the request triggers any ruleRoutes
-            for (let i = 0; i < flow.ruleRoutes?.length; i++) {
+        if (campaign.flow.type === 'url' && campaign.flow.url) {
+            flow = campaign.flow;
+            landingPage = null;
+            offer = null;
+            viewRedirectUrl = campaign.flow.url;
+        } else {
+            if (campaign.flow.type === 'saved' && campaign.flow._id) {
+                flow = await fetchFlowBy_id(campaign.flow._id);
+                if (!flow) {
+                    viewRedirectUrl = catchAllRedirectUrl();
+                }
+            } else if (campaign.flow.type === 'built_in') {
+                flow = campaign.flow;
+            }
 
+            if (flow?.ruleRoutes && flow.ruleRoutes.length > 0) {
+                for (let i = 0; i < flow.ruleRoutes.length; i++) {
+                    const ruleRoute = flow.ruleRoutes[i];
+                    if (!ruleRoute.active) {
+                        continue;
+                    }
+                    if (clickTriggersRuleRoute(clickPropsFromReq, ruleRoute)) {
+                        route = ruleRoute;
+                        break;
+                    }
+                    if (i === flow.ruleRoutes.length - 1) {
+                        route = flow.defaultRoute;
+                    }
+                }
+            }
+
+            if (route) {
+                path = weightedRandomlySelectItem(route.paths) as TPath;
+            }
+
+            if (path) {
+                if (!path.directLinkingEnabled) {
+                    directLinkingEnabled = false;
+                    const selectedLandingPage_id = (weightedRandomlySelectItem(path.landingPages) as TPath_landingPage)._id;
+                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)._id;
+                    landingPage = data.landingPages.find(landingPage => landingPage._id === selectedLandingPage_id);
+                    offer = data.offers.find(offer => offer._id === selectedOffer_id);
+                    viewRedirectUrl = landingPage?.url ?? null;
+                    clickRedirectUrl = offer?.url ?? null;
+                } else {
+                    directLinkingEnabled = true;
+                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)._id;
+                    landingPage = null;
+                    offer = data.offers.find(offer => offer._id === selectedOffer_id);
+                    viewRedirectUrl = offer?.url ?? null;
+                    clickRedirectUrl = offer?.url ?? null;
+                }
+            }
+
+            const click = await makeNewClickFromReq({
+                req,
+                campaign,
+                flow,
+                landingPage,
+                offer,
+                directLinkingEnabled,
+                clickPropsFromReq
+            });
+
+            if (click?._id) {
+                res.cookie('click_id', click._id, { httpOnly: true });
+            }
+
+            res.redirect(viewRedirectUrl ?? catchAllRedirectUrl());
+
+            if (campaign && flow) {
+                createNewAndSaveNewClick(click);
             }
         }
-        // if so, the first one triggered gets the redirect
-        // if not, the redirect goes to the defaultRoute
-
-        // now that we've chosen a route, use flow.path.active, flow.path.weight to selelct a path
-        // if !flow.path.directLinkingEnabled, select a landingPage based on flow.path.landingPaths[i].weight
-        // else, select an offer based on flow.path.offers[i].weight
+    } catch (err) {
+        console.error(err);
+        return res.redirect(catchAllRedirectUrl());
     }
-
-    // log click data in db
 });
 
 export { router };

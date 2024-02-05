@@ -28,9 +28,10 @@ function fetchCampaigns() {
 }
 exports.fetchCampaigns = fetchCampaigns;
 function fetchCampaignBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const campaigns = yield fetchCampaigns();
-        return campaigns.find((campaign) => (campaign === null || campaign === void 0 ? void 0 : campaign._id) === _id);
+        return (_a = campaigns.find((campaign) => (campaign === null || campaign === void 0 ? void 0 : campaign._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchCampaignBy_id = fetchCampaignBy_id;

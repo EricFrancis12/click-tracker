@@ -2,7 +2,7 @@ import type { TCampaign } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 
-export async function fetchCampaigns() {
+export async function fetchCampaigns(): Promise<TCampaign[]> {
     const campaignsCollection = db.collection('campaigns');
     const dbResults = await campaignsCollection.filter();
     if (!dbResults) {
@@ -12,9 +12,9 @@ export async function fetchCampaigns() {
     return campaigns;
 }
 
-export async function fetchCampaignBy_id(_id: string) {
+export async function fetchCampaignBy_id(_id: string): Promise<TCampaign | null> {
     const campaigns = await fetchCampaigns();
-    return campaigns.find((campaign: TCampaign) => campaign?._id === _id);
+    return campaigns.find((campaign: TCampaign) => campaign?._id === _id) ?? null;
 }
 
 export async function createNewAndSaveNewCampaign(campaign: TCampaign) {

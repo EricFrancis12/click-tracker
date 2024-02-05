@@ -55,7 +55,9 @@ export default function ItemSelector({
     return (
         <div className='flex justify-start items-start gap-2 w-full'>
             <div>
-                <select ref={selectElement} onChange={e => handleSelectChange(e)}>
+                <select ref={selectElement}
+                    onChange={e => handleSelectChange(e)}
+                >
                     {filteredItems.map((item, index) => (
                         <option key={index} value={index === 0 ? '' : item}>
                             {index === 0 ? defaultText : item}
@@ -69,13 +71,20 @@ export default function ItemSelector({
                         className='flex justify-center items-center gap-1 px-1'
                         style={{ border: 'solid 1px grey', borderRadius: '25px' }}
                     >
-                        <span className='flex justify-center items-center px-1' style={{ whiteSpace: 'nowrap' }}>
+                        <span
+                            className='flex justify-center items-center px-1'
+                            style={{ whiteSpace: 'nowrap' }}
+                        >
                             {item === '' ? 'Empty Value' : item}
                         </span>
                         {item &&
                             <span onClick={e => deleteItem(item)}
                                 className='flex justify-center items-center rounded-full p-1 cursor-pointer hover:bg-gray-500'
-                                style={{ height: '16px', width: '16px', border: 'solid darkgrey 2px' }}
+                                style={{
+                                    height: '16px',
+                                    width: '16px',
+                                    border: 'solid darkgrey 2px'
+                                }}
                             >
                                 <FontAwesomeIcon icon={faX} fontSize='8px' />
                             </span>

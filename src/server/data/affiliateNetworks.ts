@@ -2,7 +2,7 @@ import type { TAffiliateNetwork } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 
-export async function fetchAffiliateNetworks() {
+export async function fetchAffiliateNetworks(): Promise<TAffiliateNetwork[]> {
     const affiliateNetworksCollection = db.collection('affiliateNetworks');
     const dbResults = await affiliateNetworksCollection.filter();
     if (!dbResults) {
@@ -12,9 +12,9 @@ export async function fetchAffiliateNetworks() {
     return affiliateNetworks;
 }
 
-export async function fetchAffiliateNetworkBy_id(_id: string) {
+export async function fetchAffiliateNetworkBy_id(_id: string): Promise<TAffiliateNetwork | null> {
     const affiliateNetworks = await fetchAffiliateNetworks();
-    return affiliateNetworks.find((affiliateNetwork: TAffiliateNetwork) => affiliateNetwork?._id === _id);
+    return affiliateNetworks.find((affiliateNetwork: TAffiliateNetwork) => affiliateNetwork?._id === _id) ?? null;
 }
 
 export async function createNewAndSaveNewAffiliateNetwork(affiliateNetwork: TAffiliateNetwork) {

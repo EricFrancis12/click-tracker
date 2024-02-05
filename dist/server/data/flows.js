@@ -28,9 +28,10 @@ function fetchFlows() {
 }
 exports.fetchFlows = fetchFlows;
 function fetchFlowBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const flows = yield fetchFlows();
-        return flows.find((flow) => (flow === null || flow === void 0 ? void 0 : flow._id) === _id);
+        return (_a = flows.find((flow) => (flow === null || flow === void 0 ? void 0 : flow._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchFlowBy_id = fetchFlowBy_id;

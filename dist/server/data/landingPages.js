@@ -28,9 +28,10 @@ function fetchLandingPages() {
 }
 exports.fetchLandingPages = fetchLandingPages;
 function fetchLandingPageBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const landingPages = yield fetchLandingPages();
-        return landingPages.find((landingPage) => (landingPage === null || landingPage === void 0 ? void 0 : landingPage._id) === _id);
+        return (_a = landingPages.find((landingPage) => (landingPage === null || landingPage === void 0 ? void 0 : landingPage._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchLandingPageBy_id = fetchLandingPageBy_id;

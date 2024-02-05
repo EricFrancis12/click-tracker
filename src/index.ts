@@ -3,6 +3,7 @@ dotenv.config();
 
 import cors from 'cors';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import auth from './server/middleware/auth/auth';
 
 import express from 'express';
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.resolve('./', 'src', 'client', 'build')));
 app.use(express.static(path.resolve('./', 'src', 'client', 'public')));
 

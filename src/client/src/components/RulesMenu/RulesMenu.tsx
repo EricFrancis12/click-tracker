@@ -7,8 +7,7 @@ import Button from '../Button';
 import Checkbox from '../Checkbox';
 import type { TLogicalRelation, TRoute, TRule } from '../../lib/types';
 import { logicalRelations } from '../../lib/logicalRelations';
-import { rulesList } from '../../lib/rulesList';
-import { getRuleComponent } from '../../utils/utils';
+import { rulesList } from './layouts';
 
 export default function RulesMenu({
     rules: originalRules,
@@ -58,6 +57,10 @@ export default function RulesMenu({
             logicalRelation
         });
         setActive(false);
+    }
+
+    function getRuleComponent(rule: TRule) {
+        return rulesList.find((rulesListItem: typeof rulesList[0]) => rulesListItem.name === rule.name)?.component ?? null;
     }
 
     return (

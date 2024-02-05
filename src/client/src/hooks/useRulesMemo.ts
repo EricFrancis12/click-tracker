@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { TClick } from '../lib/types';
-import { rulesList } from '../lib/rulesList';
+import { rulesList } from '../components/RulesMenu/layouts';
 import { removeDupesFromArray } from '../utils/utils';
 
 export default function useRulesMemo(clicks: TClick[]) {

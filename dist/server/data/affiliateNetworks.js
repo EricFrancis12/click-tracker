@@ -28,9 +28,10 @@ function fetchAffiliateNetworks() {
 }
 exports.fetchAffiliateNetworks = fetchAffiliateNetworks;
 function fetchAffiliateNetworkBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const affiliateNetworks = yield fetchAffiliateNetworks();
-        return affiliateNetworks.find((affiliateNetwork) => (affiliateNetwork === null || affiliateNetwork === void 0 ? void 0 : affiliateNetwork._id) === _id);
+        return (_a = affiliateNetworks.find((affiliateNetwork) => (affiliateNetwork === null || affiliateNetwork === void 0 ? void 0 : affiliateNetwork._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchAffiliateNetworkBy_id = fetchAffiliateNetworkBy_id;

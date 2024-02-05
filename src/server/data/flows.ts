@@ -2,7 +2,7 @@ import type { TFlow } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 
-export async function fetchFlows() {
+export async function fetchFlows(): Promise<TFlow[]> {
     const flowsCollection = db.collection('flows');
     const dbResults = await flowsCollection.filter();
     if (!dbResults) {
@@ -12,9 +12,9 @@ export async function fetchFlows() {
     return flows;
 }
 
-export async function fetchFlowBy_id(_id: string) {
+export async function fetchFlowBy_id(_id: string): Promise<TFlow | null> {
     const flows = await fetchFlows();
-    return flows.find((flow: TFlow) => flow?._id === _id);
+    return flows.find((flow: TFlow) => flow?._id === _id) ?? null;
 }
 
 export async function createNewAndSaveNewFlow(flow: TFlow) {

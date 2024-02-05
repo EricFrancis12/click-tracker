@@ -2,7 +2,7 @@
   "name": "click-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "cd src/client && npm i && npm run build && cd ../../ && npx tsc",
     "start": "node dist/index.js",
@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@cyclic.sh/dynamodb": "^0.0.35",
+    "@types/cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2"

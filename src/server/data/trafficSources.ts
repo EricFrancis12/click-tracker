@@ -2,7 +2,7 @@ import type { TTrafficSource } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 
-export async function fetchTrafficSources() {
+export async function fetchTrafficSources(): Promise<TTrafficSource[]> {
     const trafficSourcesCollection = db.collection('trafficSources');
     const dbResults = await trafficSourcesCollection.filter();
     if (!dbResults) {
@@ -12,9 +12,9 @@ export async function fetchTrafficSources() {
     return trafficSources;
 }
 
-export async function fetchTrafficSourceBy_id(_id: string) {
+export async function fetchTrafficSourceBy_id(_id: string): Promise<TTrafficSource | null> {
     const trafficSources = await fetchTrafficSources();
-    return trafficSources.find((trafficSource: TTrafficSource) => trafficSource?._id === _id);
+    return trafficSources.find((trafficSource: TTrafficSource) => trafficSource?._id === _id) ?? null;
 }
 
 export async function createNewAndSaveNewTrafficSource(trafficSource: TTrafficSource) {

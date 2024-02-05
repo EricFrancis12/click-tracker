@@ -4,7 +4,7 @@ import {
     defaultAffiliateNetwork, defaultCampaign, defaultFlow,
     defaultLandingPage, defaultOffer, defaultTrafficSource
 } from '../lib/default-data';
-import { rulesList } from '../lib/rulesList';
+import { rulesList } from '../components/RulesMenu/layouts';
 
 export function isObject(any: any) {
     return any != null && typeof any === 'object';
@@ -102,6 +102,21 @@ export function swapArrayElementsPerCondition(
         if (!options?.matchAll) break;
     }
     return copyArray;
+}
+
+export function weightedRandomlySelectItem(array: any[]) {
+    const totalWeight = array.reduce((total, currentItem) => {
+        return total + (currentItem.weight ?? 100);
+    }, 0);
+    let randomNum = Math.floor(Math.random() * totalWeight);
+
+    for (let i = 0; i < array.length; i++) {
+        randomNum -= array[i].weight;
+        if (randomNum < 0) {
+            return array[i];
+        }
+    }
+    return null;
 }
 
 export function traverseParentsForId(element: HTMLElement, id: string): boolean {
@@ -207,7 +222,3 @@ export function endpointFromItemName(itemName: TItemName) {
     }
     return result;
 };
-
-export function getRuleComponent(rule: TRule) {
-    return rulesList.find((rulesListItem: typeof rulesList[0]) => rulesListItem.name === rule.name)?.component ?? null;
-}

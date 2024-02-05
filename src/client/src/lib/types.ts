@@ -24,6 +24,24 @@ export type TClickProp = 'affiliateNetwork_id' | 'campaign_id' | 'flow_id' | 'la
     | 'deviceVendor' | 'deviceType' | 'screenResolution' | 'os' | 'osVersion' | 'browserName' | 'browserVersion'
     | null;
 
+export type TClickPropsFromReq = {
+    geoName?: string | null,
+    region?: string | null,
+    city?: string | null,
+    language?: string | null,
+    isp?: string | null,
+    mobileCarrier?: string | null,
+    connectionType?: string | null,
+    deviceModel?: string | null,
+    deviceVendor?: string | null,
+    deviceType?: string | null,
+    screenResolution?: string | null,
+    os?: string | null,
+    osVersion?: string | null,
+    browserName?: string | null,
+    browserVersion?: string | null
+};
+
 export type TDataProp = 'affiliateNetworks' | 'campaigns' | 'flows' | 'landingPages' | 'offers' | 'trafficSources';
 
 export type TClick = {
@@ -32,7 +50,7 @@ export type TClick = {
     _id: TClick_id,
     campaign_id: TCampaign_id,
     trafficSource_id: TTrafficSource_id | '',
-    landingPage_id: TLandingPage_id | TLandingPage_id_direct_linking,
+    landingPage_id: TLandingPage_id | TLandingPage_id_direct_linking | null,
     offer_id: TOffer_id | null,
     flow_id: TFlow_id,
     viewTimestamp: number,
@@ -44,12 +62,12 @@ export type TClick = {
         queryParam: string,
         value: string
     }[],
-    viewRedirectUrl: string,
+    viewRedirectUrl: string | null,
     clickRedirectUrl: string | null,
     ip?: string | null,
     userAgent?: string | null,
     language?: string | null,
-    country?: string | null,
+    geoName?: string | null,
     region?: string | null,
     city?: string | null,
     isp?: string | null,
@@ -162,16 +180,18 @@ export type TRoute_rule = TRoute & {
 
 export type TPath = {
     weight: number,
-    landingPages: ({
-        _id: TLandingPage_id,
-        weight: number
-    })[],
-    offers: ({
-        _id: TOffer_id,
-        weight: number
-    })[],
+    landingPages: TPath_landingPage[],
+    offers: TPath_offer[],
     active: boolean,
     directLinkingEnabled: boolean
+};
+export type TPath_landingPage = {
+    _id: TLandingPage_id,
+    weight: number
+};
+export type TPath_offer = {
+    _id: TOffer_id,
+    weight: number
 };
 
 export type TRule = {
@@ -193,7 +213,7 @@ export type TGeoName = string;
 export type TToken = {
     queryParam: string,
     value: string
-    name: string,
+    name?: string,
 };
 
 export type TLandingPageRotation = 'random';
@@ -221,3 +241,15 @@ export type TMenuData = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | T
 export type TReportItem = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource;
 
 export type TLogicalRelation = 'and' | 'or';
+
+export type TRulesListItem = {
+    name: TRule_name,
+    itemName: TItemName | null,
+    clickProp: TClickProp,
+    component: ({ rule, rules, setRules, onDelete }: {
+        rule: TRule,
+        rules: TRule[],
+        setRules: Function,
+        onDelete: React.MouseEventHandler<HTMLSpanElement>
+    }) => JSX.Element
+};

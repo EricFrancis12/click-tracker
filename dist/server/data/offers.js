@@ -28,9 +28,10 @@ function fetchOffers() {
 }
 exports.fetchOffers = fetchOffers;
 function fetchOfferBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const offers = yield fetchOffers();
-        return offers.find((offer) => (offer === null || offer === void 0 ? void 0 : offer._id) === _id);
+        return (_a = offers.find((offer) => (offer === null || offer === void 0 ? void 0 : offer._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchOfferBy_id = fetchOfferBy_id;

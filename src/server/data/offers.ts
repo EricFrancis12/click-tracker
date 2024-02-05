@@ -2,7 +2,7 @@ import type { TOffer } from '../../client/src/lib/types';
 import CyclicDB from '@cyclic.sh/dynamodb';
 const db = CyclicDB(process.env.CYCLIC_DB);
 
-export async function fetchOffers() {
+export async function fetchOffers(): Promise<TOffer[]> {
     const offersCollection = db.collection('offers');
     const dbResults = await offersCollection.filter();
     if (!dbResults) {
@@ -12,9 +12,9 @@ export async function fetchOffers() {
     return offers;
 }
 
-export async function fetchOfferBy_id(_id: string) {
+export async function fetchOfferBy_id(_id: string): Promise<TOffer | null> {
     const offers = await fetchOffers();
-    return offers.find((offer: TOffer) => offer?._id === _id);
+    return offers.find((offer: TOffer) => offer?._id === _id) ?? null;
 }
 
 export async function createNewAndSaveNewOffer(offer: TOffer) {

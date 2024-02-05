@@ -15,23 +15,23 @@ export default function useTagSuggestions(primaryItemName: TItemName_primary) {
             break;
         }
         case 'Campaigns': {
-            result = data.campaigns?.map((campaign: TCampaign) => (campaign.tags ?? [])).flat() ?? [];
+            result = data?.campaigns?.map((campaign: TCampaign) => (campaign.tags ?? []))?.flat() ?? [];
             break;
         }
         case 'Flows': {
-            result = data.flows?.map((flow: TFlow) => (flow.tags ?? [])).flat() ?? [];
+            result = data?.flows?.map((flow: TFlow) => (flow.tags ?? []))?.flat() ?? [];
             break;
         }
         case 'Landing Pages': {
-            result = data.landingPages?.map((landingPage: TLandingPage) => (landingPage.tags ?? [])).flat() ?? [];
+            result = data?.landingPages?.map((landingPage: TLandingPage) => (landingPage.tags ?? []))?.flat() ?? [];
             break;
         }
         case 'Offers': {
-            result = data.offers?.map((offer: TOffer) => (offer.tags ?? [])).flat() ?? [];
+            result = data?.offers?.map((offer: TOffer) => (offer.tags ?? []))?.flat() ?? [];
             break;
         }
         case 'Traffic Sources': {
-            result = data.trafficSources?.map((trafficSource: TTrafficSource) => (trafficSource.tags ?? [])).flat() ?? [];
+            result = data?.trafficSources?.map((trafficSource: TTrafficSource) => (trafficSource.tags ?? []))?.flat() ?? [];
             break;
         }
     }

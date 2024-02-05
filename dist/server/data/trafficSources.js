@@ -28,9 +28,10 @@ function fetchTrafficSources() {
 }
 exports.fetchTrafficSources = fetchTrafficSources;
 function fetchTrafficSourceBy_id(_id) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         const trafficSources = yield fetchTrafficSources();
-        return trafficSources.find((trafficSource) => (trafficSource === null || trafficSource === void 0 ? void 0 : trafficSource._id) === _id);
+        return (_a = trafficSources.find((trafficSource) => (trafficSource === null || trafficSource === void 0 ? void 0 : trafficSource._id) === _id)) !== null && _a !== void 0 ? _a : null;
     });
 }
 exports.fetchTrafficSourceBy_id = fetchTrafficSourceBy_id;

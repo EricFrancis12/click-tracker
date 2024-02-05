@@ -1,6 +1,5 @@
-import type { TCampaign, TClick } from '../../client/src/lib/types';
 import type { Request } from 'express';
-import { generateNewClick_id } from '../../client/src/lib/_id';
+import { TClickPropsFromReq, TPath, TPath_landingPage, TPath_offer, TRoute_rule } from '../../client/src/lib/types';
 
 export function catchAllRedirectUrl() {
     if (process.env.CATCH_ALL_REDIRECT_URL) {
@@ -9,48 +8,54 @@ export function catchAllRedirectUrl() {
     return 'https://bing.com';
 }
 
-export function makeNewClickFromReq({ req, campaign }: {
-    req: Request,
-    campaign: TCampaign
-}) {
-    // const click: TClick = {
-    //     _id: generateNewClick_id(),
-    //     campaign_id: campaign._id,
-    //     trafficSource_id: campaign.trafficSource_id,
-    //     landingPage_id: 
-    // };
-    // return click;
+export function getLanguageFromReq(req: Request) {
+    const acceptLanguageHeader = req.get('Accept-Language');
+    if (!acceptLanguageHeader) {
+        return null;
+    }
+
+    // Parse the header to get an array of language tags with their associated quality values
+    const languages = acceptLanguageHeader.split(',').map(language => {
+        const [tag, quality = '1.0'] = language.trim().split(';q=');
+        return { tag, quality: parseFloat(quality) };
+    });
+
+    // Sort languages by quality in descending order
+    const sortedLanguages = languages.sort((a, b) => b.quality - a.quality);
+
+    // The preferred language is the first language tag after sorting
+    const preferredLanguage = sortedLanguages[0].tag;
+    return preferredLanguage;
 }
 
-// trafficSource_id: TTrafficSource_id,
-// landingPage_id: TLandingPage_id | TLandingPage_id_direct_linking,
-// offer_id: TOffer_id | null,
-// flow_id: TFlow_id,
-// viewTimestamp: number,
-// lpClickTimestamp: number | null,
-// conversionTimestamp: number | null,
-// cost: number,
-// revenue: number,
-// tokens: {
-//     key: string,
-//     value: string
-// }[],
-// viewRedirectUrl: string,
-// clickRedirectUrl: string | null,
-// ip?: string | null,
-// userAgent?: string | null,
-// language?: string | null,
-// country?: string | null,
-// region?: string | null,
-// city?: string | null,
-// isp?: string | null,
-// mobileCarrier?: string | null,
-// connectionType?: string | null,
-// deviceModel?: string | null,
-// deviceVendor?: string | null,
-// deviceType?: string | null,
-// screenResolution?: string | null,
-// os?: string | null,
-// osVersion?: string | null,
-// browserName?: string | null,
-// browserVersion?: string | null
+export function clickTriggersRuleRoute(clickPropsFromReq: TClickPropsFromReq, ruleRoute: TRoute_rule) {
+    // Check to see if any of the click.clickprop values are included/exluded
+    // from rule.data array. A Route.logicalRelation of 'and' means all rules must be satisfied,
+    // while 'or' means at least one rule needs to be satisfied. Whether or not it should be included or exluded
+    // is determined by rule.equals
+    for (let i = 0; i < ruleRoute.rules.length; i++) {
+        const rule = ruleRoute.rules[i];
+        const clickProp = rule.clickProp;
+        if (clickProp === null || clickProp === undefined || clickProp === 'affiliateNetwork_id'
+            || clickProp === 'campaign_id' || clickProp === 'flow_id' || clickProp === 'landingPage_id'
+            || clickProp === 'offer_id' || clickProp === 'trafficSource_id') {
+            continue;
+        }
+        if (ruleRoute.logicalRelation === 'or') {
+            const ruleItem = clickPropsFromReq[clickProp];
+            if (typeof ruleItem === 'string' && rule.data.includes(ruleItem)) {
+                return rule.equals ? true : false;
+            }
+        } else {
+            const ruleItem = clickPropsFromReq[clickProp];
+            if (typeof ruleItem === 'string' && rule.data.includes(ruleItem)) {
+                continue;
+            }
+            if (i === ruleRoute.rules.length - 1) {
+                return rule.equals ? true : false;
+            }
+            break;
+        }
+    }
+    return false;
+}
