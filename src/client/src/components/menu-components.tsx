@@ -39,7 +39,7 @@ export function Header({ title, onClose }: {
 
 export function Footer({ onClose, onSave, disabled }: {
     onClose: React.MouseEventHandler<Element>,
-    onSave: React.MouseEventHandler<Element>,
+    onSave?: React.MouseEventHandler<Element>,
     disabled?: boolean
 }) {
     return (
@@ -50,9 +50,11 @@ export function Footer({ onClose, onSave, disabled }: {
             <span className='mr-[4px]'>
                 <Button icon={faTimes} text='Cancel' onClick={onClose} />
             </span>
-            <span>
-                <Button icon={faCheck} text='Save' disabled={disabled} onClick={onSave} />
-            </span>
+            {onSave &&
+                <span>
+                    <Button icon={faCheck} text='Save' disabled={disabled} onClick={onSave} />
+                </span>
+            }
         </div>
     )
 }

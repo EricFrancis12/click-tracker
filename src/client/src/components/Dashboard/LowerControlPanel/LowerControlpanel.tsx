@@ -67,7 +67,7 @@ export default function LowerControlPanel({
                             }
                             <NewButton activeItem={activeItem} />
                             <EditButton activeItem={activeItem} mappedData={selectedMappedData} />
-                            <ActionsDropdown mappedData={selectedMappedData} />
+                            <ActionsDropdown activeItem={activeItem} mappedData={selectedMappedData} />
                         </>
                     }
                 </div>
