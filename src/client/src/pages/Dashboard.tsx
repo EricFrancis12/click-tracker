@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import crypto from 'crypto';
 import { ActionMenuProvider } from '../contexts/ActionMenuContext';
 import DashboardTab from '../components/Dashboard/tabs/DashboardTab';
 import HomeTab from '../components/Dashboard/tabs/HomeTab';

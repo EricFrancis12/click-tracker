@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import crypto from 'crypto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     IconDefinition, faBullseye, faHandshake, faFolder, faSitemap, faGlobe, faUsers, faDollarSign, faDownload,

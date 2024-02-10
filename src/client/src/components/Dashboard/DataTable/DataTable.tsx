@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import crypto from 'crypto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../contexts/AuthContext';

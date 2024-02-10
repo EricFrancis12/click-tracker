@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import crypto from 'crypto';
 import Dropdown from '../../Dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';

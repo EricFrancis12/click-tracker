@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import type {
     TAffiliateNetwork_id, TCampaign_id, TClick_id, TFlow_id,
     TLandingPage_id, TOffer_id, TTrafficSource_id
