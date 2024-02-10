@@ -89,7 +89,6 @@ router.get('/:campaign_id', async (req, res) => {
                 }
             }
 
-            console.log('before makeNewClickFromReq()');
             const click = await makeNewClickFromReq({
                 req,
                 campaign,
@@ -99,12 +98,17 @@ router.get('/:campaign_id', async (req, res) => {
                 directLinkingEnabled,
                 clickPropsFromReq
             });
-            console.log('after makeNewClickFromReq()');
 
             if (click?._id) {
                 res.cookie('click_id', click._id, { httpOnly: true });
             }
 
+            console.log(flow);
+            console.log(route);
+            console.log(path);
+            console.log(landingPage);
+            console.log(offer);
+            console.log(viewRedirectUrl);
             res.redirect(viewRedirectUrl ?? catchAllRedirectUrl());
 
             if (campaign && flow) {
@@ -112,7 +116,6 @@ router.get('/:campaign_id', async (req, res) => {
             }
         }
     } catch (err) {
-        console.log('before catch (err)');
         console.error(err);
         res.redirect(catchAllRedirectUrl());
     }
