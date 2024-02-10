@@ -59,6 +59,9 @@ const Card = ({ title, value }: {
             </div>
             <div
                 className='text-green-500 hover:opacity-70 cursor-pointer'
+                style={{
+                    whiteSpace: 'nowrap'
+                }}
                 onClick={() => copyTextToClipboard(value)}
             >
                 <FontAwesomeIcon icon={faCopy} />

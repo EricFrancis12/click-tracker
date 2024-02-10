@@ -14,14 +14,20 @@ const router = Router();
 router.get('/:campaign_id', async (req, res) => {
     try {
         if (!req.params.campaign_id) {
-            return res.redirect(catchAllRedirectUrl());
+            res.redirect(catchAllRedirectUrl());
+            return;
         }
 
         const data = await fetchData();
+        console.log(data);
         const campaign = data.campaigns.find(_campaign => _campaign._id === req.params.campaign_id) ?? null;
+        console.log(campaign);
         if (!campaign) {
-            return res.redirect(catchAllRedirectUrl());
+            console.log('inside !campaign');
+            res.redirect(catchAllRedirectUrl());
+            return;
         }
+        console.log('after !campaign');
 
         const clickPropsFromReq = await makeClickPropsFromReq(req);
         let directLinkingEnabled: boolean | undefined = false;
@@ -87,6 +93,7 @@ router.get('/:campaign_id', async (req, res) => {
                 }
             }
 
+            console.log('before makeNewClickFromReq()');
             const click = await makeNewClickFromReq({
                 req,
                 campaign,
@@ -96,6 +103,7 @@ router.get('/:campaign_id', async (req, res) => {
                 directLinkingEnabled,
                 clickPropsFromReq
             });
+            console.log('after makeNewClickFromReq()');
 
             if (click?._id) {
                 res.cookie('click_id', click._id, { httpOnly: true });
@@ -108,8 +116,10 @@ router.get('/:campaign_id', async (req, res) => {
             }
         }
     } catch (err) {
+        console.log('before catch (err)');
         console.error(err);
-        return res.redirect(catchAllRedirectUrl());
+        res.redirect(catchAllRedirectUrl());
+        console.log('before catch (err)');
     }
 });
 
