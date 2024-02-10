@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import crypto from 'crypto';
+import { nanoid } from 'nanoid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     IconDefinition, faBullseye, faHandshake, faFolder, faSitemap, faGlobe, faUsers, faDollarSign, faDownload,
@@ -103,7 +103,7 @@ export function UpperControlPanelItem({ item, activeItem, setActiveItem }: {
     activeItem: TItem,
     setActiveItem: React.Dispatch<React.SetStateAction<TItem>>
 }) {
-    const id = crypto.randomUUID();
+    const id = nanoid();
     const { Dropdown, isHovered } = useHoverDropdown(id);
 
     return (

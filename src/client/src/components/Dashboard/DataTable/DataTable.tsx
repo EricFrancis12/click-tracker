@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import crypto from 'crypto';
+import { nanoid } from 'nanoid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -315,7 +315,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             }
             <div className='relative grid grid-flow-col whitespace-nowrap overflow-x-scroll h-full bg-[#ffffff]'>
                 {columns(activeItem.name).map((column, index) => {
-                    const id = crypto.randomUUID();
+                    const id = nanoid();
                     return (
                         <div key={index} id={id} className='relative pb-16 w-full'
                             style={{ width: index === 0 ? '15px' : index === 1 ? '30px' : '' }}>

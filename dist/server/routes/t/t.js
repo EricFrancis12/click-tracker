@@ -22,12 +22,14 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
     var _a, _b, _c, _d, _e;
     try {
         if (!req.params.campaign_id) {
-            return res.redirect((0, utils_2.catchAllRedirectUrl)());
+            res.redirect((0, utils_2.catchAllRedirectUrl)());
+            return;
         }
         const data = yield (0, data_1.fetchData)();
         const campaign = (_a = data.campaigns.find(_campaign => _campaign._id === req.params.campaign_id)) !== null && _a !== void 0 ? _a : null;
         if (!campaign) {
-            return res.redirect((0, utils_2.catchAllRedirectUrl)());
+            res.redirect((0, utils_2.catchAllRedirectUrl)());
+            return;
         }
         const clickPropsFromReq = yield (0, clicks_1.makeClickPropsFromReq)(req);
         let directLinkingEnabled = false;
@@ -85,6 +87,7 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
                     clickRedirectUrl = (_e = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _e !== void 0 ? _e : null;
                 }
             }
+            console.log('before makeNewClickFromReq()');
             const click = yield (0, clicks_1.makeNewClickFromReq)({
                 req,
                 campaign,
@@ -94,6 +97,7 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
                 directLinkingEnabled,
                 clickPropsFromReq
             });
+            console.log('after makeNewClickFromReq()');
             if (click === null || click === void 0 ? void 0 : click._id) {
                 res.cookie('click_id', click._id, { httpOnly: true });
             }
@@ -104,7 +108,8 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
         }
     }
     catch (err) {
+        console.log('before catch (err)');
         console.error(err);
-        return res.redirect((0, utils_2.catchAllRedirectUrl)());
+        res.redirect((0, utils_2.catchAllRedirectUrl)());
     }
 }));

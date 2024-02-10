@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import crypto from 'crypto';
+import { nanoid } from 'nanoid';
 import { ActionMenuProvider } from '../contexts/ActionMenuContext';
 import DashboardTab from '../components/Dashboard/tabs/DashboardTab';
 import HomeTab from '../components/Dashboard/tabs/HomeTab';
@@ -34,7 +34,7 @@ export default function Dashboard() {
         const reportTab: TTab = {
             props: structuredClone(props), // Structured clone because was experiencing reference bug here otherwise
             component: ReportTab,
-            _id: crypto.randomUUID()
+            _id: nanoid()
         };
         setSpawnedTabs(currentspawnedTabs => [...currentspawnedTabs, reportTab]);
         setActiveTab_id(reportTab._id);

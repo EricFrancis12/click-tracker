@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import crypto from 'crypto';
+import { nanoid } from 'nanoid';
 import Dropdown from '../components/Dropdown';
 import { traverseParentsForId } from '../utils/utils';
 
@@ -7,7 +7,7 @@ export default function useHoverDropdown(id: string) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const dropdownId = useRef(crypto.randomUUID());
+    const dropdownId = useRef(nanoid());
 
     function handleMouseEnter() {
         setIsHovered(true);

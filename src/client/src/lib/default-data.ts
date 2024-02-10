@@ -1,7 +1,3 @@
-import {
-    generateNewAffiliateNetwork_id, generateNewCampaign_id, generateNewFlow_id,
-    generateNewLandingPage_id, generateNewOffer_id, generateNewTrafficSource_id
-} from './_id';
 import type {
     TAffiliateNetwork, TCampaign, TFlow, TFlow_built_in,
     TFlow_saved, TFlow_url, TLandingPage, TOffer,
@@ -12,7 +8,7 @@ import { geos } from './geos';
 
 export function defaultAffiliateNetwork(): TAffiliateNetwork {
     return ({
-        _id: generateNewAffiliateNetwork_id(),
+        _id: 'DEFAULT_AFFILIATE_NETWORK_id_AN',
         name: '',
         defaultNewOfferString: '',
         tags: []
@@ -21,7 +17,7 @@ export function defaultAffiliateNetwork(): TAffiliateNetwork {
 
 export function defaultCampaign(): TCampaign {
     return ({
-        _id: generateNewCampaign_id(),
+        _id: 'DEFAULT_CAMPAIGN_id_CA',
         name: '',
         trafficSource_id: '',
         landingPageRotation: 'random',
@@ -47,7 +43,7 @@ export function defaultFlow(): TFlow {
 
 export function defaultFlow_saved(): TFlow_saved {
     return ({
-        _id: generateNewFlow_id(),
+        _id: 'DEFAULT_SAVED_FLOW_id_FL',
         type: 'saved',
         name: '',
         defaultRoute: {
@@ -92,7 +88,7 @@ export function defaultPath(): TPath {
 
 export function defaultLandingPage(): TLandingPage {
     return ({
-        _id: generateNewLandingPage_id(),
+        _id: 'DEFAULT_LANDING_PAGE_id_LP',
         name: '',
         url: '',
         tags: []
@@ -101,7 +97,7 @@ export function defaultLandingPage(): TLandingPage {
 
 export function defaultOffer(): TOffer {
     return ({
-        _id: generateNewOffer_id(),
+        _id: 'DEFAULT_OFFER_id_OF',
         name: '',
         affiliateNetwork_id: '',
         url: '',
@@ -112,7 +108,7 @@ export function defaultOffer(): TOffer {
 
 export function defaultTrafficSource(): TTrafficSource {
     return ({
-        _id: generateNewTrafficSource_id(),
+        _id: 'DEFAULT_TRAFFIC_SOURCE_id_TS',
         name: '',
         postbackUrl: '',
         defaultTokens: [

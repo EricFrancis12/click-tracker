@@ -102,23 +102,33 @@ exports.makeClickPropsFromReq = makeClickPropsFromReq;
 function makeNewClickFromReq({ req, campaign, campaign_id, flow, flow_id, landingPage, landingPage_id, offer, offer_id, directLinkingEnabled, clickPropsFromReq }) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
     return __awaiter(this, void 0, void 0, function* () {
-        if (!campaign && campaign_id) {
-            campaign = yield (0, campaigns_1.fetchCampaignBy_id)(campaign_id);
-            if (!campaign) {
-                throw new Error('Unable to find campaign with this _id');
+        console.log('campaign:');
+        console.log(campaign);
+        console.log('campaign_id:');
+        console.log(campaign_id);
+        if (!campaign) {
+            console.log(Boolean(campaign));
+            if (!campaign_id) {
+                console.log(Boolean(campaign_id));
+                throw new Error('A campaign or campaign_id is required');
+            }
+            else {
+                campaign = yield (0, campaigns_1.fetchCampaignBy_id)(campaign_id);
+                if (!campaign) {
+                    throw new Error('Unable to find campaign with this _id');
+                }
             }
         }
-        else {
-            throw new Error('A campaign or campaign_id is required');
-        }
-        if (!flow && flow_id) {
-            flow = yield (0, flows_1.fetchFlowBy_id)(flow_id);
-            if (!flow) {
-                throw new Error('Unable to find flow with this _id');
+        if (!flow) {
+            if (!flow_id) {
+                throw new Error('A flow or flow_id is required');
             }
-        }
-        else {
-            throw new Error('A flow or flow_id is required');
+            else {
+                flow = yield (0, flows_1.fetchFlowBy_id)(flow_id);
+                if (!flow) {
+                    throw new Error('Unable to find flow with this _id');
+                }
+            }
         }
         if (!landingPage && landingPage_id) {
             landingPage = yield (0, landingPages_1.fetchLandingPageBy_id)(landingPage_id);
