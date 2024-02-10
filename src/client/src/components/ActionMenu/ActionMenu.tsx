@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import useKeypress from '../../hooks/useKeypress';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import ActionMenuLayout from './ActionMenuLayout';
 import { Header, Footer } from '../menu-components';
@@ -7,9 +8,11 @@ import type { TActionMenu } from '../../contexts/ActionMenuContext';
 import { getSingName, defaultItemFromItemName, endpointFromItemName } from '../../utils/utils';
 import { TMenuData } from '../../lib/types';
 
-export default function ActionMenu({ actionMenu, setActionMenu }: {
+export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900px', layer = 1 }: {
     actionMenu: TActionMenu,
-    setActionMenu: React.Dispatch<React.SetStateAction<TActionMenu>>
+    setActionMenu: React.Dispatch<React.SetStateAction<TActionMenu>>,
+    maxWidth?: string,
+    layer?: number
 }) {
     const { fetchData } = useAuth();
 
@@ -51,8 +54,9 @@ export default function ActionMenu({ actionMenu, setActionMenu }: {
         })
             .then(res => res.json())
             .then(resJson => {
-                // Getting an up-to-date "data" object when the fetch comes back with no errors
+                // Getting an up-to-date "data" object when the fetch comes back with no errors, and also close this menu
                 fetchData();
+                setActionMenu(null);
             })
             .catch(err => console.error(err))
             .finally(() => {
@@ -60,11 +64,14 @@ export default function ActionMenu({ actionMenu, setActionMenu }: {
             });
     }
 
+    useKeypress('escape', () => setActionMenu(null));
+
     return actionMenu &&
-        <BlackTransparentOverlay layer={1} className='flex justify-center items-start p-4'>
+        <BlackTransparentOverlay layer={layer} className='flex justify-center items-start p-4'>
             <div
-                className='flex flex-col justify-between items-center h-full w-full max-h-[90vh] max-w-[900px] text-black bg-white'
+                className='flex flex-col justify-between items-center h-full w-full max-h-[90vh] text-black bg-white'
                 style={{
+                    maxWidth,
                     borderRadius: '5px'
                 }}
             >

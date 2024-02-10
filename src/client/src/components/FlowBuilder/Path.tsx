@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLink, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useActionMenu } from '../../contexts/ActionMenuContext';
 import Checkbox from '../Checkbox';
 import WrappableSelect from '../WrappableSelect';
 import useMatchOffset from '../../hooks/useMatchOffset';
@@ -28,6 +29,7 @@ export default function Path({ path, route, flow, setFlow }: {
     setFlow: Function
 }) {
     const { data } = useAuth();
+    const { setActionMenu_2 } = useActionMenu();
 
     const [newPath, setNewPath] = useState<TPath>(path);
 
@@ -38,7 +40,7 @@ export default function Path({ path, route, flow, setFlow }: {
             prop: 'landingPages',
             options: data?.landingPages ?? [],
             data: path?.landingPages ?? [],
-            makeNew: () => createNewLandingPage()
+            makeNew: () => setActionMenu_2({ itemName: 'Landing Pages' })
         },
         {
             singName: 'Offer',
@@ -46,7 +48,7 @@ export default function Path({ path, route, flow, setFlow }: {
             prop: 'offers',
             options: data?.offers ?? [],
             data: path?.offers ?? [],
-            makeNew: () => createNewOffer()
+            makeNew: () => setActionMenu_2({ itemName: 'Offers' })
         }
     ];
 
@@ -216,14 +218,6 @@ export default function Path({ path, route, flow, setFlow }: {
             result = offer?.url;
         }
         return result;
-    }
-
-    function createNewLandingPage() {
-        console.log('Create New Landing Page not yet implimented.');
-    }
-
-    function createNewOffer() {
-        console.log('Create New Offer not yet implimented.');
     }
 
     return (

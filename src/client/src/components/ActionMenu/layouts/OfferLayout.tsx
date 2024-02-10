@@ -1,9 +1,11 @@
 import { useAuth } from '../../../contexts/AuthContext';
+import { useActionMenu } from '../../../contexts/ActionMenuContext';
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
 import { Input, Select } from '../../base-components';
 import UrlInput from '../../UrlInput';
 import TagsInput from '../../TagsInput';
 import { TMenuData } from '../../../lib/types';
+import Button from '../../Button';
 
 export default function OfferLayout({ menuData, setMenuData, loading }: {
     menuData: TMenuData,
@@ -11,6 +13,7 @@ export default function OfferLayout({ menuData, setMenuData, loading }: {
     loading?: boolean
 }) {
     const { data } = useAuth();
+    const { setActionMenu_2 } = useActionMenu();
     const tagSuggestions = useTagSuggestions('Offers');
 
     return (
@@ -37,6 +40,10 @@ export default function OfferLayout({ menuData, setMenuData, loading }: {
                                 </option>
                             ))}
                         </Select>
+                        <Button
+                            text='Add New Affiliate Network'
+                            onClick={() => setActionMenu_2({ itemName: 'Affiliate Networks' })}
+                        />
                         <UrlInput
                             value={menuData.url}
                             onChange={(newValue: string) => setMenuData({

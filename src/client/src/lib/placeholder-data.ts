@@ -175,7 +175,7 @@ export const placeholderCampaigns: TCampaign[] = [
         trafficSource_id: placeholderTrafficSources[0]._id,
         landingPageRotation: 'random',
         offerRotation: 'random',
-        flow: placeholderFlows[0],
+        flow: placeholderFlows[1],
         tags: ['0', '1', '2', '3'],
         geoName: 'sample geo name'
     }

@@ -5,7 +5,7 @@ import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 export default function Button({ children, disabled, icon, onClick, text = '', className = '' }: {
     children?: React.ReactNode,
     disabled?: boolean,
-    icon: IconDefinition,
+    icon?: IconDefinition,
     onClick: React.MouseEventHandler,
     text?: string,
     className?: string
@@ -24,7 +24,9 @@ export default function Button({ children, disabled, icon, onClick, text = '', c
                     backgroundImage: 'linear-gradient(0deg,var(--color-gray5),var(--color-white))'
                 }}
             >
-                <FontAwesomeIcon icon={icon ?? null} className='mr-[4px]' />
+                {icon &&
+                    <FontAwesomeIcon icon={icon} className='mr-[4px]' />
+                }
                 <span className='mr-[4px]'>
                     {children}
                     {text}

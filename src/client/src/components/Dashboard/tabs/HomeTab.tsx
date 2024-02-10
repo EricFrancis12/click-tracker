@@ -37,7 +37,7 @@ export default function HomeTab({
         if (clicks && data && timeframe) {
             setMappedData(mapData({ clicks, data, activeItem, timeframe, backfill: true }));
         }
-    }, [clicks, data, timeframe]);
+    }, [activeItem.name, clicks, data, timeframe]);
 
     return (
         <div>
@@ -62,7 +62,7 @@ export default function HomeTab({
                             if (addNewSpawnedTab && selectedMappedDataItems.length === 1) {
                                 addNewSpawnedTab({
                                     props: {
-                                        reportItem: mappedDataItemToDataItem(selectedMappedDataItems[0], activeItem, data),
+                                        reportDataItem: mappedDataItemToDataItem(selectedMappedDataItems[0], activeItem, data),
                                         activeItem,
                                         timeframe
                                     }
@@ -74,15 +74,14 @@ export default function HomeTab({
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
                     />
-                    {(activeItem.name !== 'Conversions' && activeItem.name !== 'Postbacks') &&
-                        <DataTable
-                            activeItem={activeItem}
-                            searchQuery={searchQuery}
-                            mappedData={mappedData}
-                            setMappedData={setMappedData}
-                            timeframe={timeframe}
-                        />
-                    }
+                    <DataTable
+                        activeItem={activeItem}
+                        searchQuery={searchQuery}
+                        mappedData={mappedData}
+                        setMappedData={setMappedData}
+                        timeframe={timeframe}
+                        addNewSpawnedTab={addNewSpawnedTab}
+                    />
                 </div>
             }
         </div>

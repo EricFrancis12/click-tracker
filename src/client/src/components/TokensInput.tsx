@@ -40,6 +40,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         <div className='flex justify-center items-center h-full w-full'>
                             <Input
                                 name=''
+                                placeholder='query parameter'
                                 defaultValue={token.queryParam}
                                 onChange={e => setDefaultTokens(defaultTokens.map((token, _index) => (
                                     _index !== index ? token : { ...token, queryParam: e.target.value }
@@ -49,6 +50,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         <div className='flex justify-center items-center h-full w-full'>
                             <Input
                                 name=''
+                                placeholder='value'
                                 defaultValue={token.value}
                                 onChange={e => setDefaultTokens(defaultTokens.map((token, _index) => (
                                     _index !== index ? token : { ...token, value: e.target.value }
@@ -96,6 +98,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         <div className='flex justify-center items-center h-full w-full'>
                             <Input
                                 name=''
+                                placeholder='query parameter'
                                 defaultValue={token.queryParam}
                                 onChange={e => setCustomTokens(customTokens.map((token, _index) => (
                                     _index !== index ? token : { ...token, queryParam: e.target.value }
@@ -105,6 +108,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         <div className='flex justify-center items-center h-full w-full'>
                             <Input
                                 name=''
+                                placeholder='value'
                                 defaultValue={token.value}
                                 onChange={e => setCustomTokens(customTokens.map((token, _index) => (
                                     _index !== index ? token : { ...token, value: e.target.value }
@@ -114,6 +118,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         <div className='flex justify-center items-center h-full w-full'>
                             <Input
                                 name=''
+                                placeholder='name'
                                 defaultValue={token.name}
                                 onChange={e => setCustomTokens(customTokens.map((token, _index) => (
                                     _index !== index ? token : { ...token, name: e.target.value }

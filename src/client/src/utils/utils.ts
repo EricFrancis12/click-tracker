@@ -1,10 +1,9 @@
 import type { TData } from '../contexts/AuthContext';
-import type { TClick, TItem, TItemName, TMappedDataItem, TRule, TTimeframe } from '../lib/types';
+import type { TCampaign, TClick, TItem, TItemName, TMappedDataItem, TTimeframe } from '../lib/types';
 import {
     defaultAffiliateNetwork, defaultCampaign, defaultFlow,
     defaultLandingPage, defaultOffer, defaultTrafficSource
 } from '../lib/default-data';
-import { rulesList } from '../components/RulesMenu/layouts';
 
 export function isObject(any: any) {
     return any != null && typeof any === 'object';
@@ -169,7 +168,7 @@ export function mappedDataItemToDataItem(
     const dataArray = data[propKey];
 
     if (!dataArray) {
-        return null;
+        return undefined;
     }
 
     let result;
@@ -184,15 +183,30 @@ export function mappedDataItemToDataItem(
     return result;
 }
 
-export function getSingName(primaryItemName: TItemName) {
+export function getSingName(itemName: TItemName) {
     let result = '';
-    switch (primaryItemName) {
+    switch (itemName) {
         case 'Affiliate Networks': result = 'Affiliate Network'; break;
         case 'Campaigns': result = 'Campaign'; break;
         case 'Flows': result = 'Flow'; break;
         case 'Landing Pages': result = 'Landing Page'; break;
         case 'Offers': result = 'Offer'; break;
         case 'Traffic Sources': result = 'Traffic Source'; break;
+        case 'Countries': result = 'Country'; break;
+        case 'Languages': result = 'Language'; break;
+        case 'Cities': result = 'City'; break;
+        case 'States / Regions': result = 'State / Region'; break;
+        case 'ISP': result = 'ISP'; break;
+        case 'Mobile Carriers': result = 'Mobile Carrier'; break;
+        case 'Connection Types': result = 'Connection Type'; break;
+        case 'Device Models': result = 'Device Model'; break;
+        case 'Device Vendors': result = 'Device Vendor'; break;
+        case 'Device Types': result = 'Device Type'; break;
+        case 'Screen Resolutions': result = 'Screen Resolution'; break;
+        case 'OS': result = 'OS'; break;
+        case 'OS Versions': result = 'OS Version'; break;
+        case 'Browser Names': result = 'Browser Name'; break;
+        case 'Browser Versions': result = 'Browser Version'; break;
     }
     return result;
 }
@@ -208,7 +222,7 @@ export function defaultItemFromItemName(itemName: TItemName) {
         case 'Traffic Sources': result = defaultTrafficSource(); break;
     }
     return result;
-};
+}
 
 export function endpointFromItemName(itemName: TItemName) {
     let result = null;
@@ -221,4 +235,30 @@ export function endpointFromItemName(itemName: TItemName) {
         case 'Traffic Sources': result = 'traffic-sources'; break;
     }
     return result;
-};
+}
+
+export function isOverflown(ref: React.RefObject<HTMLElement>) {
+    // Determines whether an element is overflowing or not
+    if (!ref?.current) return false;
+    return ref.current.scrollHeight > ref.current.clientHeight || ref.current.scrollWidth > ref.current.clientWidth;
+}
+
+export function generateCampaignLinks(campaign: TCampaign) {
+    const campaignUrl = `${window.location.protocol}//${window.location.hostname}/t/${campaign?._id}`;
+    const clickUrl = `${window.location.protocol}//${window.location.hostname}/clk`;
+    const postbackUrl = `${window.location.protocol}//${window.location.hostname}/postback/REPLACE?payout=OPTIONAL`;
+    return {
+        campaignUrl,
+        clickUrl,
+        postbackUrl
+    };
+}
+
+export function copyTextToClipboard(text: string) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+            .catch((err) => {
+                console.error('Error copying text to clipboard:', err);
+            });
+    }
+}

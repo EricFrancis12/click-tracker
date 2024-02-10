@@ -9,10 +9,12 @@ import Checkbox from '../../Checkbox';
 import ChevronToggle from '../../ChevronToggle';
 import Spinner from '../../Spinner';
 // import DrilldownButton from '../LowerControlPanel/DrilldownButton';
+import RowContextMenu from './RowContextMenu';
 import { indicators } from './indicators';
 import type { TItem, TItemName, TMappedData, TMappedDataItem, TReportChain, TTimeframe } from '../../../lib/types';
 import { mapData } from '../../../utils/mapData';
 import { replaceNonsense, stringIncludes, isEven } from '../../../utils/utils';
+import { itemsArray } from '../../../lib/items';
 
 type TSortType = 'normal' | 'reversed';
 type TSortedColumn = {
@@ -24,13 +26,15 @@ type TColumn = {
     selector: Function
 };
 
-export default function DataTable({ activeItem, searchQuery, mappedData, setMappedData, timeframe, reportChain }: {
+export default function DataTable({ activeItem, searchQuery, mappedData, setMappedData, timeframe, reportChain, addNewSpawnedTab, report }: {
     activeItem: TItem,
     searchQuery: string,
     mappedData: TMappedData,
     setMappedData: React.Dispatch<React.SetStateAction<TMappedData>>,
     timeframe: TTimeframe
-    reportChain?: TReportChain
+    reportChain?: TReportChain,
+    addNewSpawnedTab?: Function,
+    report?: boolean
 }) {
     const { clicks, data, fetchingData } = useAuth();
 
@@ -51,6 +55,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         type: 'normal'
     });
     const [selectAllChecked, setSelectAllChecked] = useState<boolean>(false);
+    const [contextMenuRow, setContextMenuRow] = useState<TMappedDataItem | null>(null);
 
     function resetMappedData() {
         setSelectAllChecked(false);
@@ -72,7 +77,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                         : indicators.NEGATIVE.name;
             }
         };
-        const index1Column = (!reportChain?.at(reportChainIndex + 1)?.hidden
+        const index1Column = (reportChain?.at(reportChainIndex + 1)?.name
             ? {
                 name: ' ',
                 selector: (row: TMappedDataItem, index: number, parentIndex: number, reportChainIndex: number) => (
@@ -206,11 +211,14 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         if (reportChainIndex > 2) return;
 
         const newMappedData = structuredClone(mappedData);
+        const newActiveItem = reportChain
+            ? (itemsArray.find(item => item.name === reportChain[reportChainIndex]?.name) ?? activeItem)
+            : activeItem;
         const deepMappedData = active
             ? mapData({
                 clicks: row.clicks,
                 data,
-                activeItem: reportChain ? reportChain[reportChainIndex] : activeItem,
+                activeItem: newActiveItem,
                 timeframe
             })
             : null;
@@ -228,19 +236,30 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
     }
 
     function toggleSelectAll(newValue: boolean) {
-        if (!reportChain?.at(1)?.hidden) return;
+        if (!reportChain?.at(1)) return;
         const newMappedData = mappedData.map(row => ({ ...row, selected: !newValue }));
         setMappedData(newMappedData);
         setSelectAllChecked(!newValue);
     }
 
     function changeRowSelection(newValue: boolean, index: number) {
-        if (reportChain && !reportChain.at(1)?.hidden) return;
+        if (reportChain && !reportChain.at(1)) return;
         const newMappedData = structuredClone(mappedData);
         newMappedData[index].selected = !newValue;
         setMappedData(newMappedData);
         setSelectAllChecked(false);
     }
+
+    function handleContextMenu(e: React.MouseEvent<HTMLElement>, row: TMappedDataItem) {
+        e.preventDefault();
+        setContextMenuRow({ ...row, x: e.pageX, y: e.pageY });
+    }
+
+    useEffect(() => {
+        const handleGlobalClick = () => setContextMenuRow(null);
+        window.addEventListener('click', handleGlobalClick);
+        return () => window.removeEventListener('click', handleGlobalClick);
+    }, []);
 
     function handleFilterClick(index: number) {
         if (index < 2) return;
@@ -266,7 +285,6 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
 
     function sortMappedData() {
         const _columns = columns(activeItem.name);
-
         const result = mappedData.sort((a, b) => {
             const activeColumn = _columns[sortedColumn.index];
             const _a = activeColumn.selector(a).at(-1) === '%' ? parseFloat(activeColumn.selector(a)) : activeColumn.selector(a);
@@ -285,6 +303,15 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             className='max-w-[100vw] overflow-x-scroll'
             style={{ height: fillRestOfScreen(dataTableRef) }}
         >
+            {contextMenuRow &&
+                <RowContextMenu
+                    row={contextMenuRow}
+                    activeItem={activeItem}
+                    timeframe={timeframe}
+                    addNewSpawnedTab={addNewSpawnedTab}
+                    report={report}
+                />
+            }
             <div className='relative grid grid-flow-col whitespace-nowrap overflow-x-scroll h-full bg-[#ffffff]'>
                 {columns(activeItem.name).map((column, index) => {
                     const id = crypto.randomUUID();
@@ -326,7 +353,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                 : sortedMappedData.map((_row, _index) => {
                                     const _cell_id = `col_${index}_index_${_index}`;
                                     const _cell = column.selector(_row, _index);
-                                    return searchQuery && !!_row.name && !stringIncludes(_row.name, searchQuery)
+                                    return searchQuery && !!_row?.name && !stringIncludes(_row.name, searchQuery)
                                         ? ''
                                         : (
                                             <React.Fragment key={_index}>
@@ -338,6 +365,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                     data-_row_index={_index}
                                                     onMouseEnter={e => handleMouseEnter(e, `div[data-_row_index="${_index}"]`)}
                                                     onClick={e => changeRowSelection(_row.selected === true, _index)}
+                                                    onContextMenu={e => handleContextMenu(e, _row)}
                                                 >
                                                     <span style={{ backgroundColor: index === 0 ? indicators.getColor(_cell) : '' }}
                                                         className={(index === 0 ? 'text-white ' : 'text-black ')
@@ -373,6 +401,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                         data-__row_index={__index}
                                                                         onMouseEnter={e => handleMouseEnter(e, `div[data-__row_index="${__index}"]`)}
                                                                         onClick={e => changeRowSelection(__row.selected === true, __index)}
+                                                                        onContextMenu={e => handleContextMenu(e, __row)}
                                                                     >
                                                                         <span className={(index === 0 ? 'text-white ' : 'text-black ')
                                                                             + (index === 0 ? 'justify-center ' : index === 2 ? 'justify-start ' : 'justify-end ')
@@ -430,7 +459,8 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                                             + ' flex justify-center items-center overflow-hidden h-8 cursor-pointer'}
                                                                                         data-___row_index={___index}
                                                                                         onMouseEnter={e => handleMouseEnter(e, `div[data-___row_index="${___index}"]`)}
-                                                                                        onClick={e => changeRowSelection(_row.selected === true, ___index)}
+                                                                                        onClick={e => changeRowSelection(___row.selected === true, ___index)}
+                                                                                        onContextMenu={e => handleContextMenu(e, ___row)}
                                                                                     >
                                                                                         <span className={(index === 0 ? 'text-white ' : 'text-black ')
                                                                                             + (index === 0 ? 'justify-center ' : index === 2 ? 'justify-start ' : 'justify-end ')

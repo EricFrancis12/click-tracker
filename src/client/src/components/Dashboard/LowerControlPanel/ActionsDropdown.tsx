@@ -1,48 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useActionMenu } from '../../../contexts/ActionMenuContext';
 import DropdownButton, { DropdownItem } from './DropdownButton';
-import {
-    faFire, faCopy, faArchive, faClone,
-    faExternalLinkSquareAlt, faLink, IconDefinition
-} from '@fortawesome/free-solid-svg-icons';
-import { TCampaign, TItem, TMappedData } from '../../../lib/types';
-import CampaignLinksMenu from '../../CampaignLinksMenu';
+import { faFire, faCopy, faArchive, faLink, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { TCampaign, TItem, TItemName_primary, TMappedData } from '../../../lib/types';
+import { mappedDataItemToDataItem } from '../../../utils/utils';
 
-type TPopupMenu = null | {
-    name: TPopupMenuName,
-    Component: typeof CampaignLinksMenu
-}
 type TPopupMenuName = 'Duplicate' | 'Archive' | 'Copy URL' | 'Preview' | 'Get Links';
-
 type TDropdownOption = {
     name: TPopupMenuName,
     icon: IconDefinition,
     active: boolean,
     onClick: React.MouseEventHandler<HTMLElement>
-}
+};
 
 export default function ActionsDropdown({ mappedData, activeItem }: {
     mappedData: TMappedData,
     activeItem: TItem
 }) {
-    const [active, setActive] = useState(false);
-    const [popupMenu, setPopupMenu] = useState<TPopupMenu>(null);
+    const { data } = useAuth();
+    const { campaignLinksMenu, setCampaignLinksMenu, duplicateMenu, setDuplicateMenu, archiveMenu, setArchiveMenu } = useActionMenu();
+
+    const [active, setActive] = useState<boolean>(false);
 
     const dropdownOptions: TDropdownOption[] = [
-        { name: 'Duplicate', icon: faCopy, active: mappedData.length === 1, onClick: () => console.log('Duplicate Item not yet implimented') },
-        { name: 'Archive', icon: faArchive, active: true, onClick: () => console.log('Archive not yet implimented') },
-        { name: 'Copy URL', icon: faClone, active: mappedData.length === 1, onClick: () => console.log('Copy Url not yet implimented') },
-        { name: 'Preview', icon: faExternalLinkSquareAlt, active: mappedData.length === 1, onClick: () => console.log('Preview not yet implimented') },
-        { name: 'Get Links', icon: faLink, active: activeItem.name === 'Campaigns', onClick: () => setPopupMenu({ name: 'Get Links', Component: CampaignLinksMenu }) }
+        {
+            name: 'Duplicate',
+            icon: faCopy,
+            active: mappedData.length === 1,
+            onClick: () => {
+                if (mappedData?.length > 0) {
+                    setDuplicateMenu({
+                        itemName: activeItem.name as TItemName_primary,
+                        dataItem: mappedDataItemToDataItem(mappedData[0], activeItem, data)
+                    })
+                }
+            }
+        },
+        {
+            name: 'Archive',
+            icon: faArchive,
+            active: true,
+            onClick: () => {
+                if (mappedData?.length > 0) {
+                    setArchiveMenu({
+                        itemName: activeItem.name as TItemName_primary,
+                        dataItem: mappedDataItemToDataItem(mappedData[0], activeItem, data)
+                    })
+                }
+            }
+        },
+        {
+            name: 'Get Links',
+            icon: faLink,
+            active: activeItem.name === 'Campaigns',
+            onClick: () => {
+                if (mappedData?.length > 0) {
+                    setCampaignLinksMenu(mappedData[0] as TCampaign);
+                }
+            }
+        }
     ];
+
+    useEffect(() => setActive(false), [campaignLinksMenu, duplicateMenu, archiveMenu]);
 
     return (
         <>
-            {popupMenu &&
-                <popupMenu.Component
-                    campaign={mappedData[0] as TCampaign}
-                    onClose={() => setPopupMenu(null)}
-                />
-            }
             <DropdownButton
                 icon={faFire}
                 disabled={mappedData.length === 0}

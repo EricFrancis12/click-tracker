@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import DropdownButton, { DropdownItem } from './DropdownButton';
-import type { TItem, TReportChain, TReportChainItem } from '../../../lib/types';
+import type { TItem, TReportChain, TReportChainItem, TReportItem } from '../../../lib/types';
 import { itemsArray } from '../../../lib/items';
 import { arrayOf } from '../../../utils/utils';
 import { MAX_REPORT_CHAIN_LENGTH } from '../../../lib/constants';
@@ -9,48 +9,52 @@ import { MAX_REPORT_CHAIN_LENGTH } from '../../../lib/constants';
 export default function ReportChain({ reportChain, setReportChain, reportItem, activeItem, setActiveItem }: {
     reportChain: TReportChain,
     setReportChain: Function,
-    reportItem: TItem,
+    reportItem: TReportItem,
     activeItem: TItem,
     setActiveItem: React.Dispatch<React.SetStateAction<TItem>>
 }) {
     const { fetchData } = useAuth();
 
-    const DEFAULT_DROPDOWNS_ACTIVE = reportChain.map(() => false);
-    const [dropdownsActive, setDropdownsActive] = useState(DEFAULT_DROPDOWNS_ACTIVE);
+    const arrayOfFalse = reportChain.map(() => false);
+    const [dropdownsActive, setDropdownsActive] = useState(arrayOfFalse);
 
     const dropdownItems = [
         ...itemsArray.filter(item => item.name !== activeItem?.name && item.name !== reportItem.name),
         // Could add more custom items here like Custom 1-10, time periods, referrers, etc.
     ];
 
-    useEffect(() => handleClick(activeItem as TReportChainItem, 0), [activeItem, handleClick]);
+    useEffect(() => handleClick(activeItem as TReportChainItem, 0), [activeItem]);
 
-    function handleClick(item: TReportChainItem, index: number) {
+    function handleClick(reportChainItem: TReportChainItem | null, index: number) {
+        if (!reportChainItem) return;
+
         if (index === 0) {
-            setActiveItem(item);
-            fetchData();
+            const newActiveItem = itemsArray.find(item => item.name === reportChainItem?.name);
+            if (newActiveItem) {
+                setActiveItem(newActiveItem);
+                fetchData();
+            }
         }
 
-        setDropdownsActive(DEFAULT_DROPDOWNS_ACTIVE);
+        setDropdownsActive(arrayOfFalse);
 
         setReportChain((prevReportChain: TReportChain) => {
             const newReportChain = [...prevReportChain];
             newReportChain.splice(
                 index,
                 MAX_REPORT_CHAIN_LENGTH,
-                { ...item, disabled: false },
-                { name: item.name, disabled: item?.name ? false : true },
-                ...arrayOf({ name: null, disabled: true }, MAX_REPORT_CHAIN_LENGTH)
+                { ...reportChainItem },
+                { name: null },
+                ...arrayOf(null, MAX_REPORT_CHAIN_LENGTH)
             );
 
             while (newReportChain.length > MAX_REPORT_CHAIN_LENGTH) {
                 newReportChain.pop();
             }
-
             return newReportChain;
         });
     }
-    [1, 2, 2, 2, 2, 2, 2, 2].splice(1, 2, 1)
+
     function handleSetActive(active: boolean, index: number) {
         setDropdownsActive(prevDropdownsActive => {
             const newDropdownsActive = [...prevDropdownsActive];
@@ -65,18 +69,18 @@ export default function ReportChain({ reportChain, setReportChain, reportItem, a
             {reportChain.map((chainLink, index) => (
                 <div key={index} className='p-1'>
                     <DropdownButton
-                        text={chainLink.disabled ? '' : ((index === 0 ? activeItem.name : chainLink.name) || 'None')}
-                        disabled={chainLink.disabled}
+                        text={!chainLink?.name ? '' : ((index === 0 ? activeItem.name : chainLink?.name) || 'None')}
+                        disabled={!chainLink}
                         active={dropdownsActive[index] !== false}
                         setActive={(active: boolean) => handleSetActive(active, index)}
                     >
                         {index !== 0 &&
                             <DropdownItem text={'None'}
-                                onClick={e => handleClick({ ...chainLink, hidden: true }, index)}
+                                onClick={e => handleClick({ name: null }, index)}
                             />
                         }
                         {dropdownItems.map((dropdownItem, _index) => {
-                            const isPrevChainLink = reportChain.find(chainLink => chainLink?.name === dropdownItem.name) !== undefined;
+                            const isPrevChainLink = reportChain.find(chainLink => chainLink?.name === dropdownItem.name) != undefined;
                             return !isPrevChainLink
                                 ? (
                                     <DropdownItem key={_index}
@@ -84,7 +88,7 @@ export default function ReportChain({ reportChain, setReportChain, reportItem, a
                                         onClick={e => handleClick(dropdownItem, index)}
                                     />
                                 )
-                                : ''
+                                : '';
                         })}
                     </DropdownButton>
                 </div>

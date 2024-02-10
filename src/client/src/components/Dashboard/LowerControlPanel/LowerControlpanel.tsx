@@ -6,10 +6,9 @@ import NewButton from '../NewButton';
 import EditButton from '../EditButton';
 import ActionsDropdown from './ActionsDropdown';
 import RefreshButton from './RefreshButton';
-import type { TItem, TTimeframe, TMappedData, TReportChain } from '../../../lib/types';
+import type { TItem, TTimeframe, TMappedData, TReportChain, TReportItem } from '../../../lib/types';
 
 export default function LowerControlPanel({
-    limited,
     mappedData,
     activeItem,
     setActiveItem,
@@ -22,7 +21,6 @@ export default function LowerControlPanel({
     setReportChain,
     reportItem
 }: {
-    limited?: boolean,
     mappedData: TMappedData,
     activeItem: TItem,
     setActiveItem: React.Dispatch<React.SetStateAction<TItem>>,
@@ -33,50 +31,52 @@ export default function LowerControlPanel({
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>,
     reportChain?: TReportChain,
     setReportChain?: React.Dispatch<React.SetStateAction<TReportChain>>,
-    reportItem?: TItem,
+    reportItem?: TReportItem,
     drilldown?: Function
 }) {
     const selectedMappedData = mappedData.filter(item => item?.selected);
 
     return (
         <div
-            className='flex flex-col justify-center align-start w-full bg-[#ebedef]'
+            className='flex flex-col justify-center align-start gap-6 w-full px-8 py-6 bg-[#ebedef]'
             style={{ borderTop: 'solid lightgrey 3px' }}
         >
-            {reportChain && setReportChain && reportItem &&
-                <div className='flex gap-6 mx-8 my-4 w-full'>
-                    <div className='flex flex-wrap gap-2 justify-center items-center'>
-                        <ReportChain
-                            reportChain={reportChain}
-                            setReportChain={setReportChain}
-                            reportItem={reportItem}
-                            activeItem={activeItem}
-                            setActiveItem={setActiveItem}
-                        />
-                    </div>
-                </div>
-            }
-            <div className='flex gap-6 mx-8 my-4 w-full'>
-                <div className='flex flex-wrap gap-2 justify-center items-center'>
-                    <CalendarButton timeframe={timeframe} setTimeframe={setTimeframe} />
-                    <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                    {!limited &&
-                        <>
-                            {newReport &&
-                                <ReportButton newReport={newReport} mappedData={selectedMappedData} />
-                            }
-                            <NewButton activeItem={activeItem} />
-                            <EditButton activeItem={activeItem} mappedData={selectedMappedData} />
-                            <ActionsDropdown activeItem={activeItem} mappedData={selectedMappedData} />
-                        </>
-                    }
-                </div>
-            </div>
-            <div className='flex gap-6 mx-8 my-4 w-full'>
-                <div className='flex flex-wrap gap-2 justify-center items-center'>
-                    <RefreshButton />
-                </div>
-            </div>
+            <Row>
+                <CalendarButton timeframe={timeframe} setTimeframe={setTimeframe} />
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                <RefreshButton />
+            </Row>
+            <Row>
+                {reportChain && setReportChain && reportItem &&
+                    <ReportChain
+                        reportChain={reportChain}
+                        setReportChain={setReportChain}
+                        reportItem={reportItem}
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                    />
+                }
+                {(!reportChain && !setReportChain && !reportItem) &&
+                    <>
+                        {newReport &&
+                            <ReportButton newReport={newReport} mappedData={selectedMappedData} />
+                        }
+                        <NewButton activeItem={activeItem} />
+                        <EditButton activeItem={activeItem} mappedData={selectedMappedData} />
+                        <ActionsDropdown activeItem={activeItem} mappedData={selectedMappedData} />
+                    </>
+                }
+            </Row>
         </div>
     )
 }
+
+const Row = ({ children }: {
+    children: React.ReactNode
+}) => (
+    <div className='flex gap-6 w-full'>
+        <div className='flex flex-wrap gap-2 justify-center items-center'>
+            {children}
+        </div>
+    </div>
+);

@@ -4,6 +4,7 @@ import type {
     TAffiliateNetwork, TCampaign, TClick, TFlow,
     TLandingPage, TOffer, TTrafficSource
 } from '../lib/types';
+import { placeholderClicks, placeholderData } from '../lib/placeholder-data';
 
 export type TData = {
     affiliateNetworks?: TAffiliateNetwork[],
@@ -99,10 +100,10 @@ export function AuthProvider({ children }: {
     }
 
     const value = {
-        data,
+        data: process.env.REACT_APP_PLACEHOLDER_DATA === 'true' ? placeholderData : data,
         fetchData,
         fetchingData,
-        clicks,
+        clicks: process.env.REACT_APP_PLACEHOLDER_DATA === 'true' ? placeholderClicks : clicks,
         fetchClicks,
         fetchingClicks,
         rulesMemo

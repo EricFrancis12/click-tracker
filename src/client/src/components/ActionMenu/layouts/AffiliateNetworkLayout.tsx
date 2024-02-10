@@ -1,13 +1,14 @@
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
 import { Input } from '../../base-components';
 import TagsInput from '../../TagsInput';
-import { TMenuData } from '../../../lib/types';
+import { TAffiliateNetwork, TMenuData } from '../../../lib/types';
 
 export default function AffiliateNetworkLayout({ menuData, setMenuData, loading }: {
     menuData: TMenuData,
     setMenuData: Function,
     loading?: boolean
 }) {
+    const affiliateNetwork = menuData as TAffiliateNetwork;
     const tagSuggestions = useTagSuggestions('Affiliate Networks');
 
     return (
@@ -22,7 +23,7 @@ export default function AffiliateNetworkLayout({ menuData, setMenuData, loading 
                         />
                         <Input
                             name='Default New Offer String'
-                            defaultValue={menuData.name}
+                            defaultValue={affiliateNetwork.defaultNewOfferString}
                             onChange={e => setMenuData({ ...menuData, defaultNewOfferString: e.target.value })}
                         />
                         {menuData?.tags &&

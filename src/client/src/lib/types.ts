@@ -15,9 +15,9 @@ export type TItem = {
 
 export type TItemName = TItemName_primary | TItemName_secondary;
 export type TItemName_primary = 'Affiliate Networks' | 'Campaigns' | 'Flows' | 'Landing Pages' | 'Offers' | 'Traffic Sources';
-export type TItemName_secondary = 'Conversions' | 'Postbacks' | 'Countries' | 'Languages' | 'Cities' | 'States / Regions' | 'ISP' | 'Mobile Carriers'
-    | 'Connection Types' | 'Devices' | 'Device Models' | 'Device Vendors' | 'Device Types' | 'Screen Resolutions'
-    | 'OS' | 'OS Versions' | 'Browsers' | 'Browser Names' | 'Browser Versions';
+export type TItemName_secondary = 'Countries' | 'Cities' | 'States / Regions' | 'Languages' | 'ISP' | 'Mobile Carriers'
+    | 'Connection Types' | 'Device Models' | 'Device Vendors' | 'Device Types' | 'Screen Resolutions'
+    | 'OS' | 'OS Versions' | 'Browser Names' | 'Browser Versions';
 
 export type TClickProp = 'affiliateNetwork_id' | 'campaign_id' | 'flow_id' | 'landingPage_id' | 'offer_id' | 'trafficSource_id'
     | 'geoName' | 'region' | 'city' | 'language' | 'isp' | 'mobileCarrier' | 'connectionType' | 'deviceModel'
@@ -228,17 +228,21 @@ export type TMappedDataItem = ((TAffiliateNetwork | TCampaign | TFlow | TLanding
     clickProp: TClickProp,
     clicks: TClick[],
     selected?: boolean,
+    x?: number,
+    y?: number,
+    report?: boolean,
     deepMappedData?: TMappedData | null
 });
 
-export type TReportChain = [TReportChainItem, TReportChainItem, TReportChainItem];
-export type TReportChainItem = TItem & {
-    disabled?: boolean, // If disabled === true and hidden === true, the button should be visible, but greyed out disabled
-    hidden?: boolean // If hidden === true, the chain link should not be visible
+export type TReportChain = [TReportChainItem, TReportChainItem | null, TReportChainItem | null];
+export type TReportChainItem = {
+    name: TItemName | null
 };
 
 export type TMenuData = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource | undefined | null;
-export type TReportItem = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource;
+
+export type TReportItem = TItem;
+export type TReportDataItem = TAffiliateNetwork | TCampaign | TFlow | TLandingPage | TOffer | TTrafficSource;
 
 export type TLogicalRelation = 'and' | 'or';
 

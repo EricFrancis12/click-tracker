@@ -35,14 +35,12 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
         { name: 'Flows', icon: faSitemap, clickProp: 'flow_id', dataProp: 'flows' },
         { name: 'Traffic Sources', icon: faGlobe, clickProp: 'trafficSource_id', dataProp: 'trafficSources' },
         { name: 'Affiliate Networks', icon: faUsers, clickProp: 'affiliateNetwork_id', dataProp: 'affiliateNetworks' },
-        { name: 'Conversions', icon: faDollarSign, clickProp: null },
-        { name: 'Postbacks', icon: faDownload, clickProp: null },
         {
             name: 'Countries', icon: faGlobeEurope, clickProp: null, dropdownItems: [
-                { name: 'Languages', icon: faGlobeEurope, clickProp: 'language' },
-                { name: 'Cities', icon: faGlobeEurope, clickProp: 'city' },
+                { name: 'Countries', icon: faGlobeEurope, clickProp: 'geoName' },
                 { name: 'States / Regions', icon: faGlobeEurope, clickProp: 'region' },
-                { name: 'Countries', icon: faGlobeEurope, clickProp: 'geoName' }
+                { name: 'Cities', icon: faGlobeEurope, clickProp: 'city' },
+                { name: 'Languages', icon: faGlobeEurope, clickProp: 'language' }
             ]
         },
         {
@@ -53,10 +51,10 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
             ]
         },
         {
-            name: 'Devices', icon: faLaptop, clickProp: null, dropdownItems: [
+            name: 'Device Types', icon: faLaptop, clickProp: null, dropdownItems: [
+                { name: 'Device Types', icon: faLaptop, clickProp: 'deviceType' },
                 { name: 'Device Models', icon: faLaptop, clickProp: 'deviceModel' },
                 { name: 'Device Vendors', icon: faLaptop, clickProp: 'deviceVendor' },
-                { name: 'Device Types', icon: faLaptop, clickProp: 'deviceType' },
                 { name: 'Screen Resolutions', icon: faLaptop, clickProp: 'screenResolution' }
             ]
         },
@@ -67,7 +65,7 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
             ]
         },
         {
-            name: 'Browsers', icon: faFolder, clickProp: null, dropdownItems: [
+            name: 'Browser Names', icon: faFolder, clickProp: null, dropdownItems: [
                 { name: 'Browser Names', icon: faFolder, clickProp: 'browserName' },
                 { name: 'Browser Versions', icon: faFolder, clickProp: 'browserVersion' }
             ]
@@ -78,9 +76,9 @@ export default function UpperControlPanel({ activeItem, setActiveItem, excludeIt
     const line2 = upperControlPanelItems.filter(item => !primaryItemNames.includes(item.name as TItemName_primary));
 
     return (
-        <div className='flex flex-col justify-center align-start w-full bg-[#ffffff]'>
+        <div className='flex flex-col justify-center align-start gap-6 w-full px-8 py-6 bg-[#ffffff]'>
             {[line1, line2].map((line, index) => (
-                <div key={index} className='flex flex-wrap gap-6 mx-8 my-4 w-full'>
+                <div key={index} className='flex flex-wrap gap-6 w-full'>
                     {line.map((item, _index) => {
                         if (!excludeItemNames.includes(item.name)) {
                             return (
@@ -116,10 +114,10 @@ export function UpperControlPanelItem({ item, activeItem, setActiveItem }: {
                     }
                 }}
                 style={{ borderRadius: '6px' }}
-                className={(activeItem.name === item.name
-                    || (item.dropdownItems && arrayIncludesKeyValuePair(item.dropdownItems, 'name', activeItem?.name))
-                    ? 'bg-[#17a689] text-white '
-                    : ' '
+                className={(
+                    activeItem.name === item.name || (item.dropdownItems && arrayIncludesKeyValuePair(item.dropdownItems, 'name', activeItem?.name))
+                        ? 'bg-[#17a689] text-white '
+                        : ' '
                 )
                     + ' relative flex justify-start items-center py-1 px-2 cursor-pointer hover:bg-[#17a689] hover:text-white'
                 }
