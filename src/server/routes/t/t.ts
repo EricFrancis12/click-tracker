@@ -19,15 +19,11 @@ router.get('/:campaign_id', async (req, res) => {
         }
 
         const data = await fetchData();
-        console.log(data);
         const campaign = data.campaigns.find(_campaign => _campaign._id === req.params.campaign_id) ?? null;
-        console.log(campaign);
         if (!campaign) {
-            console.log('inside !campaign');
             res.redirect(catchAllRedirectUrl());
             return;
         }
-        console.log('after !campaign');
 
         const clickPropsFromReq = await makeClickPropsFromReq(req);
         let directLinkingEnabled: boolean | undefined = false;
@@ -119,7 +115,6 @@ router.get('/:campaign_id', async (req, res) => {
         console.log('before catch (err)');
         console.error(err);
         res.redirect(catchAllRedirectUrl());
-        console.log('after catch (err)');
     }
 });
 

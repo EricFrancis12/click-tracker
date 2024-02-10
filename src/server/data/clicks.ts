@@ -100,8 +100,15 @@ export async function makeNewClickFromReq({
     directLinkingEnabled: boolean,
     clickPropsFromReq?: TClickPropsFromReq
 }) {
+    console.log('campaign:');
+    console.log(campaign);
+    console.log('campaign_id:');
+    console.log(campaign_id);
+
     if (!campaign) {
+        console.log(Boolean(campaign));
         if (!campaign_id) {
+            console.log(Boolean(campaign_id));
             throw new Error('A campaign or campaign_id is required');
         } else {
             campaign = await fetchCampaignBy_id(campaign_id);
