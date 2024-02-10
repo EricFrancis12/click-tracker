@@ -18,8 +18,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
 
     let title = '';
     let dataItem;
-    let method = '';
-    let endpoint = actionMenu ? endpointFromItemName(actionMenu?.itemName) : null;
+    let method: 'PUT' | 'POST' | '' = '';
     if (actionMenu) {
         // If a .dataItem property was passed in, we know the user clicked the Edit button,
         // and the ActionMenu should be used to edit that item.
@@ -35,6 +34,22 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
             method = 'POST';
         }
     }
+
+    const makeEndpoint = () => {
+        const endpointRoute = actionMenu?.itemName
+            ? endpointFromItemName(actionMenu.itemName)
+            : null;
+        if (!endpointRoute) {
+            return null;
+        } else if (method === 'PUT' && actionMenu?.dataItem?._id) {
+            return `/${endpointRoute}/${actionMenu.dataItem._id}`;
+        } else if (method === 'POST') {
+            return `/${endpointRoute}`;
+        } else {
+            return null;
+        }
+    };
+    const endpoint = makeEndpoint();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [menuData, setMenuData] = useState<TMenuData>(structuredClone(dataItem));
