@@ -50,19 +50,23 @@ router.get('/:campaign_id', async (req, res) => {
                 flow = campaign.flow;
             }
 
-            if (flow?.ruleRoutes && flow.ruleRoutes.length > 0) {
-                for (let i = 0; i < flow.ruleRoutes.length; i++) {
-                    const ruleRoute = flow.ruleRoutes[i];
-                    if (!ruleRoute.active) {
-                        continue;
+            if (flow) {
+                if (flow?.ruleRoutes && flow.ruleRoutes.length > 0) {
+                    for (let i = 0; i < flow.ruleRoutes.length; i++) {
+                        const ruleRoute = flow.ruleRoutes[i];
+                        if (!ruleRoute.active) {
+                            continue;
+                        }
+                        if (clickTriggersRuleRoute(clickPropsFromReq, ruleRoute)) {
+                            route = ruleRoute;
+                            break;
+                        }
+                        if (i === flow.ruleRoutes.length - 1) {
+                            route = flow.defaultRoute;
+                        }
                     }
-                    if (clickTriggersRuleRoute(clickPropsFromReq, ruleRoute)) {
-                        route = ruleRoute;
-                        break;
-                    }
-                    if (i === flow.ruleRoutes.length - 1) {
-                        route = flow.defaultRoute;
-                    }
+                } else {
+                    route = flow.defaultRoute;
                 }
             }
 
