@@ -103,7 +103,9 @@ export function swapArrayElementsPerCondition(
     return copyArray;
 }
 
-export function weightedRandomlySelectItem(array: any[]) {
+export function weightedRandomlySelectItem(array: (unknown & {
+    weight: number
+})[]) {
     const totalWeight = array.reduce((total, currentItem) => {
         return total + (currentItem.weight ?? 100);
     }, 0);

@@ -51,7 +51,7 @@ router.get('/:campaign_id', async (req, res) => {
             }
 
             if (flow) {
-                if (flow?.ruleRoutes && flow.ruleRoutes.length > 0) {
+                if (flow.ruleRoutes && flow.ruleRoutes.length > 0) {
                     for (let i = 0; i < flow.ruleRoutes.length; i++) {
                         const ruleRoute = flow.ruleRoutes[i];
                         if (!ruleRoute.active) {
@@ -77,15 +77,15 @@ router.get('/:campaign_id', async (req, res) => {
             if (path) {
                 if (!path.directLinkingEnabled) {
                     directLinkingEnabled = false;
-                    const selectedLandingPage_id = (weightedRandomlySelectItem(path.landingPages) as TPath_landingPage)._id;
-                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)._id;
+                    const selectedLandingPage_id = (weightedRandomlySelectItem(path.landingPages)as TPath_landingPage)?._id;
+                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)?._id;
                     landingPage = data.landingPages.find(landingPage => landingPage._id === selectedLandingPage_id);
                     offer = data.offers.find(offer => offer._id === selectedOffer_id);
                     viewRedirectUrl = landingPage?.url ?? null;
                     clickRedirectUrl = offer?.url ?? null;
                 } else {
                     directLinkingEnabled = true;
-                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)._id;
+                    const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)?._id;
                     landingPage = null;
                     offer = data.offers.find(offer => offer._id === selectedOffer_id);
                     viewRedirectUrl = offer?.url ?? null;
