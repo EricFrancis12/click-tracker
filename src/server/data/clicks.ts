@@ -100,22 +100,26 @@ export async function makeNewClickFromReq({
     directLinkingEnabled: boolean,
     clickPropsFromReq?: TClickPropsFromReq
 }) {
-    if (!campaign && campaign_id) {
-        campaign = await fetchCampaignBy_id(campaign_id);
-        if (!campaign) {
-            throw new Error('Unable to find campaign with this _id');
+    if (!campaign) {
+        if (!campaign_id) {
+            throw new Error('A campaign or campaign_id is required');
+        } else {
+            campaign = await fetchCampaignBy_id(campaign_id);
+            if (!campaign) {
+                throw new Error('Unable to find campaign with this _id');
+            }
         }
-    } else {
-        throw new Error('A campaign or campaign_id is required');
     }
 
-    if (!flow && flow_id) {
-        flow = await fetchFlowBy_id(flow_id);
-        if (!flow) {
-            throw new Error('Unable to find flow with this _id');
+    if (!flow) {
+        if (!flow_id) {
+            throw new Error('A flow or flow_id is required');
+        } else {
+            flow = await fetchFlowBy_id(flow_id);
+            if (!flow) {
+                throw new Error('Unable to find flow with this _id');
+            }
         }
-    } else {
-        throw new Error('A flow or flow_id is required');
     }
 
     if (!landingPage && landingPage_id) {

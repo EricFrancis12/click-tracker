@@ -119,7 +119,7 @@ router.get('/:campaign_id', async (req, res) => {
         console.log('before catch (err)');
         console.error(err);
         res.redirect(catchAllRedirectUrl());
-        console.log('before catch (err)');
+        console.log('after catch (err)');
     }
 });
 
