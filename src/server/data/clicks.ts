@@ -38,8 +38,44 @@ export async function updateClick(click: TClick) {
         throw new Error('Unable to update click');
     }
     const clicksCollection = db.collection('clicks');
-    await clicksCollection.delete(click._id);
-    return await clicksCollection.set(click._id, click);
+    return await clicksCollection.set(click._id, {
+        campaign_id: click.campaign_id,
+        // ...
+    });
+
+    // campaign_id: TCampaign_id,
+    // trafficSource_id: TTrafficSource_id | '',
+    // landingPage_id: TLandingPage_id | TLandingPage_id_direct_linking | null,
+    // offer_id: TOffer_id | null,
+    // flow_id: TFlow_id,
+    // viewTimestamp: number,
+    // lpClickTimestamp: number | null,
+    // conversionTimestamp: number | null,
+    // cost: number,
+    // revenue: number,
+    // tokens: {
+    //     queryParam: string,
+    //     value: string
+    // }[],
+    // viewRedirectUrl: string | null,
+    // clickRedirectUrl: string | null,
+    // ip?: string | null,
+    // userAgent?: string | null,
+    // language?: string | null,
+    // geoName?: string | null,
+    // region?: string | null,
+    // city?: string | null,
+    // isp?: string | null,
+    // mobileCarrier?: string | null,
+    // connectionType?: string | null,
+    // deviceModel?: string | null,
+    // deviceVendor?: string | null,
+    // deviceType?: string | null,
+    // screenResolution?: string | null,
+    // os?: string | null,
+    // osVersion?: string | null,
+    // browserName?: string | null,
+    // browserVersion?: string | null
 }
 
 export async function deleteClickBy_id(_id: string) {

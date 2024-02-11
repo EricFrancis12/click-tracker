@@ -28,8 +28,11 @@ export async function updateLandingPage(landingPage: TLandingPage) {
         throw new Error('Unable to update landing page');
     }
     const landingPagesCollection = db.collection('landingPages');
-    await landingPagesCollection.delete(landingPage._id);
-    return await landingPagesCollection.set(landingPage._id, landingPage);
+    return await landingPagesCollection.set(landingPage._id, {
+        name: landingPage.name,
+        url: landingPage.url,
+        tags: landingPage.tags
+    });
 }
 
 export async function deleteLandingPageBy_id(_id: string) {

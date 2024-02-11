@@ -28,8 +28,11 @@ export async function updateAffiliateNetwork(affiliateNetwork: TAffiliateNetwork
         throw new Error('Unable to update affiliate network');
     }
     const affiliateNetworksCollection = db.collection('affiliateNetworks');
-    await affiliateNetworksCollection.delete(affiliateNetwork._id);
-    return await affiliateNetworksCollection.set(affiliateNetwork._id, affiliateNetwork);
+    return await affiliateNetworksCollection.set(affiliateNetwork._id, {
+        name: affiliateNetwork.name,
+        defaultNewOfferString: affiliateNetwork.defaultNewOfferString,
+        tags: affiliateNetwork.tags
+    });
 }
 
 export async function deleteAffiliateNetworkBy_id(_id: string) {

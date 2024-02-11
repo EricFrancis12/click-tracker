@@ -29,10 +29,13 @@ export async function updateCampaign(campaign: TCampaign) {
         throw new Error('Unable to update campaign');
     }
     const campaignsCollection = db.collection('campaigns');
-    // await campaignsCollection.delete(campaign._id);
     return await campaignsCollection.set(campaign._id, {
         name: campaign.name,
+        trafficSource_id: campaign.trafficSource_id,
+        landingPageRotation: campaign.landingPageRotation,
         offerRotation: campaign.offerRotation,
+        flow: campaign.flow,
+        geoName: campaign.geoName,
         tags: campaign.tags
     });
 }
