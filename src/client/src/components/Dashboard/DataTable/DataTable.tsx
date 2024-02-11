@@ -220,7 +220,8 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 clicks: row.clicks,
                 data,
                 activeItem: newActiveItem,
-                timeframe
+                timeframe,
+                includeUnknown: !!reportChain ? true : false // We only want to show unknown rows in the data table if it's a report
             })
             : null;
 
@@ -284,7 +285,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             + (isPercentage ? '%' : '');
     }
 
-    function sortMappedData() {
+    const sortMappedData = () => {
         const _columns = columns(activeItem.name);
         const result = mappedData.sort((a, b) => {
             const activeColumn = _columns[sortedColumn.index];
@@ -295,8 +296,11 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         return sortedColumn.type === 'reversed'
             ? result.reverse()
             : result;
-    }
+    };
     const sortedMappedData = sortMappedData();
+
+    console.log(mappedData);
+    console.log(sortedMappedData);
 
     return (
         <div
@@ -317,8 +321,10 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 {columns(activeItem.name).map((column, index) => {
                     const id = nanoid();
                     return (
-                        <div key={index} id={id} className='relative pb-16 w-full'
-                            style={{ width: index === 0 ? '15px' : index === 1 ? '30px' : '' }}>
+                        <div key={index} id={id}
+                            className='relative pb-16 w-full'
+                            style={{ width: index === 0 ? '15px' : index === 1 ? '30px' : '' }}
+                        >
                             <div className='absolute h-full' style={{ right: 0, width: '1px', backgroundColor: index !== 0 ? 'lightgray' : '' }}>
                                 <div onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
                                     if (index > 1) {
@@ -329,10 +335,16 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                     style={{ border: 'dashed black 1px' }}
                                 />
                             </div>
-                            <div className='flex justify-start items-center overflow-hidden px-2 h-8 text-white bg-[#1e3948]'
-                                style={{ minWidth: index >= 2 ? '110px' : '', borderLeft: 'solid lightgray 1px' }}>
+                            <div
+                                className='flex justify-start items-center overflow-hidden px-2 h-8 text-white bg-[#1e3948]'
+                                style={{
+                                    minWidth: index >= 2 ? '110px' : '',
+                                    borderLeft: 'solid lightgray 1px'
+                                }}
+                            >
                                 {index >= 2 &&
-                                    <span className='cursor-pointer'
+                                    <span
+                                        className='cursor-pointer'
                                         onClick={e => handleFilterClick(index)}
                                     >
                                         <FontAwesomeIcon icon={faFilter} />
@@ -368,7 +380,10 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                     onClick={e => changeRowSelection(_row.selected === true, _index)}
                                                     onContextMenu={e => handleContextMenu(e, _row)}
                                                 >
-                                                    <span style={{ backgroundColor: index === 0 ? indicators.getColor(_cell) : '' }}
+                                                    <span
+                                                        style={{
+                                                            backgroundColor: index === 0 ? indicators.getColor(_cell) : ''
+                                                        }}
                                                         className={(index === 0 ? 'text-white ' : 'text-black ')
                                                             + (index <= 1 ? 'justify-center ' : index === 2 ? 'justify-start ' : 'justify-end ')
                                                             + ' flex items-center h-full w-full'}
@@ -391,11 +406,12 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                             const prev__cell = columns(activeItem.name, 1)[index - 1]?.selector(__row, __index, _index, 2);
                                                             return (
                                                                 <React.Fragment key={__index}>
-                                                                    <div id={__cell_id} style={{
-                                                                        borderTop: index >= 2 ? 'solid lightgray 1px' : '',
-                                                                        borderBottom: index >= 2 ? 'solid lightgray 1px' : '',
-                                                                        backgroundColor: __row.selected ? '#d1ede7' : ''
-                                                                    }}
+                                                                    <div id={__cell_id}
+                                                                        style={{
+                                                                            borderTop: index >= 2 ? 'solid lightgray 1px' : '',
+                                                                            borderBottom: index >= 2 ? 'solid lightgray 1px' : '',
+                                                                            backgroundColor: __row.selected ? '#d1ede7' : ''
+                                                                        }}
                                                                         className={(isEven(__index) ? 'bg-[#ffffff]' : 'bg-[#e5e5e5]')
                                                                             + (index <= 2 ? '' : ' px-2')
                                                                             + ' flex justify-center items-center overflow-hidden h-8 cursor-pointer'}

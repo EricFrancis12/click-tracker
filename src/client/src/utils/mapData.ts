@@ -1,12 +1,14 @@
 import type { TClick, TClickProp, TItem, TTimeframe, TMappedData, TMappedDataItem } from '../lib/types';
 import type { TData } from '../contexts/AuthContext';
+import { isWithinTimeframe } from './utils';
 
-export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
+export function mapData({ clicks, data, activeItem, timeframe, backfill, includeUnknown }: {
     clicks: TClick[],
     data: TData,
     activeItem: TItem,
     timeframe: TTimeframe,
-    backfill?: boolean
+    backfill?: boolean,
+    includeUnknown?: boolean
 }) {
     const { dataProp, clickProp } = activeItem;
 
@@ -14,15 +16,13 @@ export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
     let savedDataItems = data[dataProp as keyof typeof data] ?? [];
 
     const clicksInTimeframe = timeframe
-        ? clicks /* clicks.filter(click => isWithinTimeframe(click, timeframe)) */
+        ? clicks.filter(click => isWithinTimeframe(click, timeframe))
         : clicks;
 
     for (let i = 0; i < clicksInTimeframe.length; i++) {
         const click = clicksInTimeframe[i];
         const filteredResult = results.find(result => result.clickProp === click[clickProp as keyof typeof click]);
 
-        // let dataItem = savedDataItems.find((_dataItem: any) => _dataItem._id === click[clickProp as keyof typeof click])
-        // ?? { name: click[clickProp as keyof typeof click] };
         let dataItem;
         for (let i = 0; i < savedDataItems.length; i++) {
             if (savedDataItems[i]._id === click[clickProp as keyof typeof click]) {
@@ -43,7 +43,7 @@ export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
         }
     }
 
-    // backfill means we loop thru dataItems that received 0 clicks,
+    // Backfill means we loop thru dataItems that received 0 clicks,
     // and include them in results anyways
     // (so they will appear as a row):
     if (backfill) {
@@ -60,7 +60,7 @@ export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
         }
     }
 
-    // here's an example of what results could look like:
+    // Here's an example of what results could look like:
     // result = [
     //     { name: 'Unknown', clickProp: '012', clicks: [{}, {}, {}] },
     //     { name: 'name 1', clickProp: '345', clicks: [{}, {}] },
