@@ -28,17 +28,8 @@ export async function updateCampaign(campaign: TCampaign) {
         throw new Error('Unable to update campaign');
     }
     const campaignsCollection = db.collection('campaigns');
-    await campaignsCollection.delete(campaign._id);
-
-    await new Promise((resolve) => {
-        console.log('starting timeout');
-        setTimeout(() => {
-            console.log('timeout finished');
-            resolve(true);
-        }, 10_000);
-    });
-
-    return await campaignsCollection.set(campaign._id, campaign);
+    // await campaignsCollection.delete(campaign._id);
+    return await campaignsCollection.set(campaign._id, { name: '789' });
 }
 
 export async function deleteCampaignBy_id(_id: string) {
