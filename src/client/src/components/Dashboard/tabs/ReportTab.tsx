@@ -33,7 +33,7 @@ export default function ReportTab({
     const [activeItem, setActiveItem] = useState<TItem>(
         (originalActiveItem?.name !== 'Campaigns' ? itemsDictionary.campaigns : itemsDictionary.offers)
     );
-    const [timeframe, setTimeframe] = useState<TTimeframe>(originalTimeframe ?? defaultTimeframe);
+    const [timeframe, setTimeframe] = useState<TTimeframe>(originalTimeframe ?? defaultTimeframe());
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [reportChain, setReportChain] = useState<TReportChain>([
         { name: activeItem.name },

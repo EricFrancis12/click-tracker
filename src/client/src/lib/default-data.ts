@@ -6,6 +6,12 @@ import type {
     TTimeframe, TTrafficSource
 } from './types';
 import { geos } from './geos';
+import { getDates } from '../utils/timeframe-utils';
+import { DEFAULT_TIMEFRAME_NAME } from './constants';
+
+export function defaultTimeframe(): TTimeframe {
+    return getDates(DEFAULT_TIMEFRAME_NAME);
+}
 
 export function defaultAffiliateNetwork(): TAffiliateNetwork {
     return ({
@@ -128,5 +134,3 @@ export function defaultTrafficSource(): TTrafficSource {
         tags: []
     });
 }
-
-export const defaultTimeframe: TTimeframe = [new Date(), new Date()];

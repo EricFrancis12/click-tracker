@@ -25,7 +25,7 @@ export default function HomeTab({
     const { data, clicks } = useAuth();
 
     const [activeItem, setActiveItem] = useState<TItem>(itemsDictionary.campaigns);
-    const [timeframe, setTimeframe] = useState<TTimeframe>(defaultTimeframe);
+    const [timeframe, setTimeframe] = useState<TTimeframe>(defaultTimeframe());
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [mappedData, setMappedData] = useState<TMappedData>(
         mapData({ clicks, data, activeItem, timeframe, backfill: true })
