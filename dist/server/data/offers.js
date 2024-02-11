@@ -49,6 +49,7 @@ function updateOffer(offer) {
             throw new Error('Unable to update offer');
         }
         const offersCollection = db.collection('offers');
+        yield offersCollection.delete(offer._id);
         return yield offersCollection.set(offer._id, offer);
     });
 }

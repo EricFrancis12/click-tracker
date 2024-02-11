@@ -28,6 +28,7 @@ export async function updateFlow(flow: TFlow) {
         throw new Error('Unable to update flow');
     }
     const flowsCollection = db.collection('flows');
+    await flowsCollection.delete(flow._id);
     return await flowsCollection.set(flow._id, flow);
 }
 

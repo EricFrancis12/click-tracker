@@ -28,6 +28,7 @@ export async function updateCampaign(campaign: TCampaign) {
         throw new Error('Unable to update campaign');
     }
     const campaignsCollection = db.collection('campaigns');
+    await campaignsCollection.delete(campaign._id);
     return await campaignsCollection.set(campaign._id, campaign);
 }
 

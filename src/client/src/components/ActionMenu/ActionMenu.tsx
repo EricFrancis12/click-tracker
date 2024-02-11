@@ -55,6 +55,11 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
     const [menuData, setMenuData] = useState<TMenuData>(structuredClone(dataItem));
 
     function handleSave() {
+        console.log(title);
+        console.log(method);
+        console.log(actionMenu);
+        console.log(endpoint);
+        
         if (!endpoint || !method) {
             return;
         }

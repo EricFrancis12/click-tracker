@@ -77,7 +77,7 @@ router.get('/:campaign_id', async (req, res) => {
             if (path) {
                 if (!path.directLinkingEnabled) {
                     directLinkingEnabled = false;
-                    const selectedLandingPage_id = (weightedRandomlySelectItem(path.landingPages)as TPath_landingPage)?._id;
+                    const selectedLandingPage_id = (weightedRandomlySelectItem(path.landingPages) as TPath_landingPage)?._id;
                     const selectedOffer_id = (weightedRandomlySelectItem(path.offers) as TPath_offer)?._id;
                     landingPage = data.landingPages.find(landingPage => landingPage._id === selectedLandingPage_id);
                     offer = data.offers.find(offer => offer._id === selectedOffer_id);
@@ -107,6 +107,7 @@ router.get('/:campaign_id', async (req, res) => {
                 res.cookie('click_id', click._id, { httpOnly: true });
             }
 
+            console.log(campaign);
             console.log(flow);
             console.log(route);
             console.log(path);

@@ -127,7 +127,7 @@ export default function TokensInput({ defaultTokens, setDefaultTokens, customTok
                         </div>
                         <div className='flex justify-center items-center h-full w-[50px]'>
                             <span
-                                className='cursor-pointer hover:text-red-500'
+                                className='cursor-pointer text-black hover:text-red-500'
                                 onClick={e => setCustomTokens(customTokens.filter((token, _index) => _index !== index))}
                             >
                                 <FontAwesomeIcon icon={faTrashAlt} />

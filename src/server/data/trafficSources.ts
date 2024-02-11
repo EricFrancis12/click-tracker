@@ -28,6 +28,7 @@ export async function updateTrafficSource(trafficSource: TTrafficSource) {
         throw new Error('Unable to update affiliate network');
     }
     const trafficSourcesCollection = db.collection('trafficSources');
+    await trafficSourcesCollection.delete(trafficSource._id);
     return await trafficSourcesCollection.set(trafficSource._id, trafficSource);
 }
 

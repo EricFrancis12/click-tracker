@@ -49,6 +49,7 @@ function updateFlow(flow) {
             throw new Error('Unable to update flow');
         }
         const flowsCollection = db.collection('flows');
+        yield flowsCollection.delete(flow._id);
         return yield flowsCollection.set(flow._id, flow);
     });
 }

@@ -28,6 +28,7 @@ export async function updateOffer(offer: TOffer) {
         throw new Error('Unable to update offer');
     }
     const offersCollection = db.collection('offers');
+    await offersCollection.delete(offer._id);
     return await offersCollection.set(offer._id, offer);
 }
 

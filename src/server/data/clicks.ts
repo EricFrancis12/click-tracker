@@ -38,6 +38,7 @@ export async function updateClick(click: TClick) {
         throw new Error('Unable to update click');
     }
     const clicksCollection = db.collection('clicks');
+    await clicksCollection.delete(click._id);
     return await clicksCollection.set(click._id, click);
 }
 

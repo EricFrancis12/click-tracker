@@ -249,7 +249,7 @@ export default function Path({ path, route, flow, setFlow }: {
                                     {`(${calcWeightResult(path.weight, route.paths.map(path => path.weight))}%)`}
                                 </span>
                                 {route?.paths?.length > 1 &&
-                                    <span className='cursor-pointer text-red-500' onClick={e => handlePathDelete()}>
+                                    <span className='cursor-pointer text-black hover:text-red-500' onClick={e => handlePathDelete()}>
                                         <FontAwesomeIcon icon={faTrashAlt} />
                                     </span>
                                 }

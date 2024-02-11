@@ -28,6 +28,7 @@ export async function updateLandingPage(landingPage: TLandingPage) {
         throw new Error('Unable to update landing page');
     }
     const landingPagesCollection = db.collection('landingPages');
+    await landingPagesCollection.delete(landingPage._id);
     return await landingPagesCollection.set(landingPage._id, landingPage);
 }
 

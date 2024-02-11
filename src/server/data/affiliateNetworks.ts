@@ -28,6 +28,7 @@ export async function updateAffiliateNetwork(affiliateNetwork: TAffiliateNetwork
         throw new Error('Unable to update affiliate network');
     }
     const affiliateNetworksCollection = db.collection('affiliateNetworks');
+    await affiliateNetworksCollection.delete(affiliateNetwork._id);
     return await affiliateNetworksCollection.set(affiliateNetwork._id, affiliateNetwork);
 }
 
