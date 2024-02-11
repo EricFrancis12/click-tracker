@@ -49,8 +49,13 @@ function updateTrafficSource(trafficSource) {
             throw new Error('Unable to update affiliate network');
         }
         const trafficSourcesCollection = db.collection('trafficSources');
-        yield trafficSourcesCollection.delete(trafficSource._id);
-        return yield trafficSourcesCollection.set(trafficSource._id, trafficSource);
+        return yield trafficSourcesCollection.set(trafficSource._id, {
+            name: trafficSource.name,
+            postbackUrl: trafficSource.postbackUrl,
+            defaultTokens: trafficSource.defaultTokens,
+            customTokens: trafficSource.customTokens,
+            tags: trafficSource.tags
+        });
     });
 }
 exports.updateTrafficSource = updateTrafficSource;

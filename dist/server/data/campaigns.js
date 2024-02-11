@@ -49,8 +49,15 @@ function updateCampaign(campaign) {
             throw new Error('Unable to update campaign');
         }
         const campaignsCollection = db.collection('campaigns');
-        yield campaignsCollection.delete(campaign._id);
-        return yield campaignsCollection.set(campaign._id, campaign);
+        return yield campaignsCollection.set(campaign._id, {
+            name: campaign.name,
+            trafficSource_id: campaign.trafficSource_id,
+            landingPageRotation: campaign.landingPageRotation,
+            offerRotation: campaign.offerRotation,
+            flow: campaign.flow,
+            geoName: campaign.geoName,
+            tags: campaign.tags
+        });
     });
 }
 exports.updateCampaign = updateCampaign;

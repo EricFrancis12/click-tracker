@@ -1,4 +1,4 @@
-import { makeDate } from "../utils/timeframe-utils";
+import { makeDate } from '../utils/timeframe-utils';
 import type { TTimeframeName } from './types';
 
 export const MAX_REPORT_CHAIN_LENGTH = 3;

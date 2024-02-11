@@ -49,8 +49,11 @@ function updateLandingPage(landingPage) {
             throw new Error('Unable to update landing page');
         }
         const landingPagesCollection = db.collection('landingPages');
-        yield landingPagesCollection.delete(landingPage._id);
-        return yield landingPagesCollection.set(landingPage._id, landingPage);
+        return yield landingPagesCollection.set(landingPage._id, {
+            name: landingPage.name,
+            url: landingPage.url,
+            tags: landingPage.tags
+        });
     });
 }
 exports.updateLandingPage = updateLandingPage;

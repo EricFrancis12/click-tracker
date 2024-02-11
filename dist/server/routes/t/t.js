@@ -11,15 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const utils_1 = require("../../../client/src/utils/utils");
+const utils_2 = require("../../utils/utils");
 const clicks_1 = require("../../data/clicks");
 const data_1 = require("../../data/data");
 const flows_1 = require("../../data/flows");
-const utils_2 = require("../../utils/utils");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     try {
         if (!req.params.campaign_id) {
             res.redirect((0, utils_2.catchAllRedirectUrl)());
@@ -31,6 +31,7 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
             res.redirect((0, utils_2.catchAllRedirectUrl)());
             return;
         }
+        const trafficSource = (_b = data.trafficSources.find(_trafficSource => _trafficSource._id === (campaign === null || campaign === void 0 ? void 0 : campaign.trafficSource_id))) !== null && _b !== void 0 ? _b : null;
         const clickPropsFromReq = yield (0, clicks_1.makeClickPropsFromReq)(req);
         let directLinkingEnabled = false;
         let flow, route, path, landingPage, offer, viewRedirectUrl, clickRedirectUrl;
@@ -76,20 +77,20 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
             if (path) {
                 if (!path.directLinkingEnabled) {
                     directLinkingEnabled = false;
-                    const selectedLandingPage_id = (_b = (0, utils_1.weightedRandomlySelectItem)(path.landingPages)) === null || _b === void 0 ? void 0 : _b._id;
-                    const selectedOffer_id = (_c = (0, utils_1.weightedRandomlySelectItem)(path.offers)) === null || _c === void 0 ? void 0 : _c._id;
+                    const selectedLandingPage_id = (_c = (0, utils_1.weightedRandomlySelectItem)(path.landingPages)) === null || _c === void 0 ? void 0 : _c._id;
+                    const selectedOffer_id = (_d = (0, utils_1.weightedRandomlySelectItem)(path.offers)) === null || _d === void 0 ? void 0 : _d._id;
                     landingPage = data.landingPages.find(landingPage => landingPage._id === selectedLandingPage_id);
                     offer = data.offers.find(offer => offer._id === selectedOffer_id);
-                    viewRedirectUrl = (_d = landingPage === null || landingPage === void 0 ? void 0 : landingPage.url) !== null && _d !== void 0 ? _d : null;
-                    clickRedirectUrl = (_e = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _e !== void 0 ? _e : null;
+                    viewRedirectUrl = (_e = landingPage === null || landingPage === void 0 ? void 0 : landingPage.url) !== null && _e !== void 0 ? _e : null;
+                    clickRedirectUrl = (_f = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _f !== void 0 ? _f : null;
                 }
                 else {
                     directLinkingEnabled = true;
-                    const selectedOffer_id = (_f = (0, utils_1.weightedRandomlySelectItem)(path.offers)) === null || _f === void 0 ? void 0 : _f._id;
+                    const selectedOffer_id = (_g = (0, utils_1.weightedRandomlySelectItem)(path.offers)) === null || _g === void 0 ? void 0 : _g._id;
                     landingPage = null;
                     offer = data.offers.find(offer => offer._id === selectedOffer_id);
-                    viewRedirectUrl = (_g = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _g !== void 0 ? _g : null;
-                    clickRedirectUrl = (_h = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _h !== void 0 ? _h : null;
+                    viewRedirectUrl = (_h = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _h !== void 0 ? _h : null;
+                    clickRedirectUrl = (_j = offer === null || offer === void 0 ? void 0 : offer.url) !== null && _j !== void 0 ? _j : null;
                 }
             }
             const click = yield (0, clicks_1.makeNewClickFromReq)({
@@ -101,19 +102,30 @@ router.get('/:campaign_id', (req, res) => __awaiter(void 0, void 0, void 0, func
                 directLinkingEnabled,
                 clickPropsFromReq
             });
+            viewRedirectUrl = (0, data_1.replaceTokensInUrl)({
+                url: viewRedirectUrl,
+                click,
+                campaign,
+                landingPage,
+                offer,
+                trafficSource
+            });
+            click.viewRedirectUrl = viewRedirectUrl;
+            clickRedirectUrl = (0, data_1.replaceTokensInUrl)({
+                url: clickRedirectUrl,
+                click,
+                campaign,
+                landingPage,
+                offer,
+                trafficSource
+            });
+            click.clickRedirectUrl = clickRedirectUrl;
             if (click === null || click === void 0 ? void 0 : click._id) {
                 res.cookie('click_id', click._id, { httpOnly: true });
             }
-            console.log(campaign);
-            console.log(flow);
-            console.log(route);
-            console.log(path);
-            console.log(landingPage);
-            console.log(offer);
-            console.log(viewRedirectUrl);
             res.redirect(viewRedirectUrl !== null && viewRedirectUrl !== void 0 ? viewRedirectUrl : (0, utils_2.catchAllRedirectUrl)());
             if (campaign && flow) {
-                (0, clicks_1.createNewAndSaveNewClick)(click);
+                yield (0, clicks_1.createNewAndSaveNewClick)(click);
             }
         }
     }

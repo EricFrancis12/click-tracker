@@ -57,8 +57,38 @@ function updateClick(click) {
             throw new Error('Unable to update click');
         }
         const clicksCollection = db.collection('clicks');
-        yield clicksCollection.delete(click._id);
-        return yield clicksCollection.set(click._id, click);
+        return yield clicksCollection.set(click._id, {
+            campaign_id: click.campaign_id,
+            trafficSource_id: click.trafficSource_id,
+            landingPage_id: click.landingPage_id,
+            offer_id: click.offer_id,
+            flow_id: click.flow_id,
+            viewTimestamp: click.viewTimestamp,
+            lpClickTimestamp: click.lpClickTimestamp,
+            conversionTimestamp: click.conversionTimestamp,
+            cost: click.cost,
+            revenue: click.revenue,
+            tokens: click.tokens,
+            viewRedirectUrl: click.viewRedirectUrl,
+            clickRedirectUrl: click.clickRedirectUrl,
+            ip: click.ip,
+            userAgent: click.userAgent,
+            language: click.language,
+            geoName: click.geoName,
+            region: click.region,
+            city: click.city,
+            isp: click.isp,
+            mobileCarrier: click.mobileCarrier,
+            connectionType: click.connectionType,
+            deviceModel: click.deviceModel,
+            deviceVendor: click.deviceVendor,
+            deviceType: click.deviceType,
+            screenResolution: click.screenResolution,
+            os: click.os,
+            osVersion: click.osVersion,
+            browserName: click.browserName,
+            browserVersion: click.browserVersion
+        });
     });
 }
 exports.updateClick = updateClick;

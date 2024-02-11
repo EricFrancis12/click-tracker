@@ -49,8 +49,11 @@ function updateAffiliateNetwork(affiliateNetwork) {
             throw new Error('Unable to update affiliate network');
         }
         const affiliateNetworksCollection = db.collection('affiliateNetworks');
-        yield affiliateNetworksCollection.delete(affiliateNetwork._id);
-        return yield affiliateNetworksCollection.set(affiliateNetwork._id, affiliateNetwork);
+        return yield affiliateNetworksCollection.set(affiliateNetwork._id, {
+            name: affiliateNetwork.name,
+            defaultNewOfferString: affiliateNetwork.defaultNewOfferString,
+            tags: affiliateNetwork.tags
+        });
     });
 }
 exports.updateAffiliateNetwork = updateAffiliateNetwork;

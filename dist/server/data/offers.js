@@ -49,8 +49,13 @@ function updateOffer(offer) {
             throw new Error('Unable to update offer');
         }
         const offersCollection = db.collection('offers');
-        yield offersCollection.delete(offer._id);
-        return yield offersCollection.set(offer._id, offer);
+        return yield offersCollection.set(offer._id, {
+            name: offer.name,
+            affiliateNetwork_id: offer.affiliateNetwork_id,
+            url: offer.url,
+            payout: offer.payout,
+            tags: offer.tags
+        });
     });
 }
 exports.updateOffer = updateOffer;

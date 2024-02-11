@@ -49,8 +49,14 @@ function updateFlow(flow) {
             throw new Error('Unable to update flow');
         }
         const flowsCollection = db.collection('flows');
-        yield flowsCollection.delete(flow._id);
-        return yield flowsCollection.set(flow._id, flow);
+        return yield flowsCollection.set(flow._id, {
+            name: flow.name,
+            type: flow.type,
+            defaultRoute: flow.defaultRoute,
+            ruleRoutes: flow.ruleRoutes,
+            url: flow.url,
+            tags: flow.tags
+        });
     });
 }
 exports.updateFlow = updateFlow;
