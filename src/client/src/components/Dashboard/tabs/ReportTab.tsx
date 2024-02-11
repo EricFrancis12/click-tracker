@@ -42,7 +42,7 @@ export default function ReportTab({
     ]);
 
     // Filtering out clicks that don't belong in the report:
-    const filteredClicks = clicks.filter(click => click[activeItem.clickProp as keyof typeof click] === reportDataItem?._id);
+    const filteredClicks = clicks.filter(click => click[reportItem.current?.clickProp as keyof typeof click] === reportDataItem?._id);
     const [mappedData, setMappedData] = useState<TMappedData>(
         mapData({ clicks: filteredClicks, data, activeItem, timeframe, backfill: false })
     );

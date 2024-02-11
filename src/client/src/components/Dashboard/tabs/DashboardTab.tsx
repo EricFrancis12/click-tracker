@@ -106,7 +106,6 @@ export default function DashboardTab({ active, onClick, onClose }: {
                 name='Dashboard'
                 active={active}
                 onClick={onClick}
-                onClose={onClose}
             />
             {active &&
                 <div className='absolute top-[40px] left-0 w-[100vw] text-sm'>

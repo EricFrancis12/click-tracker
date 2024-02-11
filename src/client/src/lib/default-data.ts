@@ -8,8 +8,8 @@ import type {
 import { geos } from './geos';
 
 export function defaultTimeframe(): TTimeframe {
-    const sevenDays = 60 * 60 * 24 * 7 * 1000;
-    return [new Date(Date.now() - sevenDays), new Date()];
+    const sevenDaysMS = 60 * 60 * 24 * 7 * 1000;
+    return [new Date(Date.now() - sevenDaysMS), new Date()];
 }
 
 export function defaultAffiliateNetwork(): TAffiliateNetwork {

@@ -256,7 +256,7 @@ export function makeEndpoint(actionMenu: TActionMenu, method: THttpMethod) {
 };
 
 export function isOverflown(ref: React.RefObject<HTMLElement>) {
-    // Determines whether an element is overflowing or not
+    // Determines whether an element contains overflowing nodes or not
     if (!ref?.current) return false;
     return ref.current.scrollHeight > ref.current.clientHeight || ref.current.scrollWidth > ref.current.clientWidth;
 }

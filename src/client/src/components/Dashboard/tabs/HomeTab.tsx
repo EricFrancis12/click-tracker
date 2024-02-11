@@ -46,7 +46,6 @@ export default function HomeTab({
                 name='Home'
                 active={active}
                 onClick={onClick}
-                onClose={onClose}
             />
             {active &&
                 <div className='absolute top-[40px] left-0 width-[100vw] text-sm'>

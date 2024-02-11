@@ -129,11 +129,11 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             },
             {
                 name: 'Revenue',
-                selector: (row: TMappedDataItem) => row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0)
+                selector: (row: TMappedDataItem) => row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0).toFixed(2)
             },
             {
                 name: 'Cost',
-                selector: (row: TMappedDataItem) => row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0)
+                selector: (row: TMappedDataItem) => row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0).toFixed(2)
             },
             {
                 name: 'Profit',

@@ -2,7 +2,7 @@
 
 export default function TestLandingPage() {
     return (
-        <div className='flex justify-center items-start w-full mt-8'>
+        <div className='flex flex-col justify-start items-center gap-4 w-full mt-8'>
             <h1 className='text-lg font-bold'>
                 Test Landing Page
             </h1>

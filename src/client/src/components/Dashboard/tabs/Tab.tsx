@@ -9,7 +9,7 @@ export default function Tab({ name, icon, active, onClick, onClose, toolTip }: {
     icon: IconDefinition,
     active: boolean,
     onClick: React.MouseEventHandler<HTMLDivElement>,
-    onClose: React.MouseEventHandler<SVGSVGElement>,
+    onClose?: React.MouseEventHandler<SVGSVGElement>,
     toolTip?: boolean
 }) {
     const overflownRef = useRef<HTMLDivElement>(null);
@@ -22,21 +22,30 @@ export default function Tab({ name, icon, active, onClick, onClose, toolTip }: {
             >
                 <div ref={overflownRef}
                     onClick={onClick}
-                    className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] hover:bg-[#00000070] ')
+                    className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] hover:bg-[#000000] ')
                         + (active ? ' text-[#394146] ' : ' text-white ')
-                        + ' h-[32px] max-w-[245px] text-sm text-ellipsis overflow-hidden cursor-pointer'}
+                        + ' group relative h-[32px] max-w-[245px] text-sm text-ellipsis overflow-hidden cursor-pointer'}
                     style={{
                         userSelect: 'none',
                         padding: '6px 8px 6px 8px',
                         borderRadius: '6px 6px 0 0',
                         whiteSpace: 'nowrap'
-                    }}>
+                    }}
+                >
                     <FontAwesomeIcon icon={icon} className='mr-[8px]' />
-                    <span className='mr-[8px]'>
+                    <span>
                         {name}
                     </span>
                     {onClose &&
-                        <FontAwesomeIcon icon={faClose} className='cursor-pointer' onClick={onClose} />
+                        <div className='absolute flex justify-end items-center top-0 left-0 h-full w-full'>
+                            <div className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] group-hover:bg-[#000000] ')}>
+                                <FontAwesomeIcon
+                                    icon={faClose}
+                                    className='mr-2 cursor-pointer'
+                                    onClick={onClose}
+                                />
+                            </div>
+                        </div>
                     }
                 </div>
             </Tooltip>

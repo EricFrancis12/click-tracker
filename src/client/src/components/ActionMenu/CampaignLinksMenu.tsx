@@ -5,7 +5,7 @@ import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import useKeypress from '../../hooks/useKeypress';
 import useWindowResize from '../../hooks/useWindowResize';
 import type { TCampaign } from '../../lib/types';
-import { Header } from '../menu-components';
+import { Modal, Header } from '../menu-components';
 import Button from '../Button';
 import { generateCampaignLinks, copyTextToClipboard } from '../../utils/utils';
 
@@ -25,12 +25,7 @@ export default function CampaignLinksMenu({ campaign, onClose }: {
 
     return (
         <BlackTransparentOverlay layer={2} className='flex justify-center items-start p-4'>
-            <div
-                className='w-full max-w-[500px] text-black bg-white'
-                style={{
-                    borderRadius: '5px'
-                }}
-            >
+            <Modal>
                 <Header
                     title='Campaign Links'
                     onClose={() => onClose()}
@@ -46,7 +41,7 @@ export default function CampaignLinksMenu({ campaign, onClose }: {
                     </div>
                     <Button text='Close' onClick={() => onClose()} />
                 </div>
-            </div>
+            </Modal>
         </BlackTransparentOverlay>
     )
 }
