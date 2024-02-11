@@ -58,6 +58,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
         console.log(title);
         console.log(method);
         console.log(actionMenu);
+        console.log(menuData);
         console.log(endpoint);
         
         if (!endpoint || !method) {
