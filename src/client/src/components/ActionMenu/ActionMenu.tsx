@@ -4,9 +4,9 @@ import useKeypress from '../../hooks/useKeypress';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import ActionMenuLayout from './ActionMenuLayout';
 import { Header, Footer } from '../menu-components';
+import type { THttpMethod, TMenuData } from '../../lib/types';
 import type { TActionMenu } from '../../contexts/ActionMenuContext';
-import { getSingName, defaultItemFromItemName, endpointFromItemName } from '../../utils/utils';
-import { TMenuData } from '../../lib/types';
+import { getSingName, defaultItemFromItemName, makeEndpoint } from '../../utils/utils';
 
 export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900px', layer = 1 }: {
     actionMenu: TActionMenu,
@@ -18,7 +18,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
 
     let title = '';
     let dataItem;
-    let method: 'PUT' | 'POST' | '' = '';
+    let method: THttpMethod = 'POST';
     if (actionMenu) {
         // If a .dataItem property was passed in, we know the user clicked the Edit button,
         // and the ActionMenu should be used to edit that item.
@@ -35,21 +35,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
         }
     }
 
-    const makeEndpoint = () => {
-        const endpointRoute = actionMenu?.itemName
-            ? endpointFromItemName(actionMenu.itemName)
-            : null;
-        if (!endpointRoute) {
-            return null;
-        } else if (method === 'PUT' && actionMenu?.dataItem?._id) {
-            return `/${endpointRoute}/${actionMenu.dataItem._id}`;
-        } else if (method === 'POST') {
-            return `/${endpointRoute}`;
-        } else {
-            return null;
-        }
-    };
-    const endpoint = makeEndpoint();
+    const endpoint = makeEndpoint(actionMenu, method);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [menuData, setMenuData] = useState<TMenuData>(structuredClone(dataItem));
@@ -60,7 +46,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
         console.log(actionMenu);
         console.log(menuData);
         console.log(endpoint);
-        
+
         if (!endpoint || !method) {
             return;
         }

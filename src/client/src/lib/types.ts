@@ -7,6 +7,8 @@ export type TOffer_id = `${string}_OF`;
 export type TFlow_id = `${string}_FL`;
 export type TClick_id = `${string}_CL`;
 
+export type THttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 export type TItem = {
     name: TItemName,
     clickProp?: TClickProp,

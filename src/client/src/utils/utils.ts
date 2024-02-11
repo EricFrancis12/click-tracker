@@ -1,9 +1,10 @@
 import type { TData } from '../contexts/AuthContext';
-import type { TCampaign, TClick, TItem, TItemName, TMappedDataItem, TTimeframe } from '../lib/types';
+import type { TCampaign, TClick, THttpMethod, TItem, TItemName, TMappedDataItem, TTimeframe } from '../lib/types';
 import {
     defaultAffiliateNetwork, defaultCampaign, defaultFlow,
     defaultLandingPage, defaultOffer, defaultTrafficSource
 } from '../lib/default-data';
+import { TActionMenu } from '../contexts/ActionMenuContext';
 
 export function isObject(any: any) {
     return any != null && typeof any === 'object';
@@ -226,7 +227,7 @@ export function defaultItemFromItemName(itemName: TItemName) {
     return result;
 }
 
-export function endpointFromItemName(itemName: TItemName) {
+export function endpointRouteFromItemName(itemName: TItemName) {
     let result = null;
     switch (itemName) {
         case 'Affiliate Networks': result = 'affiliate-networks'; break;
@@ -238,6 +239,21 @@ export function endpointFromItemName(itemName: TItemName) {
     }
     return result;
 }
+
+export function makeEndpoint(actionMenu: TActionMenu, method: THttpMethod) {
+    const endpointRoute = actionMenu?.itemName
+        ? endpointRouteFromItemName(actionMenu.itemName)
+        : null;
+    if (!endpointRoute) {
+        return null;
+    } else if ((method === 'PUT' || method === 'DELETE') && actionMenu?.dataItem?._id) {
+        return `/${endpointRoute}/${actionMenu.dataItem._id}`;
+    } else if (method === 'POST') {
+        return `/${endpointRoute}`;
+    } else {
+        return null;
+    }
+};
 
 export function isOverflown(ref: React.RefObject<HTMLElement>) {
     // Determines whether an element is overflowing or not
