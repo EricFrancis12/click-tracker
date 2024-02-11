@@ -29,6 +29,15 @@ export async function updateCampaign(campaign: TCampaign) {
     }
     const campaignsCollection = db.collection('campaigns');
     await campaignsCollection.delete(campaign._id);
+
+    await new Promise((resolve) => {
+        console.log('starting timeout');
+        setTimeout(() => {
+            console.log('timeout finished');
+            resolve(true);
+        }, 10_000);
+    });
+
     return await campaignsCollection.set(campaign._id, campaign);
 }
 

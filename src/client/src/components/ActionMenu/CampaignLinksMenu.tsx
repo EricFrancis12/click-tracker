@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
+import useKeypress from '../../hooks/useKeypress';
 import useWindowResize from '../../hooks/useWindowResize';
 import type { TCampaign } from '../../lib/types';
 import { Header } from '../menu-components';
@@ -11,9 +12,10 @@ export default function CampaignLinksMenu({ campaign, onClose }: {
     campaign: TCampaign,
     onClose: Function
 }) {
-    useWindowResize(() => onClose());
-
     const campaignLinks = generateCampaignLinks(campaign);
+
+    useKeypress('escape', () => onClose());
+    useWindowResize(() => onClose());
 
     return (
         <BlackTransparentOverlay layer={2} className='flex justify-center items-start p-4'>

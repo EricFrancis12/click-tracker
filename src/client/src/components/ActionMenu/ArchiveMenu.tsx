@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import useKeypress from '../../hooks/useKeypress';
+import useWindowResize from '../../hooks/useWindowResize';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import { Header } from '../menu-components';
 import Button from '../Button';
@@ -39,6 +41,9 @@ export default function ArchiveMenu({ actionMenu, onClose }: {
                 setLoading(false);
             });
     }
+
+    useKeypress('escape', () => onClose());
+    useWindowResize(() => onClose());
 
     return (
         <BlackTransparentOverlay layer={2} className='flex justify-center items-start p-4'>

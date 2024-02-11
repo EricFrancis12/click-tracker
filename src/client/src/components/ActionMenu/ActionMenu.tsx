@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import useKeypress from '../../hooks/useKeypress';
+import useWindowResize from '../../hooks/useWindowResize';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import ActionMenuLayout from './ActionMenuLayout';
 import { Header, Footer } from '../menu-components';
@@ -66,6 +67,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
     }
 
     useKeypress('escape', () => setActionMenu(null));
+    useWindowResize(() => setActionMenu(null));
 
     return actionMenu &&
         <BlackTransparentOverlay layer={layer} className='flex justify-center items-start p-4'>

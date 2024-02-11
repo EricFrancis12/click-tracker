@@ -220,8 +220,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 clicks: row.clicks,
                 data,
                 activeItem: newActiveItem,
-                timeframe,
-                includeUnknown: !!reportChain ? true : false // We only want to show unknown rows in the data table if it's a report
+                timeframe
             })
             : null;
 
@@ -298,9 +297,6 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             : result;
     };
     const sortedMappedData = sortMappedData();
-
-    console.log(mappedData);
-    console.log(sortedMappedData);
 
     return (
         <div

@@ -2,13 +2,12 @@ import type { TClick, TClickProp, TItem, TTimeframe, TMappedData, TMappedDataIte
 import type { TData } from '../contexts/AuthContext';
 import { isWithinTimeframe } from './utils';
 
-export function mapData({ clicks, data, activeItem, timeframe, backfill, includeUnknown }: {
+export function mapData({ clicks, data, activeItem, timeframe, backfill }: {
     clicks: TClick[],
     data: TData,
     activeItem: TItem,
     timeframe: TTimeframe,
-    backfill?: boolean,
-    includeUnknown?: boolean
+    backfill?: boolean
 }) {
     const { dataProp, clickProp } = activeItem;
 
