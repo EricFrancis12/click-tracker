@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../contexts/AuthContext';
 import BlackTransparentOverlay from '../BlackTransparentOverlay';
 import useKeypress from '../../hooks/useKeypress';
 import useWindowResize from '../../hooks/useWindowResize';
@@ -12,7 +13,12 @@ export default function CampaignLinksMenu({ campaign, onClose }: {
     campaign: TCampaign,
     onClose: Function
 }) {
-    const campaignLinks = generateCampaignLinks(campaign);
+    const { data } = useAuth();
+
+    const trafficSource = campaign?.trafficSource_id
+        ? data?.trafficSources?.find(_trafficSource => _trafficSource._id === campaign.trafficSource_id)
+        : null;
+    const campaignLinks = generateCampaignLinks({ campaign, trafficSource });
 
     useKeypress('escape', () => onClose());
     useWindowResize(() => onClose());

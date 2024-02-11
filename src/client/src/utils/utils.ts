@@ -1,5 +1,5 @@
 import type { TData } from '../contexts/AuthContext';
-import type { TCampaign, TClick, THttpMethod, TItem, TItemName, TMappedDataItem, TTimeframe } from '../lib/types';
+import type { TCampaign, TClick, THttpMethod, TItem, TItemName, TMappedDataItem, TTimeframe, TTrafficSource } from '../lib/types';
 import {
     defaultAffiliateNetwork, defaultCampaign, defaultFlow,
     defaultLandingPage, defaultOffer, defaultTrafficSource
@@ -261,10 +261,25 @@ export function isOverflown(ref: React.RefObject<HTMLElement>) {
     return ref.current.scrollHeight > ref.current.clientHeight || ref.current.scrollWidth > ref.current.clientWidth;
 }
 
-export function generateCampaignLinks(campaign: TCampaign) {
-    const campaignUrl = `${window.location.protocol}//${window.location.hostname}/t/${campaign?._id}`;
+export function generateCampaignLinks({ campaign, trafficSource }: {
+    campaign: TCampaign,
+    trafficSource?: TTrafficSource | null
+}) {
+    let campaignUrl = `${window.location.protocol}//${window.location.hostname}/t/${campaign?._id}`;
     const clickUrl = `${window.location.protocol}//${window.location.hostname}/clk`;
     const postbackUrl = `${window.location.protocol}//${window.location.hostname}/postback/REPLACE?payout=OPTIONAL`;
+
+    if (trafficSource) {
+        campaignUrl += '?';
+        const tokens = [...trafficSource.defaultTokens, ...trafficSource.customTokens];
+        for (let i = 0; i < tokens.length; i++) {
+            campaignUrl += `${trafficSource.defaultTokens[i].queryParam}=${trafficSource.defaultTokens[i].value}`;
+            if (i !== trafficSource.defaultTokens.length - 1) {
+                campaignUrl += '&';
+            }
+        }
+    }
+
     return {
         campaignUrl,
         clickUrl,

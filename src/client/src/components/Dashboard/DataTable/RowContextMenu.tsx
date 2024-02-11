@@ -29,7 +29,10 @@ export default function RowContextMenu({ row, activeItem, timeframe, addNewSpawn
         const campaign = activeItem.name === 'Campaigns' ? row as TCampaign : null;
         const landingPage = activeItem.name === 'Landing Pages' ? row as TLandingPage : null;
         const offer = activeItem.name === 'Offers' ? row as TOffer : null;
-        return campaign ? generateCampaignLinks(campaign).campaignUrl : landingPage?.url ?? offer?.url;
+        const trafficSource = campaign?.trafficSource_id
+            ? data?.trafficSources?.find(_trafficSource => _trafficSource._id === campaign.trafficSource_id)
+            : null;
+        return campaign ? generateCampaignLinks({ campaign, trafficSource }).campaignUrl : landingPage?.url ?? offer?.url;
     };
 
     const menuOptions: TMenuOption[] = [
