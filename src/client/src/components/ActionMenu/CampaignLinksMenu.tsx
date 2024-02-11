@@ -36,7 +36,7 @@ export default function CampaignLinksMenu({ campaign, onClose }: {
                     onClose={() => onClose()}
                 />
                 <div className='flex flex-col justify-between items-center min-h-[50vh] max-h-[90vh] p-4'>
-                    <div className='flex flex-col justify-start items-center gap-4 w-full'>
+                    <div className='flex flex-col justify-start items-center gap-4 w-full mb-4'>
                         {campaign?.name &&
                             <Card title='Campaign Name' value={campaign.name} />
                         }

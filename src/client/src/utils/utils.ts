@@ -273,8 +273,8 @@ export function generateCampaignLinks({ campaign, trafficSource }: {
         campaignUrl += '?';
         const tokens = [...trafficSource.defaultTokens, ...trafficSource.customTokens];
         for (let i = 0; i < tokens.length; i++) {
-            campaignUrl += `${trafficSource.defaultTokens[i].queryParam}=${trafficSource.defaultTokens[i].value}`;
-            if (i !== trafficSource.defaultTokens.length - 1) {
+            campaignUrl += `${tokens[i].queryParam}=${tokens[i].value}`;
+            if (i !== tokens.length - 1) {
                 campaignUrl += '&';
             }
         }
