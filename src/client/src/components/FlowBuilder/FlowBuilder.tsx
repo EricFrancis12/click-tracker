@@ -28,6 +28,8 @@ export default function FlowBuilder({ flow, setFlow }: {
         });
     }
 
+    console.log(structuredClone(flow));
+
     return (
         <>
             {flow?.defaultRoute &&

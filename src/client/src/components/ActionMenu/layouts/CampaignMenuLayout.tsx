@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import useTagSuggestions from '../../../hooks/useTagSuggestions';
 import { Input, Select } from '../../base-components';
@@ -24,6 +24,18 @@ export default function CampaignMenuLayout({ menuData, setMenuData }: {
     const savedFlow = flow.type === 'saved' ? flow as TFlow_saved : defaultFlow_saved();
     const [builtInFlow, setBuiltInFlow] = useState<TFlow_built_in>(flow.type === 'built_in' ? flow as TFlow_built_in : defaultFlow_built_in());
     const [urlFlow, setUrlFlow] = useState<TFlow_url>(flow.type === 'url' ? flow as TFlow_url : defaultFlow_url());
+
+    useEffect(() => {
+        if (flow.type === 'built_in') {
+            setMenuData({ ...menuData, flow: structuredClone(builtInFlow) });
+        }
+    }, [builtInFlow]);
+
+    useEffect(() => {
+        if (flow.type === 'url') {
+            setMenuData({ ...menuData, flow: structuredClone(urlFlow) });
+        }
+    }, [urlFlow]);
 
     return (
         <>
@@ -153,7 +165,11 @@ export default function CampaignMenuLayout({ menuData, setMenuData }: {
                                 <Select
                                     name='Flow'
                                     defaultValue={menuData.flow._id}
-                                    onChange={e => setMenuData({ ...menuData, flow: { ...menuData.flow, _id: e.target.value } })}
+                                    onChange={e => {
+                                        if (flow.type === 'saved') {
+                                            setMenuData({ ...menuData, flow: { ...menuData.flow, _id: e.target.value } });
+                                        }
+                                    }}
                                 >
                                     <option value=''>
                                         None
