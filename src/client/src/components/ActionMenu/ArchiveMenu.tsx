@@ -7,6 +7,7 @@ import { Header } from '../menu-components';
 import Button from '../Button';
 import type { TActionMenu } from '../../contexts/ActionMenuContext';
 import { makeEndpoint } from '../../utils/utils';
+import { getSingName } from '../../utils/utils';
 
 export default function ArchiveMenu({ actionMenu, onClose }: {
     actionMenu: TActionMenu,
@@ -54,12 +55,12 @@ export default function ArchiveMenu({ actionMenu, onClose }: {
                 }}
             >
                 <Header
-                    title='Campaign Links'
+                    title='Confirm Delete'
                     onClose={() => onClose()}
                 />
                 <div className='max-h-[90vh] w-full p-4 text-center'>
                     <h2 className='my-4'>
-                        Are you sure you want to delete: {actionMenu?.dataItem?.name}?
+                        {`Are you sure you want to delete${actionMenu?.itemName ? ` ${getSingName(actionMenu.itemName)}:` : ':'} ${actionMenu?.dataItem?.name}?`}
                     </h2>
                     <div className='flex justify-center items-center gap-2 w-full'>
                         <Button text='Confirm' onClick={() => handleDelete()} disabled={loading} />

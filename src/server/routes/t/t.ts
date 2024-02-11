@@ -117,7 +117,7 @@ router.get('/:campaign_id', async (req, res) => {
             res.redirect(viewRedirectUrl ?? catchAllRedirectUrl());
 
             if (campaign && flow) {
-                createNewAndSaveNewClick(click);
+                await createNewAndSaveNewClick(click);
             }
         }
     } catch (err) {
