@@ -6,11 +6,10 @@ import type {
     TTimeframe, TTrafficSource
 } from './types';
 import { geos } from './geos';
-import { getDates } from '../utils/timeframe-utils';
-import { DEFAULT_TIMEFRAME_NAME } from './constants';
 
 export function defaultTimeframe(): TTimeframe {
-    return getDates(DEFAULT_TIMEFRAME_NAME);
+    const sevenDays = 60 * 60 * 24 * 7 * 1000;
+    return [new Date(Date.now() - sevenDays), new Date()];
 }
 
 export function defaultAffiliateNetwork(): TAffiliateNetwork {
