@@ -5,8 +5,8 @@ import { fetchFlows } from './flows';
 import { fetchLandingPages } from './landingPages';
 import { fetchOffers } from './offers';
 import { fetchTrafficSources } from './trafficSources';
-import { TToken, TTrafficSource } from '../../client/src/lib/types';
 import { tokensDictionary, tokensList } from '../../client/src/lib/tokensList';
+import type { TCampaign, TClick, TLandingPage, TOffer, TToken, TTrafficSource } from '../../client/src/lib/types';
 
 export async function fetchData() {
     const _affiliateNetworksPromise = fetchAffiliateNetworks();
@@ -92,4 +92,53 @@ export function getTokensFromUrl(
                 value
             };
         });
+}
+
+export function replaceTokensInUrl({ url, click, campaign, landingPage, offer, trafficSource }: {
+    url?: string | null,
+    click: TClick,
+    campaign?: TCampaign | null,
+    landingPage?: TLandingPage | null,
+    offer?: TOffer | null,
+    trafficSource?: TTrafficSource | null
+}) {
+    if (!url) return '';
+
+    let result = url.includes('?') ? `${url}&` : `${url}?`;
+    tokensList.forEach(token => {
+        if (result.includes(token.value)) {
+            let replacementValue;
+            switch (token.value) {
+                case tokensDictionary['Click ID'].value: replacementValue = click._id; break;
+                case tokensDictionary['Cost'].value: replacementValue = click.cost; break;
+                case tokensDictionary['Campaign ID'].value: replacementValue = click.campaign_id; break;
+                case tokensDictionary['Campaign Name'].value: replacementValue = campaign?.name ?? null; break;
+                case tokensDictionary['Traffic Source ID'].value: replacementValue = click.trafficSource_id; break;
+                case tokensDictionary['Traffic Source Name'].value: replacementValue = trafficSource?.name ?? null; break;
+                case tokensDictionary['Landing Page ID'].value: replacementValue = click.landingPage_id; break;
+                case tokensDictionary['Landing Page Name'].value: replacementValue = landingPage?.name ?? null; break;
+                case tokensDictionary['Offer ID'].value: replacementValue = offer?._id; break;
+                case tokensDictionary['Landing Page Name'].value: replacementValue = offer?.name ?? null; break;
+                case tokensDictionary['Device Type'].value: replacementValue = click.deviceType ?? null; break;
+                case tokensDictionary['Device Vendor'].value: replacementValue = click.deviceVendor ?? null; break;
+                case tokensDictionary['Device Model'].value: replacementValue = click.deviceModel ?? null; break;
+                case tokensDictionary['Browser Name'].value: replacementValue = click.browserName ?? null; break;
+                case tokensDictionary['Browser Version'].value: replacementValue = click.browserVersion ?? null; break;
+                case tokensDictionary['OS'].value: replacementValue = click.os ?? null; break;
+                case tokensDictionary['OS Version'].value: replacementValue = click.osVersion ?? null; break;
+                case tokensDictionary['Country Name'].value: replacementValue = click.geoName ?? null; break;
+                case tokensDictionary['Region'].value: replacementValue = click.region ?? null; break;
+                case tokensDictionary['City'].value: replacementValue = click.city ?? null; break;
+                case tokensDictionary['ISP'].value: replacementValue = click.isp ?? null; break;
+                case tokensDictionary['User Agent'].value: replacementValue = click.userAgent ?? null; break;
+                case tokensDictionary['IP Address'].value: replacementValue = click.ip ?? null; break;
+                case tokensDictionary['Language'].value: replacementValue = click.language ?? null; break;
+                case tokensDictionary['Connection Type'].value: replacementValue = click.connectionType ?? null; break;
+                case tokensDictionary['Mobile Carrier'].value: replacementValue = click.mobileCarrier ?? null; break;
+            }
+            if (!replacementValue) return;
+            result = result.replace(new RegExp(token.value, 'g'), `${replacementValue}`);
+        }
+    });
+    return result;
 }

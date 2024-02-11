@@ -1,14 +1,15 @@
 import type {
-    TFlow, TLandingPage, TOffer, TPath,
-    TPath_landingPage, TPath_offer, TRoute
+    TClick, TFlow, TLandingPage, TOffer,
+    TPath, TPath_landingPage, TPath_offer, TRoute
 } from '../../../client/src/lib/types';
 import { weightedRandomlySelectItem } from '../../../client/src/utils/utils';
-import { createNewAndSaveNewClick, makeClickPropsFromReq, makeNewClickFromReq } from '../../data/clicks';
-import { fetchData } from '../../data/data';
-import { fetchFlowBy_id } from '../../data/flows';
 import { catchAllRedirectUrl, clickTriggersRuleRoute } from '../../utils/utils';
+import { createNewAndSaveNewClick, makeClickPropsFromReq, makeNewClickFromReq } from '../../data/clicks';
+import { fetchData, replaceTokensInUrl } from '../../data/data';
+import { fetchFlowBy_id } from '../../data/flows';
 
 import { Router } from 'express';
+import { tokensDictionary, tokensList } from '../../../client/src/lib/tokensList';
 const router = Router();
 
 router.get('/:campaign_id', async (req, res) => {
@@ -24,6 +25,7 @@ router.get('/:campaign_id', async (req, res) => {
             res.redirect(catchAllRedirectUrl());
             return;
         }
+        const trafficSource = data.trafficSources.find(_trafficSource => _trafficSource._id === campaign?.trafficSource_id) ?? null;
 
         const clickPropsFromReq = await makeClickPropsFromReq(req);
         let directLinkingEnabled: boolean | undefined = false;
@@ -103,17 +105,30 @@ router.get('/:campaign_id', async (req, res) => {
                 clickPropsFromReq
             });
 
+            viewRedirectUrl = replaceTokensInUrl({
+                url: viewRedirectUrl,
+                click,
+                campaign,
+                landingPage,
+                offer,
+                trafficSource
+            });
+            click.viewRedirectUrl = viewRedirectUrl
+
+            clickRedirectUrl = replaceTokensInUrl({
+                url: clickRedirectUrl,
+                click,
+                campaign,
+                landingPage,
+                offer,
+                trafficSource
+            });
+            click.clickRedirectUrl = clickRedirectUrl;
+
             if (click?._id) {
                 res.cookie('click_id', click._id, { httpOnly: true });
             }
 
-            console.log(campaign);
-            console.log(flow);
-            console.log(route);
-            console.log(path);
-            console.log(landingPage);
-            console.log(offer);
-            console.log(viewRedirectUrl);
             res.redirect(viewRedirectUrl ?? catchAllRedirectUrl());
 
             if (campaign && flow) {

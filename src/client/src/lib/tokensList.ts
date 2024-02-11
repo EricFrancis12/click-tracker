@@ -91,20 +91,15 @@ export const tokensDictionary = {
         queryParam: 'countryName',
         value: '{countryName}'
     },
-    'Country Code': {
-        name: 'Country Code',
-        queryParam: 'countryCode',
-        value: '{countryCode}'
+    'Region': {
+        name: 'Region',
+        queryParam: 'region',
+        value: '{region}'
     },
     'City': {
         name: 'City',
         queryParam: 'city',
         value: '{city}'
-    },
-    'Region': {
-        name: 'Region',
-        queryParam: 'region',
-        value: '{region}'
     },
     'ISP': {
         name: 'ISP',
@@ -120,11 +115,6 @@ export const tokensDictionary = {
         name: 'IP Address',
         queryParam: 'ip',
         value: '{ip}'
-    },
-    'Custom': {
-        name: 'Custom',
-        queryParam: 'customN',
-        value: '{customN}'
     },
     'Language': {
         name: 'Language',
