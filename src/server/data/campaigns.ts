@@ -25,17 +25,16 @@ export async function createNewAndSaveNewCampaign(campaign: TCampaign) {
 export async function updateCampaign(campaign: TCampaign) {
     const _campaign = await fetchCampaignBy_id(campaign._id);
 
-    console.log('campaign follows: ');
-    console.log(campaign);
-    console.log('_campaign follows: ');
-    console.log(_campaign);
-
     if (!_campaign) {
         throw new Error('Unable to update campaign');
     }
     const campaignsCollection = db.collection('campaigns');
     // await campaignsCollection.delete(campaign._id);
-    return await campaignsCollection.set(campaign._id, { name: '789' });
+    return await campaignsCollection.set(campaign._id, {
+        name: campaign.name,
+        offerRotation: campaign.offerRotation,
+        tags: campaign.tags
+    });
 }
 
 export async function deleteCampaignBy_id(_id: string) {
