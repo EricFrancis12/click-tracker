@@ -288,8 +288,8 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         const _columns = columns(activeItem.name);
         const result = mappedData.sort((a, b) => {
             const activeColumn = _columns[sortedColumn.index];
-            const _a = activeColumn.selector(a).at(-1) === '%' ? parseFloat(activeColumn.selector(a)) : activeColumn.selector(a);
-            const _b = activeColumn.selector(b).at(-1) === '%' ? parseFloat(activeColumn.selector(b)) : activeColumn.selector(b);
+            const _a = activeColumn?.selector(a)?.at(-1) === '%' ? parseFloat(activeColumn.selector(a)) : activeColumn.selector(a);
+            const _b = activeColumn?.selector(b)?.at(-1) === '%' ? parseFloat(activeColumn.selector(b)) : activeColumn.selector(b);
             return _a - _b;
         });
         return sortedColumn.type === 'reversed'
