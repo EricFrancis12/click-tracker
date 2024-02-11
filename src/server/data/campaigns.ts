@@ -24,6 +24,12 @@ export async function createNewAndSaveNewCampaign(campaign: TCampaign) {
 
 export async function updateCampaign(campaign: TCampaign) {
     const _campaign = await fetchCampaignBy_id(campaign._id);
+
+    console.log('campaign follows: ');
+    console.log(campaign);
+    console.log('_campaign follows: ');
+    console.log(_campaign);
+
     if (!_campaign) {
         throw new Error('Unable to update campaign');
     }
