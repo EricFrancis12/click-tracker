@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import type {
     TAffiliateNetwork, TCampaign, TFlow, TFlow_built_in,
     TFlow_saved, TFlow_url, TLandingPage, TOffer,
@@ -8,7 +9,7 @@ import { geos } from './geos';
 
 export function defaultAffiliateNetwork(): TAffiliateNetwork {
     return ({
-        _id: 'DEFAULT_AFFILIATE_NETWORK_id_AN',
+        _id: `${nanoid()}_AN`,
         name: '',
         defaultNewOfferString: '',
         tags: []
@@ -17,7 +18,7 @@ export function defaultAffiliateNetwork(): TAffiliateNetwork {
 
 export function defaultCampaign(): TCampaign {
     return ({
-        _id: 'DEFAULT_CAMPAIGN_id_CA',
+        _id: `${nanoid()}_CA`,
         name: '',
         trafficSource_id: '',
         landingPageRotation: 'random',
@@ -43,7 +44,7 @@ export function defaultFlow(): TFlow {
 
 export function defaultFlow_saved(): TFlow_saved {
     return ({
-        _id: 'DEFAULT_SAVED_FLOW_id_FL',
+        _id: `${nanoid()}_FL`,
         type: 'saved',
         name: '',
         defaultRoute: {
@@ -88,7 +89,7 @@ export function defaultPath(): TPath {
 
 export function defaultLandingPage(): TLandingPage {
     return ({
-        _id: 'DEFAULT_LANDING_PAGE_id_LP',
+        _id: `${nanoid()}_LP`,
         name: '',
         url: '',
         tags: []
@@ -97,7 +98,7 @@ export function defaultLandingPage(): TLandingPage {
 
 export function defaultOffer(): TOffer {
     return ({
-        _id: 'DEFAULT_OFFER_id_OF',
+        _id: `${nanoid()}_OF`,
         name: '',
         affiliateNetwork_id: '',
         url: '',
@@ -108,7 +109,7 @@ export function defaultOffer(): TOffer {
 
 export function defaultTrafficSource(): TTrafficSource {
     return ({
-        _id: 'DEFAULT_TRAFFIC_SOURCE_id_TS',
+        _id: `${nanoid()}_TS`,
         name: '',
         postbackUrl: '',
         defaultTokens: [
