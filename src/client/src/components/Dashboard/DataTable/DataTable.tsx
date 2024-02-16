@@ -332,7 +332,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                 />
                             </div>
                             <div
-                                className='flex justify-start items-center overflow-hidden px-2 h-8 text-white bg-[#1e3948]'
+                                className='flex justify-start items-center overflow-hidden px-2 h-8 text-white bg-[#2f918e]'
                                 style={{
                                     minWidth: index >= 2 ? '110px' : '',
                                     borderLeft: 'solid lightgray 1px'
@@ -537,7 +537,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                         )
                                 })
                             }
-                            < div className='absolute flex justify-end items-center overflow-hidden px-2 h-8 w-full text-white bg-[#1e3948]'
+                            < div className='absolute flex justify-end items-center overflow-hidden px-2 h-8 w-full text-white bg-[#2f918e]'
                                 style={{
                                     minHeight: '20px',
                                     borderLeft: 'solid lightgray 1px',

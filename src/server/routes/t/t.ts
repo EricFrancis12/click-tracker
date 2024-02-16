@@ -1,5 +1,5 @@
 import type {
-    TClick, TFlow, TLandingPage, TOffer,
+    TFlow, TLandingPage, TOffer,
     TPath, TPath_landingPage, TPath_offer, TRoute
 } from '../../../client/src/lib/types';
 import { weightedRandomlySelectItem } from '../../../client/src/utils/utils';
@@ -9,7 +9,6 @@ import { fetchData, replaceTokensInUrl } from '../../data/data';
 import { fetchFlowBy_id } from '../../data/flows';
 
 import { Router } from 'express';
-import { tokensDictionary, tokensList } from '../../../client/src/lib/tokensList';
 const router = Router();
 
 router.get('/:campaign_id', async (req, res) => {

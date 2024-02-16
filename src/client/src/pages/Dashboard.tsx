@@ -24,10 +24,11 @@ export default function Dashboard() {
     ];
     const [spawnedTabs, setSpawnedTabs] = useState<TTab[]>([]);
 
-    function handleClose(tab_id: string) {
+    function handleCloseTab(e: React.MouseEvent<SVGSVGElement, MouseEvent>, tab_id: string) {
+        e.stopPropagation();
         const newSpawnedTabs = spawnedTabs.filter(tab => tab._id !== tab_id);
-        setActiveTab_id('0');
         setSpawnedTabs(newSpawnedTabs);
+        setActiveTab_id('1');
     }
 
     function addNewSpawnedTab({ props }: TTab_props) {
@@ -49,7 +50,7 @@ export default function Dashboard() {
                         fontFamily: 'Lato,Helvetica,sans-serif,-apple-system'
                     }}
                 >
-                    <div className='flex h-[40px] w-[100vw] bg-[#1e3948]'>
+                    <div className='flex h-[40px] w-[100vw] bg-[#2f918e]'>
                         <div className='flex justify-center items-center h-full'>
                             <img
                                 src='/assets/images/logo.png'
@@ -63,7 +64,7 @@ export default function Dashboard() {
                                 {...tab.props} // Props will contain "addNewSpawnedTab" only when tab.component === HomeTab
                                 active={tab._id === activeTab_id}
                                 onClick={() => setActiveTab_id(tab._id)}
-                                onClose={() => handleClose(tab._id)}
+                                onClose={e => handleCloseTab(e, tab._id)}
                             />
                         ))}
                     </div>

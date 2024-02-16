@@ -131,6 +131,7 @@ export default function CalendarButton({ timeframe, setTimeframe }: {
     }
 
     function handleCalendarChange(newValue: Value) {
+        console.log(newValue);
         if (!isArray(newValue)) return;
         setCalendarValue(newValue as TTimeframe);
         setActiveTimeframeName('Date Range');
@@ -175,21 +176,20 @@ export default function CalendarButton({ timeframe, setTimeframe }: {
                     style={{ border: 'solid black 1px', zIndex: 100 }}
                 >
                     <div className='flex'>
-                        <div className='m-4'>
+                        <div className='w-[270px] m-4 text-center'>
                             <Calendar
+                                className='w-full'
                                 selectRange={true}
                                 value={calendarValue}
                                 onChange={handleCalendarChange}
                             />
                         </div>
-                        <div className='flex flex-col p-1' style={{ height: 'auto', width: 'auto', backgroundColor: 'red' }}>
+                        <div className='flex flex-col h-auto w-auto p-1 bg-gray-300'>
                             {timeframeTypes.map((type, index) => (
-                                <div onClick={type.onClick}
-                                    key={index}
-                                    className='whitespace-nowrap cursor-pointer hover:opacity-70'
-                                    style={{
-                                        backgroundColor: type.name === activeTimeframeName ? 'blue' : 'white'
-                                    }}
+                                <div key={index}
+                                    className={(type.name === activeTimeframeName ? 'bg-[#1f76c6] ' : 'bg-white hover:bg-gray-300 ')
+                                        + ' px-2 whitespace-nowrap cursor-pointer'}
+                                    onClick={type.onClick}
                                 >
                                     {type.name}
                                 </div>

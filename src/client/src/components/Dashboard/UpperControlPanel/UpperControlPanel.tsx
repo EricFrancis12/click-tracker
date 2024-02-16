@@ -117,10 +117,10 @@ export function UpperControlPanelItem({ item, activeItem, setActiveItem }: {
                 style={{ borderRadius: '6px' }}
                 className={(
                     activeItem.name === item.name || (item.dropdownItems && arrayIncludesKeyValuePair(item.dropdownItems, 'name', activeItem?.name))
-                        ? 'bg-[#17a689] text-white '
+                        ? 'bg-[#1f76c6] text-white '
                         : ' '
                 )
-                    + ' relative flex justify-start items-center py-1 px-2 cursor-pointer hover:bg-[#17a689] hover:text-white'
+                    + ' relative flex justify-start items-center py-1 px-2 cursor-pointer hover:bg-[#1f76c6] hover:text-white'
                 }
             >
                 {item.icon &&

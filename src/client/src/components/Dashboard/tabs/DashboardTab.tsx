@@ -188,7 +188,7 @@ export default function DashboardTab({ active, onClick, onClose }: {
                                                         style={{ borderBottom: 'solid grey 1px' }}
                                                     >
                                                         <div className='flex justify-start items-center h-full'>
-                                                            <div className={(posProfit ? 'bg-[#17a689]' : negProfit ? 'bg-red-300' : 'bg-gray-300')
+                                                            <div className={(posProfit ? 'bg-[#1f76c6]' : negProfit ? 'bg-red-300' : 'bg-gray-300')
                                                                 + ' h-full w-[3px] mr-[10px]'} />
                                                             <span className='my-1'>
                                                                 {dataItem.name}

@@ -22,9 +22,8 @@ export default function Tab({ name, icon, active, onClick, onClose, toolTip }: {
             >
                 <div ref={overflownRef}
                     onClick={onClick}
-                    className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] hover:bg-[#000000] ')
-                        + (active ? ' text-[#394146] ' : ' text-white ')
-                        + ' group relative h-[32px] max-w-[245px] text-sm text-ellipsis overflow-hidden cursor-pointer'}
+                    className={(active ? 'bg-[#ffffff] ' : 'bg-[#c3ccd2] hover:bg-[#d0d9de] ')
+                        + ' group relative h-[32px] max-w-[245px] text-[#394146] text-sm text-ellipsis overflow-hidden cursor-pointer'}
                     style={{
                         userSelect: 'none',
                         padding: '6px 8px 6px 8px',
@@ -38,7 +37,7 @@ export default function Tab({ name, icon, active, onClick, onClose, toolTip }: {
                     </span>
                     {onClose &&
                         <div className='absolute flex justify-end items-center top-0 left-0 h-full w-full'>
-                            <div className={(active ? 'bg-[#ffffff] ' : 'bg-[#4b616d] group-hover:bg-[#000000] ')}>
+                            <div className={(active ? 'bg-[#ffffff] ' : 'bg-[#c3ccd2] group-hover:bg-[#d0d9de] ')}>
                                 <FontAwesomeIcon
                                     icon={faClose}
                                     className='mr-2 cursor-pointer'
