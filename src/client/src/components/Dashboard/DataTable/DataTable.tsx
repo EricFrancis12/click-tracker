@@ -66,7 +66,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
     }
 
     const columns = (activeItemName: TItemName, reportChainIndex: number = 0): TColumn[] => {
-        const index0Column = {
+        const columnAtIndex0 = {
             name: ' ',
             selector: (row: TMappedDataItem) => {
                 const totalRevenue = row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0);
@@ -78,7 +78,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                         : indicators.NEGATIVE.name;
             }
         };
-        const index1Column = (reportChain?.at(reportChainIndex + 1)?.name
+        const columnAtIndex1 = (reportChain?.at(reportChainIndex + 1)?.name
             ? {
                 name: ' ',
                 selector: (row: TMappedDataItem, index: number, parentIndex: number, reportChainIndex: number) => (
@@ -109,8 +109,8 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         ) as TColumn;
 
         return [
-            index0Column,
-            index1Column,
+            columnAtIndex0,
+            columnAtIndex1,
             {
                 name: activeItemName,
                 selector: (row: TMappedDataItem) => row.name
@@ -129,18 +129,18 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             },
             {
                 name: 'Revenue',
-                selector: (row: TMappedDataItem) => row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0).toFixed(2)
+                selector: (row: TMappedDataItem) => `$ ${row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0).toFixed(2)}`
             },
             {
                 name: 'Cost',
-                selector: (row: TMappedDataItem) => row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0).toFixed(2)
+                selector: (row: TMappedDataItem) => `$ ${row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0).toFixed(2)}`
             },
             {
                 name: 'Profit',
                 selector: (row: TMappedDataItem) => {
                     const totalRevenue = row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0);
                     const totalCost = row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0);
-                    return totalRevenue - totalCost;
+                    return `$ ${(totalRevenue - totalCost).toFixed(2)}`;
                 }
             },
             {
@@ -148,7 +148,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalCost = row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0);
                     const totalVisits = row.clicks.length;
-                    return replaceNonsense(totalCost / totalVisits, 0);
+                    return `$ ${replaceNonsense(totalCost / totalVisits, 0).toFixed(2)}`;
                 }
             },
             {
@@ -156,7 +156,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalCost = row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0);
                     const totalClicks = row.clicks.filter(click => click.lpClickTimestamp).length;
-                    return replaceNonsense(totalCost / totalClicks, 0);
+                    return `$ ${replaceNonsense(totalCost / totalClicks, 0).toFixed(2)}`;
                 }
             },
             {
@@ -164,7 +164,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalClicks = row.clicks.filter(click => click.lpClickTimestamp).length;
                     const totalVisits = row.clicks.length;
-                    return replaceNonsense(totalClicks / totalVisits, 0) * 100 + '%';
+                    return `${(replaceNonsense(totalClicks / totalVisits, 0) * 100).toFixed(2)}%`;
                 }
             },
             {
@@ -172,7 +172,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalConversions = row.clicks.filter(click => click.conversionTimestamp).length;
                     const totalVisits = row.clicks.length;
-                    return replaceNonsense(totalConversions / totalVisits, 0) * 100 + '%';
+                    return `${(replaceNonsense(totalConversions / totalVisits, 0) * 100).toFixed(2)}%`;
                 }
             },
             {
@@ -180,7 +180,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalCost = row.clicks.reduce((totalCost, click) => totalCost + (click.cost ?? 0), 0);
                     const totalRevenue = row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0);
-                    return replaceNonsense((totalRevenue - totalCost) / totalCost, 0) * 100 + '%';
+                    return `${(replaceNonsense((totalRevenue - totalCost) / totalCost, 0) * 100).toFixed(2)}%`;
                 }
             },
             {
@@ -188,7 +188,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalRevenue = row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0);
                     const totalVisits = row.clicks.length;
-                    return replaceNonsense(totalRevenue / totalVisits, 0);
+                    return `$ ${replaceNonsense(totalRevenue / totalVisits, 0).toFixed(2)}`;
                 }
             },
             {
@@ -196,7 +196,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                 selector: (row: TMappedDataItem) => {
                     const totalRevenue = row.clicks.reduce((totalRevenue, click) => totalRevenue + (click.revenue ?? 0), 0);
                     const totalClicks = row.clicks.filter(click => click.lpClickTimestamp).length;
-                    return replaceNonsense(totalRevenue / totalClicks, 0);
+                    return `$ ${replaceNonsense(totalRevenue / totalClicks, 0).toFixed(2)}`;
                 }
             }
         ];

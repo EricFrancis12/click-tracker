@@ -14,11 +14,11 @@ export default function NewButton({ activeItem }: {
             text='New'
             icon={faPlus}
             onClick={e => {
-                if (!primaryItemNames.includes(activeItem.name as TItemName_primary)) {
-                    throw new Error('New item must be a primary item.');
-                }
+                const itemName = primaryItemNames.includes(activeItem.name as TItemName_primary)
+                    ? activeItem.name
+                    : 'Campaigns';
                 setActionMenu({
-                    itemName: activeItem.name as TItemName_primary
+                    itemName: itemName as TItemName_primary
                 });
             }}
         />

@@ -3,6 +3,7 @@ import type {
     TRoute_default, TRoute_rule, TRule, TPath, TTrafficSource, TClick
 } from './types';
 import { TData } from '../contexts/AuthContext';
+import { geos } from './geos';
 
 export const placeholderAffiliateNetworks: TAffiliateNetwork[] = [
     {
@@ -171,19 +172,119 @@ export const placeholderTrafficSources: TTrafficSource[] = [
 export const placeholderCampaigns: TCampaign[] = [
     {
         _id: 'PLACEHOLDER-CAMPAIGN-0_CA',
-        name: 'PLACEHOLDER-CAMPAIGN-0',
+        name: 'US | Men | age 25-34 | remarketing',
         trafficSource_id: placeholderTrafficSources[0]._id,
         landingPageRotation: 'random',
         offerRotation: 'random',
         flow: placeholderFlows[1],
         tags: ['0', '1', '2', '3'],
-        geoName: 'sample geo name'
+        geoName: geos[1].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-1_CA',
+        name: 'Africa modile test',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-2_CA',
+        name: 'Lead Magnet campaign 1',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-3_CA',
+        name: 'Lead Magnet campaign 2',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-4_CA',
+        name: 'Aniversary sale',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-5_CA',
+        name: 'Performance Test',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-6_CA',
+        name: 'Tier 2 Geos Experiment',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-7_CA',
+        name: 'Beta Testing Campaign',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-8_CA',
+        name: 'Test Campaign A',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-9_CA',
+        name: 'Test Campaign B',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
+    },
+    {
+        _id: 'PLACEHOLDER-CAMPAIGN-10_CA',
+        name: 'Orange button split test',
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPageRotation: 'random',
+        offerRotation: 'random',
+        flow: placeholderFlows[1],
+        tags: [],
+        geoName: geos[2].name
     }
 ];
 
 export const placeholderClicks: TClick[] = [
     {
-        _id: `12345_CL`,
+        _id: `0_CL`,
         campaign_id: placeholderCampaigns[0]._id,
         trafficSource_id: placeholderTrafficSources[0]._id,
         landingPage_id: placeholderLandingPages[0]._id,
@@ -206,7 +307,183 @@ export const placeholderClicks: TClick[] = [
         ],
         viewRedirectUrl: 'https://demoredirecturl.xyz',
         clickRedirectUrl: 'https://demoredirecturl.xyz'
-    }
+    },
+    {
+        _id: `1_CL`,
+        campaign_id: placeholderCampaigns[0]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 0.90,
+        revenue: 4.56,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `2_CL`,
+        campaign_id: placeholderCampaigns[1]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 0.90,
+        revenue: 4.56,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `3_CL`,
+        campaign_id: placeholderCampaigns[2]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `4_CL`,
+        campaign_id: placeholderCampaigns[3]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `5_CL`,
+        campaign_id: placeholderCampaigns[4]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `6_CL`,
+        campaign_id: placeholderCampaigns[5]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `7_CL`,
+        campaign_id: placeholderCampaigns[6]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 6.23,
+        revenue: 1.55,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `8_CL`,
+        campaign_id: placeholderCampaigns[7]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `9_CL`,
+        campaign_id: placeholderCampaigns[8]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `10_CL`,
+        campaign_id: placeholderCampaigns[9]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 6.23,
+        revenue: 1.55,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
+    {
+        _id: `11_CL`,
+        campaign_id: placeholderCampaigns[10]._id,
+        trafficSource_id: placeholderTrafficSources[0]._id,
+        landingPage_id: placeholderLandingPages[0]._id,
+        offer_id: placeholderOffers[0]._id,
+        flow_id: placeholderFlows[0]._id,
+        viewTimestamp: Date.now(),
+        lpClickTimestamp: Date.now(),
+        conversionTimestamp: Date.now(),
+        cost: 1.95,
+        revenue: 2.14,
+        tokens: [],
+        viewRedirectUrl: 'https://demoredirecturl.xyz',
+        clickRedirectUrl: 'https://demoredirecturl.xyz'
+    },
 ];
 
 export const placeholderData: TData = {

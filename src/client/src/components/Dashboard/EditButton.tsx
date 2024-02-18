@@ -17,21 +17,19 @@ export default function EditButton({ activeItem, mappedData }: {
         <Button
             text='Edit'
             icon={faPencil}
-            disabled={mappedData.length !== 1}
+            disabled={mappedData.length !== 1 || !primaryItemNames.includes(activeItem.name as TItemName_primary)}
             onClick={e => {
-                if (!primaryItemNames.includes(activeItem.name as TItemName_primary)) {
-                    throw new Error('Edit item must be a primary item.');
+                if (mappedData.length < 1 || !primaryItemNames.includes(activeItem.name as TItemName_primary)) {
+                    return;
                 }
-                if (mappedData.length >= 1) {
-                    const dataItem = mappedDataItemToDataItem(mappedData[0], activeItem, data);
-                    if (!dataItem) {
-                        return;
-                    }
-                    setActionMenu({
-                        itemName: activeItem.name as TItemName_primary,
-                        dataItem
-                    });
+                const dataItem = mappedDataItemToDataItem(mappedData[0], activeItem, data);
+                if (!dataItem) {
+                    return;
                 }
+                setActionMenu({
+                    itemName: activeItem.name as TItemName_primary,
+                    dataItem
+                });
             }}
         />
     )

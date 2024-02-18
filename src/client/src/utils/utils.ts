@@ -30,7 +30,7 @@ export function isEven(number: number) {
     return number % 2 === 0;
 }
 
-export function replaceNonsense(any: any, replacement: number = 0) {
+export function replaceNonsense(any: any, replacement: number = 0): typeof any | number {
     if (isNonsense(any)) return replacement;
     return any;
 }
