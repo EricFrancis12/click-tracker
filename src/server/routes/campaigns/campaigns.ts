@@ -1,5 +1,3 @@
-
-
 import { TCampaign } from '../../../client/src/lib/types';
 import {
     fetchCampaigns, fetchCampaignBy_id,

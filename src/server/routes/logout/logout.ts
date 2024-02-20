@@ -1,10 +1,11 @@
-
+import { logout } from '../../middleware/auth/auth';
 
 import { Router } from 'express';
 const router = Router();
 
 router.get('/', (req, res) => {
-    res.send('/logout');
+    logout();
+    res.redirect('/login');
 });
 
 export { router };

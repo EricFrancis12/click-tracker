@@ -16,20 +16,20 @@ export async function fetchData() {
     const offersPromise = fetchOffers();
     const trafficSourcesPromise = fetchTrafficSources();
 
-    const affiliateNetworks = await _affiliateNetworksPromise;
-    const campaigns = await campaignsPromise;
-    const flows = await flowsPromise;
-    const landingPages = await landingPagesPromise;
-    const offers = await offersPromise;
-    const trafficSources = await trafficSourcesPromise;
+    const affiliateNetworks = await _affiliateNetworksPromise.catch(err => console.error('Error fetching affiliate networks.'));
+    const campaigns = await campaignsPromise.catch(err => console.error('Error fetching campaigns.'));
+    const flows = await flowsPromise.catch(err => console.error('Error fetching flows.'));
+    const landingPages = await landingPagesPromise.catch(err => console.error('Error fetching landing pages.'));
+    const offers = await offersPromise.catch(err => console.error('Error fetching offers.'));
+    const trafficSources = await trafficSourcesPromise.catch(err => console.error('Error fetching traffic sources.'));
 
     return {
-        affiliateNetworks,
-        campaigns,
-        flows,
-        landingPages,
-        offers,
-        trafficSources
+        affiliateNetworks: affiliateNetworks ?? [],
+        campaigns: campaigns ?? [],
+        flows: flows ?? [],
+        landingPages: landingPages ?? [],
+        offers: offers ?? [],
+        trafficSources: trafficSources ?? []
     };
 }
 

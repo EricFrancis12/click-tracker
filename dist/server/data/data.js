@@ -25,19 +25,19 @@ function fetchData() {
         const landingPagesPromise = (0, landingPages_1.fetchLandingPages)();
         const offersPromise = (0, offers_1.fetchOffers)();
         const trafficSourcesPromise = (0, trafficSources_1.fetchTrafficSources)();
-        const affiliateNetworks = yield _affiliateNetworksPromise;
-        const campaigns = yield campaignsPromise;
-        const flows = yield flowsPromise;
-        const landingPages = yield landingPagesPromise;
-        const offers = yield offersPromise;
-        const trafficSources = yield trafficSourcesPromise;
+        const affiliateNetworks = yield _affiliateNetworksPromise.catch(err => console.error('Error fetching affiliate networks.'));
+        const campaigns = yield campaignsPromise.catch(err => console.error('Error fetching campaigns.'));
+        const flows = yield flowsPromise.catch(err => console.error('Error fetching flows.'));
+        const landingPages = yield landingPagesPromise.catch(err => console.error('Error fetching landing pages.'));
+        const offers = yield offersPromise.catch(err => console.error('Error fetching offers.'));
+        const trafficSources = yield trafficSourcesPromise.catch(err => console.error('Error fetching traffic sources.'));
         return {
-            affiliateNetworks,
-            campaigns,
-            flows,
-            landingPages,
-            offers,
-            trafficSources
+            affiliateNetworks: affiliateNetworks !== null && affiliateNetworks !== void 0 ? affiliateNetworks : [],
+            campaigns: campaigns !== null && campaigns !== void 0 ? campaigns : [],
+            flows: flows !== null && flows !== void 0 ? flows : [],
+            landingPages: landingPages !== null && landingPages !== void 0 ? landingPages : [],
+            offers: offers !== null && offers !== void 0 ? offers : [],
+            trafficSources: trafficSources !== null && trafficSources !== void 0 ? trafficSources : []
         };
     });
 }

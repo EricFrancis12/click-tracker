@@ -15,6 +15,12 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.router = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield (0, data_1.fetchData)();
-    res.json({ data });
+    try {
+        const data = yield (0, data_1.fetchData)();
+        res.json({ data });
+    }
+    catch (err) {
+        console.error(err);
+        res.json({ success: false });
+    }
 }));

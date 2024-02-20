@@ -6,17 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const cors_1 = __importDefault(require("cors"));
+const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const auth_1 = __importDefault(require("./server/middleware/auth/auth"));
+const auth_1 = require("./server/middleware/auth/auth");
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)(process.env.COOKIE_SECRET));
-app.use(express_1.default.static(path_1.default.resolve('./', 'src', 'client', 'build')));
-app.use(express_1.default.static(path_1.default.resolve('./', 'src', 'client', 'public')));
 const affiliate_networks_1 = require("./server/routes/affiliate-networks/affiliate-networks");
 const campaigns_1 = require("./server/routes/campaigns/campaigns");
 const clicks_1 = require("./server/routes/clicks/clicks");
@@ -43,8 +42,28 @@ app.use('/offers', offers_1.router);
 app.use('/postback', postback_1.router);
 app.use('/t', t_1.router);
 app.use('/traffic-sources', traffic_sources_1.router);
-app.get('*', auth_1.default, (req, res) => {
-    res.sendFile(path_1.default.resolve('./', 'src', 'client', 'build', 'index.html'));
-});
+app.get('/', catchAllRoute);
+app.get('*', catchAllRoute);
+function catchAllRoute(req, res) {
+    if (req.path && req.path !== '/') {
+        const publicPath = path_1.default.resolve(`./src/client/build${req.path}`);
+        const buildPath = path_1.default.resolve(`./src/client/public${req.path}`);
+        if (fs_1.default.existsSync(publicPath)) {
+            res.sendFile(publicPath);
+        }
+        else if (fs_1.default.existsSync(buildPath)) {
+            res.sendFile(buildPath);
+        }
+    }
+    else if ((0, auth_1.loggedIn)(req)) {
+        res.sendFile(path_1.default.resolve('./', 'src', 'client', 'build', 'index.html'));
+    }
+    else if (req.headers['Content-Type'] === 'application/json') {
+        res.status(403).json({ success: false, message: 'You need to be logged in for that.' });
+    }
+    else {
+        res.redirect('/login');
+    }
+}
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
