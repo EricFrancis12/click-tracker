@@ -54,8 +54,7 @@ export default function ActionMenu({ actionMenu, setActionMenu, maxWidth = '900p
             method,
             body: JSON.stringify(menuData)
         })
-            .then(res => res.json())
-            .then(resJson => {
+            .then(() => {
                 // Getting an up-to-date "data" object when the fetch comes back with no errors, and also close this menu
                 fetchData();
                 setActionMenu(null);

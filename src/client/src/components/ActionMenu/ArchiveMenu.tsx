@@ -31,8 +31,7 @@ export default function ArchiveMenu({ actionMenu, onClose }: {
             method: 'DELETE',
             body: JSON.stringify({})
         })
-            .then(res => res.json())
-            .then(resJson => {
+            .then(() => {
                 // Getting an up-to-date "data" object when the fetch comes back with no errors, and also close this menu
                 fetchData();
                 onClose();
