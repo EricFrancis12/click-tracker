@@ -54,7 +54,7 @@ export default function Dashboard() {
                         <div className='flex justify-center items-center h-full'>
                             <img
                                 src='/assets/images/logo-no-bg.png'
-                                className='max-w-[40px] mx-6'
+                                className='max-w-[35px] mx-6'
                                 alt='Logo'
                             />
                         </div>

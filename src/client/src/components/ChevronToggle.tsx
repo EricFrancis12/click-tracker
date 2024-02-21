@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { TReportChain } from '../lib/types';
 
+export const CHEVRON_TOGGLE_CLASS = 'CHEVRON_TOGGLE_CLASS';
+
 export default function ChevronToggle({ callback, reportChain }: {
     callback: Function,
     reportChain?: TReportChain
@@ -14,11 +16,14 @@ export default function ChevronToggle({ callback, reportChain }: {
     useWindowResize(() => setActive(false));
 
     return (
-        <span className='flex justify-center items-center w-full h-full cursor-pointer'>
-            <FontAwesomeIcon onClick={e => {
-                setActive(!active);
-                callback(!active);
-            }} icon={active ? faChevronDown : faChevronRight} />
+        <span className={CHEVRON_TOGGLE_CLASS + ' flex justify-center items-center w-full h-full cursor-pointer'}>
+            <FontAwesomeIcon
+                icon={active ? faChevronDown : faChevronRight}
+                onClick={e => {
+                    setActive(!active);
+                    callback(!active);
+                }}
+            />
         </span>
     )
 }

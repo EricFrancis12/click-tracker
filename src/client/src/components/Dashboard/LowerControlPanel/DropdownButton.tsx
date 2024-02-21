@@ -40,8 +40,10 @@ export default function DropdownButton({ children, disabled, active, setActive,
     }, []);
 
     return (
-        <div id={id.current} className={' relative whitespace-nowrap ' + (className || ' ') + (!disabled ? 'cursor-pointer ' : ' ')}>
-            <div onClick={!disabled ? (onClick ?? setActive ? (e => setActive(!active)) : (e => null)) : (e => null)}
+        <div id={id.current}
+            className={' relative whitespace-nowrap ' + (className || ' ') + (!disabled ? 'cursor-pointer ' : ' ')}
+        >
+            <div
                 className={(!disabled ? 'hover:opacity-70 ' : 'opacity-40 ') + 'flex justify-between px-2 py-2'}
                 style={{
                     minWidth: '100px',
@@ -49,26 +51,26 @@ export default function DropdownButton({ children, disabled, active, setActive,
                     borderRadius: '6px',
                     backgroundImage: 'linear-gradient(0deg,var(--color-gray5),var(--color-white))'
                 }}
+                onClick={!disabled ? (onClick ?? setActive ? (e => setActive(!active)) : undefined) : undefined}
             >
                 <span>
                     {icon &&
-                        <FontAwesomeIcon icon={icon} style={{ marginRight: '4px' }} />
+                        <FontAwesomeIcon icon={icon} className='mr-[4px]' />
                     }
-                    <span style={{ marginRight: '4px' }}>
+                    <span className='mr-[4px]'>
                         {text ?? ''}
                     </span>
                 </span>
                 <span>
                     <FontAwesomeIcon icon={active ? faChevronUp : faChevronDown} />
                 </span>
-            </div >
-            {
-                active && !disabled &&
+            </div>
+            {(active && !disabled) &&
                 <Dropdown>
                     {children}
                 </Dropdown>
             }
-        </div >
+        </div>
     )
 }
 
@@ -79,9 +81,14 @@ export function DropdownItem({ children, text, icon, onClick }: {
     onClick: React.MouseEventHandler
 }) {
     return (
-        <div onClick={onClick}
-            className='hover:bg-red-500'>
-            {icon && <FontAwesomeIcon icon={icon} style={{ marginRight: '4px' }} />}
+        <div
+            className='p-1 hover:bg-blue-300'
+            style={{ outline: 'solid grey 1px' }}
+            onClick={onClick}
+        >
+            {icon &&
+                <FontAwesomeIcon icon={icon} className='mr-[4px]' />
+            }
             {children || text}
         </div>
     )

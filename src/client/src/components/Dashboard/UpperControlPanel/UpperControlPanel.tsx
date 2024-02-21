@@ -144,10 +144,9 @@ export function UpperControlPanelItem({ item, activeItem, setActiveItem }: {
                     >
                         <Dropdown>
                             {item.dropdownItems.map((dropdownItem, index) => (
-                                <div key={index} className='p-1 bg-white hover:bg-red-500'
+                                <div key={index} className='p-1 bg-white hover:bg-blue-300'
                                     style={{
-                                        borderTop: index === 0 ? 'solid 1px black' : '',
-                                        borderBottom: 'solid 1px black'
+                                        borderTop: index !== 0 ? 'solid 1px black' : ''
                                     }}
                                     onClick={e => setActiveItem(dropdownItem)}
                                 >

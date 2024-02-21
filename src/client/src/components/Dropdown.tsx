@@ -7,11 +7,12 @@ export default function Dropdown({ children, ref, id, isHovered = true }: {
     isHovered?: boolean
 }) {
     return (
-        <div className='absolute w-auto bg-white'
+        <div className='absolute w-auto bg-white rounded overflow-hidden'
             ref={ref}
             id={id}
             style={{
                 display: isHovered ? 'block' : 'none',
+                border: 'solid black 1px',
                 zIndex: 999
             }}
         >

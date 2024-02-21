@@ -11,7 +11,7 @@ const MemoContext = React.createContext<TMemoContext | null>(null);
 export function useMemoContext() {
     const context = useContext(MemoContext);
     if (!context) {
-        throw new Error('useMemoContext must be used within a MemoContext provider')
+        throw new Error('useMemoContext must be used within a MemoContext provider');
     }
     return context;
 }

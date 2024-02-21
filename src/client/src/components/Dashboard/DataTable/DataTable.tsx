@@ -1,20 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../contexts/AuthContext';
 import useWindowResize from '../../../hooks/useWindowResize';
 import useColumnDragger from '../../../hooks/useColumnDragger';
 import useRowHover from '../../../hooks/useRowHover';
 import Checkbox from '../../Checkbox';
-import ChevronToggle from '../../ChevronToggle';
-import Spinner from '../../Spinner';
-// import DrilldownButton from '../LowerControlPanel/DrilldownButton';
+import ChevronToggle, { CHEVRON_TOGGLE_CLASS } from '../../ChevronToggle';
 import RowContextMenu from './RowContextMenu';
+import Spinner from '../../Spinner';
 import { indicators } from './indicators';
 import type { TItem, TItemName, TMappedData, TMappedDataItem, TReportChain, TTimeframe } from '../../../lib/types';
 import { mapData } from '../../../utils/mapData';
-import { replaceNonsense, stringIncludes, isEven } from '../../../utils/utils';
+import { replaceNonsense, stringIncludes, isEven, traverseParentsForClass } from '../../../utils/utils';
 import { itemsArray } from '../../../lib/items';
 
 type TSortType = 'normal' | 'reversed';
@@ -225,9 +224,13 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
             : null;
 
         if (reportChainIndex === 1) {
-            newMappedData[index].deepMappedData = deepMappedData;
+            const mappedDataItem = newMappedData[index];
+            mappedDataItem.deepMappedData = deepMappedData;
         } else if (reportChainIndex === 2) {
-            // newMappedData[index].deepMappedData[parentIndex].deepMappedData = deepMappedData;
+            const deepMappedDataItem = newMappedData[index].deepMappedData?.at(parentIndex);
+            if (deepMappedDataItem) {
+                deepMappedDataItem.deepMappedData = deepMappedData;
+            }
         } else {
             return;
         }
@@ -274,14 +277,23 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
         if (index <= 2) return '';
 
         let isPercentage = false;
-        return mappedData
+        let isCurrency = false;
+        const reduced = mappedData
             .map((_row, _index) => {
                 const cell = column.selector(_row, _index);
-                if (typeof cell === 'string' && cell.includes('%')) isPercentage = true;
+                if (typeof cell === 'string') {
+                    if (cell.includes('%')) isPercentage = true;
+                    if (cell.includes('$')) isCurrency = true;
+                }
                 return cell;
             })
-            .reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0)
-            + (isPercentage ? '%' : '');
+            .reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+
+        let result = reduced / (isPercentage ? mappedData.length : 1);
+        if (isPercentage || isCurrency) {
+            return `${isCurrency ? '$' : ''}${result.toFixed(2)}${isPercentage ? '%' : ''}`;
+        }
+        return result;
     }
 
     const sortMappedData = () => {
@@ -298,12 +310,26 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
     };
     const sortedMappedData = sortMappedData();
 
+    console.log(structuredClone(sortedMappedData?.at(0)));
+
     return (
-        <div
-            ref={dataTableRef}
-            className='max-w-[100vw] overflow-x-scroll'
+        <div ref={dataTableRef}
+            className='relative max-w-[100vw] overflow-x-scroll'
             style={{ height: fillRestOfScreen(dataTableRef) }}
         >
+            {fetchingData &&
+                <div className='absolute flex justify-center items-center top-[20%] w-full'>
+                    <div
+                        className='flex flex-col justify-center items-center gap-2 h-[100px] w-[150px] p-2 bg-blue-100 opacity-80 rounded shadow'
+                        style={{ zIndex: 1000 }}
+                    >
+                        <span>
+                            Loading...
+                        </span>
+                        <Spinner />
+                    </div>
+                </div>
+            }
             {contextMenuRow &&
                 <RowContextMenu
                     row={contextMenuRow}
@@ -356,7 +382,7 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                             {fetchingData
                                 ? index >= 2 && (
                                     <div className='flex justify-center items-start h-full w-full py-2'>
-                                        <Spinner />
+                                        <FontAwesomeIcon icon={faSpinner} />
                                     </div>
                                 )
                                 : sortedMappedData.map((_row, _index) => {
@@ -373,7 +399,10 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                         + ' flex justify-center items-center overflow-hidden h-8 cursor-pointer'}
                                                     data-_row_index={_index}
                                                     onMouseEnter={e => handleMouseEnter(e, `div[data-_row_index="${_index}"]`)}
-                                                    onClick={e => changeRowSelection(_row.selected === true, _index)}
+                                                    onClick={e => {
+                                                        if (traverseParentsForClass(e.target as HTMLElement, CHEVRON_TOGGLE_CLASS)) return;
+                                                        changeRowSelection(_row.selected === true, _index);
+                                                    }}
                                                     onContextMenu={e => handleContextMenu(e, _row)}
                                                 >
                                                     <span
@@ -413,7 +442,10 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                             + ' flex justify-center items-center overflow-hidden h-8 cursor-pointer'}
                                                                         data-__row_index={__index}
                                                                         onMouseEnter={e => handleMouseEnter(e, `div[data-__row_index="${__index}"]`)}
-                                                                        onClick={e => changeRowSelection(__row.selected === true, __index)}
+                                                                        onClick={e => {
+                                                                            if (traverseParentsForClass(e.target as HTMLElement, CHEVRON_TOGGLE_CLASS)) return;
+                                                                            changeRowSelection(__row.selected === true, __index);
+                                                                        }}
                                                                         onContextMenu={e => handleContextMenu(e, __row)}
                                                                     >
                                                                         <span className={(index === 0 ? 'text-white ' : 'text-black ')
@@ -472,7 +504,10 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                                                                             + ' flex justify-center items-center overflow-hidden h-8 cursor-pointer'}
                                                                                         data-___row_index={___index}
                                                                                         onMouseEnter={e => handleMouseEnter(e, `div[data-___row_index="${___index}"]`)}
-                                                                                        onClick={e => changeRowSelection(___row.selected === true, ___index)}
+                                                                                        onClick={e => {
+                                                                                            if (traverseParentsForClass(e.target as HTMLElement, CHEVRON_TOGGLE_CLASS)) return;
+                                                                                            changeRowSelection(___row.selected === true, ___index);
+                                                                                        }}
                                                                                         onContextMenu={e => handleContextMenu(e, ___row)}
                                                                                     >
                                                                                         <span className={(index === 0 ? 'text-white ' : 'text-black ')
@@ -537,12 +572,9 @@ export default function DataTable({ activeItem, searchQuery, mappedData, setMapp
                                         )
                                 })
                             }
-                            < div className='absolute flex justify-end items-center overflow-hidden px-2 h-8 w-full text-white bg-[#2f918e]'
-                                style={{
-                                    minHeight: '20px',
-                                    borderLeft: 'solid lightgray 1px',
-                                    bottom: 0
-                                }}
+                            <div
+                                className='absolute flex justify-end items-center bottom-0 h-8 min-h-[20px] w-full px-2 bg-[#2f918e] text-white overflow-hidden'
+                                style={{ borderLeft: 'solid lightgray 1px' }}
                             >
                                 {columnTotal(mappedData, column, index)}
                             </div>

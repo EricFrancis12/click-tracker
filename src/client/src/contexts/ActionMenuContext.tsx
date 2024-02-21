@@ -31,7 +31,7 @@ const ActionMenuContext = React.createContext<TActionMenuContext | null>(null);
 export function useActionMenu() {
     const context = useContext(ActionMenuContext);
     if (!context) {
-        throw new Error('useActionMenu must be used within a ActionMenuContext provider')
+        throw new Error('useActionMenu must be used within a ActionMenuContext provider');
     }
     return context;
 }
