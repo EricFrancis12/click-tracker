@@ -7,6 +7,8 @@ export default function DuplicateMenu({ actionMenu, onClose }: {
     actionMenu: TActionMenu,
     onClose: Function
 }) {
+    console.log('Duplicate menu not yet implimented');
+
     return (
         <BlackTransparentOverlay layer={2} className='flex justify-center items-start p-4'>
             <Modal>
